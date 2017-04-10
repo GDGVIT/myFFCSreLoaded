@@ -10,6 +10,7 @@ router.post('/register',function(req,res){
 	var data = req.body;
 	user.insertUser(data.name,data.regno,data.password)
 	.then(function(action){
+		console.log('adjba');
 		res.render('home',{data:true,message:action});
 	}).catch(function(error){
 		res.render('home',{data:true,message:error});

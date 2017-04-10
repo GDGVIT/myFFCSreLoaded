@@ -21,9 +21,37 @@ function userPresent(regno){
 	return new promise(function(fullfill,reject){
 		User.find({regno:regno},function(err,data){
 			if (err) reject("Mongo error: "+err);
-			if(data.length>0){
+			else if(data.length>0){
 				fullfill(true);
 			}
+			else{
+				fullfill(false);
+			}
+		});
+	});
+}
+
+function encryptAndSave(name,regno,passwd){
+	return new promise(function(fullfill,reject){
+		bcrypt.hash(passwd,10,function(err,hash){
+			if (err) 
+				reject("Bcrypt error :"+err);
+			else{
+				passwd= hash;
+				var newUser = new User({
+					name:name,
+					regno:regno,
+					passwd:passwd
+				});
+				newUser.save(function(error, data){
+					if(err)
+						reject('Mongo error: '+error);
+					else{
+						fullfill('User inserted :'+ name);
+					}
+				});
+			}
+
 		});
 	});
 }
@@ -36,29 +64,14 @@ function userInsert(name,regno,passwd){
 				fullfill('You have already registered once');
 			}
 			else{
-				bcrypt.hash(passwd,7,function(err,hash){
-					if (err) {
-						console.log(err);
-						reject("Bcrypt error :"+err);
-					}
-					else{
-						passwd= hash;
-						var newUser = new User({
-							name:name,
-							regno:regno,
-							passwd:passwd
-						});
-						newUser.save(function(error, data){
-							if(err)
-								reject('Mongo error: '+error);
-							else{
-								fullfill('User inserted :'+ name);
-							}
-						});
-					}
-
-				});
+				return encryptAndSave(name,regno,passwd);
 			}
+		})
+		.catch(function(e){
+			reject(e);
+		})
+		.then(function(res){
+			fullfill(res)
 		})
 		.catch(function(e){
 			reject(e);
