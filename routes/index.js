@@ -7,6 +7,7 @@ var LocalStrategy  =require('passport-local').Strategy;
 var bcrypt = require('bcrypt');
 var auth = require('../authentication/auth');
 
+
 router.get('/',function(req,res){
 	res.render('home',{data:false});
 });
@@ -27,6 +28,11 @@ router.post('/login',passport.authenticate('local', { successRedirect: '/success
 
 router.get('/failed',function(req,res){
 	res.render('home',{message:"Invalid Credentials",data:true});
+});
+
+router.get('/logout',(req,res)=>{
+	req.logout();
+	res.redirect('/');
 });
 
 module.exports = router;

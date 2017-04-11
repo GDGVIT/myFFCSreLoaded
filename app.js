@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var mongoose = require('mongoose');
+var course = require('./models/courses')
 var LocalStrategy = require('passport-local').LocalStrategy;
 var session  = require('express-session');
 
@@ -32,7 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/',index);
-
+//Uncomment it for first time when inserting courses
+//course.insertCourses();
 
 
 app.use(function(req, res, next) {
