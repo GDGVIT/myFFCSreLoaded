@@ -83,5 +83,5 @@ function userInsert(name,regno,passwd){
 }
 
 exports.insertUser = userInsert;
-
+exports.User= User;
 

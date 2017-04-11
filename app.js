@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var mongoose = require('mongoose');
+var LocalStrategy = require('passport-local').LocalStrategy;
+var session  = require('express-session');
 
 var app = express();
 mongoose.connect('mongodb://localhost:27017/myffcs');
@@ -14,7 +16,14 @@ var index = require('./routes/index');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(session({
+	secret:"wh0 c4r3s?",
+	saveUninitialized: false,
+	resave : false
+}));
 
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
