@@ -32,19 +32,14 @@
   </head>
   <body>
 
-    <input type="text" class="user-token" name="token" style="display:none;" value="<%=user.token%>">
+    <input type="text" class="user-token" name="token" style="display:none;" value="<%=user.regno%>">
     <div class="timetable-menu-list">
       <div class="close">
         <i class="fa fa-times" aria-hidden="true" style="color: rgb(127,144,153);font-size: 50px"></i>
       </div>
       <div class="row add-course">
         <div class="col s12 m12 l12 add-course">
-          <!--select id="course-list" class="course-list-1" name="course-list" style="min-width: 200px" data-placeholder="Search Course">
-              <option></option>
-              <%for(i=0;i<data.length;i++){%>
-              <option value="<%=data[i].courseCode%>"><%=data[i].courseCode+" "+data[i].name%></option>
-             <%}%>
-           </select-->
+         
            <div class="row  timetable-theory">
            <div class="input-field col s12 m2 l2">
              <input type="text" class="course" name="course" required class="validate">
@@ -136,16 +131,7 @@
             <input type="text" name="faculty" required class="validate">
             <label for="faculty">Enter Faculty Name</label>
           </div>
-      <!--    <div class="input-field col s12 m2 l2 has-lab" style="padding-bottom: 3%">
-            <input type="checkbox" name="lab" id="lab" class="filled-in">
-            <label for="lab">Lab?</label>
-          </div>-->
-            <!--select id="faculty-list" class="faculty-list-1" name="faculty-list" style="min-width: 200px" data-placeholder="Search Faculty">
-              <option></option>
-              <%for(i=0;i<data.length;i++){%>
-              <option value="<%=data[i].faculty%>"><%=data[i].faculty%></option>
-             <%}%>
-           </select-->
+      
 
          </div>
          <div class="row timetable-lab" >
@@ -324,7 +310,7 @@
       </table>
     </div>
     <div class="row save-timetable">
-      <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://myffcs.in/share?id=<%=share%>"><button class="col s12 m3 l3 push-l6 submit-button">Share to Facebook!</button></a>
+      <a target="_blank" href="#"><button class="col s12 m3 l3 push-l6 submit-button">Share to Facebook!</button></a>
     </div>
     <div class="row timetable-selected-list z-depth-1">
       <table class="timetable-selected-table">
