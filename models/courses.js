@@ -242,9 +242,9 @@ function allFaculty(crscd, slot) {
     });
 }
 
-function all() {
+function all(crscd,slot) {
     return new Promise((fullfill, reject) => {
-        Course.find({}, (err, data) => {
+        Course.find({Crscd:crscd,Slot:slot}, (err, data) => {
             if (err) reject(err);
             else fullfill(data);
         });
