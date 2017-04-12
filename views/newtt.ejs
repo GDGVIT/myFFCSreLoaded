@@ -64,9 +64,9 @@
           <div class="col s12 m2 l2 push-l4 valign">
             <select id="slot-list" class="slot-list-1" name="slot-list" style="min-width: 200px" data-placeholder="Select Slot">
               <option></option>
-              <option value="B1">B1</option>
-              <option value="A1">A1</option>
-              <option value="L1+L2">L1+L2</option>
+            <!--   <%for(i=0;i<slots.length;i++){%>
+            //   <option value="<%=slots[i]%>"><%=slots[i]%></option>
+            //  <%}%>-->
             </select>
           </div>
 
@@ -614,6 +614,7 @@
         }
       })
     });
+    // Changed line below this
     $('.slot-list-1').prop('disabled', 'disabled');
    /* $(".course-list-1").change(function(){
       if(!doneOnce){
@@ -677,7 +678,7 @@
         var search = $('.course-list-1').select2('data')[0]['text'];
         /*var search = $('.slot-list-1').select2('data')[0]['text'];*/
         $.ajax({
-          url: '/v2/course/getslot/?q='+search,
+          url: '/getslot/?q='+search,
           datatype: 'json',
           type: 'GET',
           success: function(response){
@@ -687,10 +688,8 @@
             $('.slot-list-1').empty();
             $('.slot-list-1').append('<option></option>');
             /*$('.slot-list-1').append('<option value="'+response.data[i].slots+'">'+response.data[i].slots+'</option>')*/
-            console.log(response.data[0]);
-            for(var i in response.data){
-              $('.slot-list-1').append('<option value="'+response.data[i]+'">'+response.data[i]+'</option>');
-              console.log(response.data[i]);
+            for(var i in response){
+              $('.slot-list-1').append('<option value="'+response[i]+'">'+response[i]+'</option>');
             }
           },
           error: function(){
@@ -707,7 +706,7 @@
         var search   = $('.slot-list-1').select2('data')[0]['text'];
        search = search.replace(/\+/g,"%2B");
       $.ajax({
-        url: '/v2/course/getcourse/?courseCode='+search1+'&slots='+search,
+        url: '/getcourse/?courseCode='+search1+'&slots='+search,
         type: 'GET',
         datatype: 'json',
         success: function(response){
@@ -715,16 +714,15 @@
           $('.timetable-results').slideDown(400);
           $('.timetable-menu-list').hide();/*
           console.log(response.data[0].faculty);*/
-          for(var i in response.data){
-
-            var courseTitle = response.data[i].courseName;
-            var courseCode = response.data[i].courseCode;
-            var slot = response.data[i].slots;
-            var credits = response.data[i].credits;
-            var faculty = response.data[i].faculty;
+          for(i=0;i<response.length;i++){
+            var courseTitle = response[i].Crsnm;
+            var courseCode = response[i].Crscd;
+            var slot = response[i].Slot;
+            var credits = 4;
+            var faculty = response[i].Faculty;
             //var courseType = response.data[i].type;
             //var school = response.data[i].school;
-            var id = response.data[i]._id;
+            var id = response[i]._id;
             $('.timetable-results').append('<div class="custom-card z-depth-1 col m3 push-m1 l3 push-l1" ><div class="custom-card-header"><div class="custom-card-front"><input class="course-id" type="text" style="display:none" value="'+id+'"><h5 class="course-title">'+courseTitle+'</h5><p class="course-faculty">'+faculty+'</p></div><div class="custom-card-edit" style="display:none"><img src="images/add.png" class="save-tt" style="padding-left: 15%;padding-top: 5%;padding-bottom: 5%" class="left" /><img src="images/delete.png" style="padding-right: 15%;padding-top: 5%;padding-bottom: 5%" class="right" /></div></div><div class="custom-card-slot row valign-wrapper"><div class="col s10 m10 l10"  style="border-right: 1px solid;border-color: rgb(123,123,123)"><p class="course-code">'+courseCode+'<span class="right">'+slot+'</span></p></div><div class="col s2 m2 l2 valign custom-card-action front" style="padding: 1%;text-align: center;font-size: 20px;"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></div></div></div>');
           }
         },

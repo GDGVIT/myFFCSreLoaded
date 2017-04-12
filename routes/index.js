@@ -44,16 +44,58 @@ router.post('/register', function (req, res) {
 router.post('/login', passport.authenticate('local', { successRedirect: '/home', failureRedirect: '/failed' }));
 
 router.get('/home', (req, res) => {
-	course.all().then((res1) => {
-		course.allCourseCode(null, null).then((res2) => {
-			res.render('newtt', { user: req.user, data: res1, codes: res2 });
+	if (req.user == undefined) {
+		res.redirect('/');
+	} else {
+		course.all().then((res1) => {
+			course.allCourseCode(null, null).then((res2) => {
+				course.allSlots("CSE2006", null).then((res3) => {
+					res.render('newtt', { user: req.user, data: res1, codes: res2, slots: res3 });
+				});
+
+			});
+
 		});
-		
+	}
+
+});
+
+
+router.get('/getslot/', (req, res) => {
+	var crscd = req.query.q;
+	course.allSlots(crscd, null)
+	.then((res1) => {
+		res.send(res1);
+	})
+	.catch((res2)=>{
+		console.log(res2);
+	});
+});
+
+
+router.get("/getcourse/",(req,res)=>{
+	course.all(req.query.courseCode,req.query.slots)
+	.then((res1)=>{
+		res.send(res1);
+	})
+	.catch((res2)=>{
+		console.log(res2);
 	});
 });
 
 router.get('/failed', function (req, res) {
 	res.render('home', { message: "Invalid Credentials", data: true });
+});
+
+
+router.get('/oldtimetable',(req,res)=>{
+	if(req.user ==undefined){
+		res.render('home',{data:true,message:"Login First"});
+		res.location('/');
+	}
+	else{
+		res.render('oldtt',{user:req.user});
+	}
 });
 
 router.get('/logout', (req, res) => {
