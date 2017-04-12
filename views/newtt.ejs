@@ -47,7 +47,7 @@
   </head>
   <body>
 
-     <input type="text" class="user-token" name="token" style="display:none;" value="<%=user.token%>">
+     <input type="text" class="user-token" name="token" style="display:none;" value="<%=user.regno%>">
     <div class="timetable-menu-list">
       <div class="close">
         <i class="fa fa-times" aria-hidden="true" style="color: rgb(127,144,153);font-size: 50px"></i>
@@ -56,8 +56,8 @@
         <div class="col s12 m2 l2 push-l4 valign">
           <select id="course-list" class="course-list-1" name="course-list" style="min-width: 200px" data-placeholder="Search Course">
               <option></option>
-              <%for(i=0;i<data.length;i++){%>
-              <option value="<%=data[i]%>"><%=data[i]%></option>
+              <%for(i=0;i<codes.length;i++){%>
+              <option value="<%=codes[i]%>"><%=codes[i]%></option>
              <%}%>
             </select>
           </div>
@@ -237,7 +237,8 @@
       </table>
     </div>
     <div class="row save-timetable">
-      <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://myffcs.in/share?id=<%=share%>"><button class="col s12 m3 l3 push-l6 submit-button">Share to Facebook!</button></a>
+      <!-- Made href changes in next a tag -->
+      <a target="_blank" href="#"><button class="col s12 m3 l3 push-l6 submit-button">Share to Facebook!</button></a>
     </div>
     <div class="row timetable-selected-list z-depth-1">
       <table class="timetable-selected-table">

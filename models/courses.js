@@ -27,7 +27,7 @@ function insertCourses() {
         getCourses()
             .then((result) => {
                 result.forEach((res) => {
-                    var item = {Faculty:res.Faculty,Count:[],Crscd:res['Course Code'],Crsnm:res['Course Name'],Slot:res.Slot}
+                    var item = { Faculty: res.Faculty, Count: [], Crscd: res['Course Code'], Crsnm: res['Course Name'], Slot: res.Slot }
                     var newCourse = new Course(item);
                     return Save(newCourse);
                 });
@@ -54,4 +54,240 @@ function Save(newCourse) {
     });
 }
 
+
+function allCourseCode(slot, crsnm) {
+    return new Promise((fullfill, reject) => {
+        var arr = new Array();
+        if (slot == null && crsnm == null) {
+            Course.find({}, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Crscd) == -1) {
+                            arr.push(data[i].Crscd);
+                        }
+                    }
+                    if (arr.length == 0) fullfill("No course as such");
+                    else fullfill(arr);
+                }
+            });
+        }
+        else if (crsnm == null) {
+            Course.find({ Slot: slot }, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Crscd) == -1) {
+                            arr.push(data[i].Crscd);
+                        }
+                    }
+                    if (arr.length == 0) fullfill(["No course as such"]);
+                    else fullfill(arr);
+                }
+            });
+        }
+        else if (slot == null) {
+            Course.find({ Crsnm: crsnm }, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Crscd) == -1) {
+                            arr.push(data[i].Crscd);
+                        }
+                    }
+                    if (arr.length == 0) fullfill(["No course as such"]);
+                    else fullfill(arr);
+                }
+            });
+        }
+        else {
+            Course.find({ Crsnm: crsnm, Slot: slot }, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Crscd) == -1) {
+                            arr.push(data[i].Crscd);
+                        }
+                    }
+                    if (arr.length == 0) fullfill(["No course as such"]);
+                    else fullfill(arr);
+                }
+            });
+        }
+    });
+}
+
+function allSlots(crscd, faculty) {
+    return new Promise((fullfill, reject) => {
+        var arr = new Array();
+        if (crscd == null && faculty == null) {
+            Course.find({}, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Slot) == -1) {
+                            arr.push(data[i].Slot);
+                        }
+                    }
+                    if (arr.length == 0) fullfill("No course as such");
+                    else fullfill(arr);
+                }
+            });
+        }
+        else if (faculty == null) {
+            Course.find({ Crscd: crscd }, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Slot) == -1) {
+                            arr.push(data[i].Slot);
+                        }
+                    }
+                    if (arr.length == 0) fullfill(["No course as such"]);
+                    else fullfill(arr);
+                }
+            });
+        }
+        else if (crscd == null) {
+            Course.find({ Faculty: faculty }, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Slot) == -1) {
+                            arr.push(data[i].Slot);
+                        }
+                    }
+                    if (arr.length == 0) fullfill(["No course as such"]);
+                    else fullfill(arr);
+                }
+            });
+        }
+        else {
+            Course.find({ Faculty: faculty, Crscd: crscd }, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Slot) == -1) {
+                            arr.push(data[i].Slot);
+                        }
+                    }
+                    if (arr.length == 0) fullfill(["No course as such"]);
+                    else fullfill(arr);
+                }
+            });
+        }
+    });
+}
+
+
+function allFaculty(crscd, slot) {
+    return new Promise((fullfill, reject) => {
+        var arr = new Array();
+        if (crscd == null && slot == null) {
+            Course.find({}, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Faculty) == -1) {
+                            arr.push(data[i].Faculty);
+                        }
+                    }
+                    if (arr.length == 0) fullfill("No course as such");
+                    else fullfill(arr);
+                }
+            });
+        }
+        else if (slot == null) {
+            Course.find({ Crscd: crscd }, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Faculty) == -1) {
+                            arr.push(data[i].Faculty);
+                        }
+                    }
+                    if (arr.length == 0) fullfill(["No course as such"]);
+                    else fullfill(arr);
+                }
+            });
+        }
+        else if (crscd == null) {
+            Course.find({ Slot: slot }, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Faculty) == -1) {
+                            arr.push(data[i].Faculty);
+                        }
+                    }
+                    if (arr.length == 0) fullfill(["No course as such"]);
+                    else fullfill(arr);
+                }
+            });
+        }
+        else {
+            Course.find({ Slot: slot, Crscd: crscd }, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Faculty) == -1) {
+                            arr.push(data[i].Faculty);
+                        }
+                    }
+                    if (arr.length == 0) fullfill(["No course as such"]);
+                    else fullfill(arr);
+                }
+            });
+        }
+    });
+}
+
+function all() {
+    return new Promise((fullfill, reject) => {
+        Course.find({}, (err, data) => {
+            if (err) reject(err);
+            else fullfill(data);
+        });
+    });
+}
+
+function allCourseName(crscd) {
+    return new Promise((fullfill, reject) => {
+        var arr = new Array();
+        if (crscd == null) {
+            Course.find({}, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Crsnm) == -1) {
+                            arr.push(data[i].Crsnm);
+                        }
+                    }
+                    fullfill(arr);
+                }
+            });
+        }
+        else {
+            Course.find({ Crscd: crscd }, (err, data) => {
+                if (err) reject(err);
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        if (arr.indexOf(data[i].Crsnm) == -1) {
+                            arr.push(data[i].Crsnm);
+                        }
+                    }
+                    fullfill(arr);
+                }
+            });
+        }
+
+    });
+}
+
+
 exports.insertCourses = insertCourses;
+exports.allSlots = allSlots;
+exports.allCourseCode = allCourseCode;
+exports.allCourseName = allCourseName;
+exports.allFaculty = allFaculty;
+exports.all = all;
