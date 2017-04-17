@@ -12,11 +12,11 @@ var user = mongoose.Schema({
 	passwd:{
 		type:String,
 		bcrypt:true
-	}
+	},
+	courses:[]
 });
 
 var User = mongoose.model("User",user);
-
 function userPresent(regno){
 	return new promise(function(fullfill,reject){
 		User.find({regno:regno},function(err,data){

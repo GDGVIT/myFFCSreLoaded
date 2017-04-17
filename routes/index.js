@@ -30,6 +30,7 @@ router.get('/', function (req, res) {
 });
 
 router.post('/register', function (req, res) {
+	data=req.body;
 	user.insertUser(data.name, data.regno, data.password)
 		.then(function (action) {
 			console.log('adjba');
@@ -98,9 +99,22 @@ router.get('/oldtimetable',(req,res)=>{
 	}
 });
 
+
+
 router.get('/logout', (req, res) => {
 	req.logout();
 	res.redirect('/');
+});
+
+router.post('/addcourse',(req,res)=>{
+	console.log(req.body.courseId);
+	console.log(req.headers.token);
+	course.incrementCount(req.body.courseId,req.headers.token).then((count)=>{
+		res.json({'status':true,'count':count});
+		console.log(count);
+	}).catch((err)=>{
+		console.log(err);
+	})
 });
 
 module.exports = router;

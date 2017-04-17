@@ -452,7 +452,7 @@
             $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-subject:nth-child('+count+")");
           }
           $.ajax({
-            url: '/v2/student/addcourse',
+            url: '/addcourse',
             headers: {
               'token': token
             },
@@ -462,7 +462,7 @@
             },
             success: function(response){
               if(response.status==true){
-                Materialize.toast("Course Added" , 4000);
+                Materialize.toast("Course Added "+response.count , 4000);
               }
               else{
                 Materialize.toast("Some Error" , 4000);

@@ -6,7 +6,7 @@ var course = mongoose.Schema({
         type: String,
     },
     Count: {
-        type: Array
+        type: Array,
     },
     Crscd: {
         type: String
@@ -20,7 +20,34 @@ var course = mongoose.Schema({
 });
 
 var Course = mongoose.model("Course", course);
+var User = require('./user').User;
 exports.Course = Course;
+
+exports.incrementCount=(id,reg)=>{
+	return new promise((full,rej)=>{
+		Course.findById(id,(err,doc)=>{
+			if(doc){
+				if(doc.Count.indexOf(reg)<0){
+					doc.Count.push(reg);
+					User.findOne({'regno':reg},(er,doc)=>{
+						if(!err && doc){
+							doc.courses.push(id);
+							doc.save((err,d)=>{
+								if(!err)
+								full(doc.Count.length);
+							});
+						}
+						else
+						rej(er);
+					});
+				}
+			}
+			else{
+				rej(err);
+			}
+		});
+	});
+}
 
 function insertCourses() {
     return new promise((fullfill, reject) => {
