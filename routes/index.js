@@ -140,7 +140,7 @@ router.get('/detail',(req,res)=>{
 			res.json({'status':true,'data':{'newAllotedCourse2':course_arr}});
 		})
 		.catch((e)=>{
-			res.json({'status':false});
+			res.json({'status':false,'data':{'newAllotedCourse2':[]}});
 		});
 });
 
