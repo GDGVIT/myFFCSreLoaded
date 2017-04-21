@@ -136,7 +136,7 @@ router.post('/deletecourse',(req,res)=>{
 router.get('/detail',(req,res)=>{
 	course.details(req.headers.token)
 		.then((course_arr)=>{
-			console.log(JSON.stringify(us,null,4));
+			console.log(JSON.stringify(course_arr,null,4));
 			res.json({'status':true,'data':{'newAllotedCourse2':course_arr}});
 		})
 		.catch((e)=>{
