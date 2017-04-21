@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var promise = require('bluebird');
 var bcrypt = require('bcrypt');
+
+
 var user = mongoose.Schema({
 	name:{
 		type:String
@@ -86,8 +88,8 @@ exports.deleteCourse=(id,uid)=>{
 	return new promise((full,rej)=>{
 		User.findOne({'regno':uid},(err,data)=>{
 			if(!err && data){
-				data.courses.splice(data.courses.indexOf(id),1);
-				data.save((er)=>{
+				data.courses.splice(data.courses.indexOf(new mongoose.mongo.ObjectID(id)),1);
+				data.save((er,usd)=>{
 					if(er)
 					rej(er);
 					else

@@ -120,13 +120,16 @@ router.post('/addcourse',(req,res)=>{
 
 router.post('/deletecourse',(req,res)=>{
 	console.log(req.body);
-	user.deleteCourse(req.body.courseId,req.headers.token)
-		.then(()=>{
-			res.json({'status':true});
-		})
-		.catch((err)=>{
-			res.json({'status':false});
-		});
+	promise.all([
+		user.deleteCourse(req.body.courseId,req.headers.token),
+		course.removeUserFromCourse(req.headers.token,req.body.courseId)
+	])
+	.then(([r1,r2])=>{
+		res.json({'status':true});
+	})
+	.catch((err)=>{
+		res.json({'status':false});
+	});
 });
 
 

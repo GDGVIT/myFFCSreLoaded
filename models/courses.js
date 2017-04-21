@@ -23,6 +23,22 @@ var Course = mongoose.model("Course", course);
 var User = require('./user').User;
 exports.Course = Course;
 
+exports.test="test";
+
+exports.removeUserFromCourse=(uid,cid)=>{
+	return new promise((full,rej)=>{
+		Course.findById(cid,(er1,csr)=>{
+			if(csr){
+				csr.Count.splice(csr.Count.indexOf(uid),1);
+				csr.save((er2,csdc)=>{
+					full();
+				})
+			}
+		});
+	});
+}
+
+
 exports.incrementCount=(id,reg)=>{
 	return new promise((full,rej)=>{
 		Course.findById(id,(err,doc)=>{
