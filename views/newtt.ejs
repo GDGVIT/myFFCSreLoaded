@@ -492,7 +492,8 @@
       var id = $(this).closest($('.timetable-selected-subject')).find($('.course-id')).val();
       var token = $('.user-token').val();
       $.ajax({
-        url: '/v2/student/deletecourse/',
+        //url: '/v2/student/deletecourse/',
+        url: '/deletecourse',
         headers: {
           'token': token
         },
@@ -569,7 +570,7 @@
         ]
       });*/
       $.ajax({
-        url: '/detail2',
+        url: '/detail',
         headers: {
           'token': $('.user-token').val()
         },

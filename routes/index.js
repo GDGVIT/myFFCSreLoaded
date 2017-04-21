@@ -113,8 +113,32 @@ router.post('/addcourse',(req,res)=>{
 		res.json({'status':true,'count':count});
 		console.log(count);
 	}).catch((err)=>{
+		res.json({'status':true,'count':count});
 		console.log(err);
 	})
+});
+
+router.post('/deletecourse',(req,res)=>{
+	console.log(req.body);
+	user.deleteCourse(req.body.courseId,req.headers.token)
+		.then(()=>{
+			res.json({'status':true});
+		})
+		.catch((err)=>{
+			res.json({'status':false});
+		});
+});
+
+
+router.get('/detail',(req,res)=>{
+	course.details(req.headers.token)
+		.then((course_arr)=>{
+			console.log(JSON.stringify(us,null,4));
+			res.json({'status':true,'data':course_arr});
+		})
+		.catch((e)=>{
+			res.json({'status':false});
+		});
 });
 
 module.exports = router;

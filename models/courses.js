@@ -29,23 +29,53 @@ exports.incrementCount=(id,reg)=>{
 			if(doc){
 				if(doc.Count.indexOf(reg)<0){
 					doc.Count.push(reg);
-					User.findOne({'regno':reg},(er,doc)=>{
+					User.findOne({'regno':reg},(er,us)=>{
 						if(!err && doc){
-							doc.courses.push(id);
-							doc.save((err,d)=>{
-								if(!err)
-								full(doc.Count.length);
+							us.courses.push(new mongoose.mongo.ObjectId(id));
+							us.save((err2)=>{
+								if(err2)
+								console.log(err2);
+								doc.save((err,d)=>{
+									console.log(d);
+									if(!err)
+									full(doc.Count.length);
+								});
 							});
 						}
 						else
 						rej(er);
 					});
 				}
+				else{
+					full(doc.Count.length);
+				}
 			}
 			else{
 				rej(err);
 			}
 		});
+	});
+}
+
+
+exports.details = (reg)=>{
+	return new promise((full,rej)=>{
+		User.aggregate([{$unwind: "$courses"},{$lookup:
+			{
+				from: "courses",
+				localField: "courses",
+				foreignField: "_id",
+				as: "course_docs"
+			}}]).match({'regno':reg}).unwind('courses').exec((err,us)=>{
+			if(err){
+				console.log(err);
+				rej(err)
+			}
+			else{
+				full(us);
+			}
+			
+		});	
 	});
 }
 

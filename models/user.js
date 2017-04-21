@@ -82,6 +82,27 @@ function userInsert(name,regno,passwd){
 	});
 }
 
+exports.deleteCourse=(id,uid)=>{
+	return new promise((full,rej)=>{
+		User.findOne({'regno':uid},(err,data)=>{
+			if(!err && data){
+				data.courses.splice(data.courses.indexOf(id),1);
+				data.save((er)=>{
+					if(er)
+					rej(er);
+					else
+					full();
+				});
+			}
+			else{
+				if(err)
+				rej(err);
+				else
+				rej('not found');
+			}
+		});
+	});
+};
+
 exports.insertUser = userInsert;
 exports.User= User;
-
