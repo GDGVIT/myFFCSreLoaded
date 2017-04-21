@@ -10,7 +10,7 @@ var LocalStrategy = require('passport-local').LocalStrategy;
 var session  = require('express-session');
 
 var app = express();
-mongoose.connect('mongodb://127.0.0.1:27017/myffcs');
+mongoose.connect('mongodb://myffcs:myffcs@ds147995.mlab.com:47995/myffcs');
 var index = require('./routes/index');
 
 app.set('views', path.join(__dirname, 'views'));
