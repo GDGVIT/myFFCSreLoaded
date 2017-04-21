@@ -137,7 +137,7 @@ router.get('/detail',(req,res)=>{
 	course.details(req.headers.token)
 		.then((course_arr)=>{
 			console.log(JSON.stringify(us,null,4));
-			res.json({'status':true,'data':course_arr});
+			res.json({'status':true,'data':{'newAllotedCourse2':course_arr}});
 		})
 		.catch((e)=>{
 			res.json({'status':false});

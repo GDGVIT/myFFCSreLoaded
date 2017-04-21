@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/',index);
 //Uncomment it for first time when inserting courses
-course.insertCourses();
+//course.insertCourses();
 
 
 app.use(function(req, res, next) {
