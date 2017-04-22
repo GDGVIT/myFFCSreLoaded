@@ -3,6 +3,7 @@ var router = express.Router();
 var promise = require('bluebird');
 var user = require('../models/user');
 var course = require('../models/courses');
+var suggestion = require('../models/suggest');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt');
@@ -107,16 +108,21 @@ router.get('/logout', (req, res) => {
 });
 
 router.post('/addcourse',(req,res)=>{
-	console.log(req.body.courseId);
-	console.log(req.headers.token);
-	course.incrementCount(req.body.courseId,req.headers.token).then((count)=>{
-		res.json({'status':true,'count':count});
-		console.log(count);
-	}).catch((err)=>{
-		res.json({'status':true,'count':count});
-		console.log(err);
+	promise.all([
+		suggestion.incrementCount(req.body.courseId,req.headers.token),
+		course.incrementCount(req.body.courseId,req.headers.token)
+	])
+	.then(([r1,r2])=>{
+		res.json({'status':true});
 	})
+	.catch((err)=>{
+		res.json({'status':false});
+	});
+
+
 });
+
+
 
 router.post('/deletecourse',(req,res)=>{
 	console.log(req.body);
@@ -124,7 +130,7 @@ router.post('/deletecourse',(req,res)=>{
 		user.deleteCourse(req.body.courseId,req.headers.token),
 		course.removeUserFromCourse(req.headers.token,req.body.courseId)
 	])
-	.then(([r1,r2])=>{
+	.then(()=>{
 		res.json({'status':true});
 	})
 	.catch((err)=>{
