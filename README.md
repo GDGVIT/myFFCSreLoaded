@@ -20,7 +20,7 @@ Done :
 
 ```
 
-#Validator:
+# Validator:
 
 ```
 1. Slot clashing.
