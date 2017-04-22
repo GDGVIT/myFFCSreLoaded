@@ -150,4 +150,17 @@ router.get('/detail',(req,res)=>{
 		});
 });
 
+
+router.post('/suggestcourse',(req,res)=>{
+	console.log('adwefwuevfuyvwfuyvewfyu');
+	console.log(req.body);
+	suggestion.getData(req.body.reg)
+	.then((re)=>{
+		res.json({status:200,data:re});
+	})
+	.catch((er)=>{
+		res.json({status:400,data:er});
+	});
+});
+
 module.exports = router;

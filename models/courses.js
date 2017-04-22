@@ -23,76 +23,78 @@ var Course = mongoose.model("Course", course);
 var User = require('./user').User;
 exports.Course = Course;
 
-exports.test="test";
+exports.test = "test";
 
-exports.removeUserFromCourse=(uid,cid)=>{
-	return new promise((full,rej)=>{
-		Course.findById(cid,(er1,csr)=>{
-			if(csr){
-				csr.Count.splice(csr.Count.indexOf(uid),1);
-				csr.save((er2,csdc)=>{
-					full();
-				})
-			}
-		});
-	});
+exports.removeUserFromCourse = (uid, cid) => {
+    return new promise((full, rej) => {
+        Course.findById(cid, (er1, csr) => {
+            if (csr) {
+                csr.Count.splice(csr.Count.indexOf(uid), 1);
+                csr.save((er2, csdc) => {
+                    full();
+                })
+            }
+        });
+    });
 }
 
 
-exports.incrementCount=(id,reg)=>{
-	return new promise((full,rej)=>{
-		Course.findById(id,(err,doc)=>{
-			if(doc){
-				if(doc.Count.indexOf(reg)<0){
-					doc.Count.push(reg);
-					User.findOne({'regno':reg},(er,us)=>{
-						if(!err && doc){
-							us.courses.push(new mongoose.mongo.ObjectId(id));
-							us.save((err2)=>{
-								if(err2)
-								console.log(err2);
-								doc.save((err,d)=>{
-									console.log(d);
-									if(!err)
-									full(doc.Count.length);
-								});
-							});
-						}
-						else
-						rej(er);
-					});
-				}
-				else{
-					full(doc.Count.length);
-				}
-			}
-			else{
-				rej(err);
-			}
-		});
-	});
+exports.incrementCount = (id, reg) => {
+    return new promise((full, rej) => {
+        Course.findById(id, (err, doc) => {
+            if (doc) {
+                if (doc.Count.indexOf(reg) < 0) {
+                    doc.Count.push(reg);
+                    User.findOne({ 'regno': reg }, (er, us) => {
+                        if (!err && doc) {
+                            us.courses.push(new mongoose.mongo.ObjectId(id));
+                            us.save((err2) => {
+                                if (err2)
+                                    console.log(err2);
+                                doc.save((err, d) => {
+                                    console.log(d);
+                                    if (!err)
+                                        full(doc.Count.length);
+                                });
+                            });
+                        }
+                        else
+                            rej(er);
+                    });
+                }
+                else {
+                    full(doc.Count.length);
+                }
+            }
+            else {
+                rej(err);
+            }
+        });
+    });
 }
 
 
-exports.details = (reg)=>{
-	return new promise((full,rej)=>{
-		User.aggregate([{$unwind: "$courses"},{$lookup:
-			{
-				from: "courses",
-				localField: "courses",
-				foreignField: "_id",
-				as: "course_docs"
-			}}]).match({'regno':reg}).unwind('courses').exec((err,us)=>{
-			if(err){
-				console.log(err);
-				rej(err)
-			}
-			else{
-				full(us);
-			}
-			
-		});	
-	});
+exports.details = (reg) => {
+    return new promise((full, rej) => {
+        User.aggregate([{ $unwind: "$courses" }, {
+            $lookup:
+            {
+                from: "courses",
+                localField: "courses",
+                foreignField: "_id",
+                as: "course_docs"
+            }
+        }]).match({ 'regno': reg }).unwind('courses').exec((err, us) => {
+            if (err) {
+                console.log(err);
+                rej(err)
+            }
+            else {
+                full(us);
+            }
+
+        });
+    });
 }
 
 function insertCourses() {
@@ -315,9 +317,9 @@ function allFaculty(crscd, slot) {
     });
 }
 
-function all(crscd,slot) {
+function all(crscd, slot) {
     return new Promise((fullfill, reject) => {
-        Course.find({Crscd:crscd,Slot:slot}, (err, data) => {
+        Course.find({ Crscd: crscd, Slot: slot }, (err, data) => {
             if (err) reject(err);
             else fullfill(data);
         });
