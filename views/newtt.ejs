@@ -578,13 +578,25 @@
         success: function(response){
           $('.timetable-selected-subject').remove();
           var count = 1;
+          //console.log(response.data);
           for(var i in response.data.newAllotedCourse2){
-            var id = response.data.newAllotedCourse2[i]._id;
-            var courseTitle = response.data.newAllotedCourse2[i].courseName;
-            var faculty = response.data.newAllotedCourse2[i].faculty;
-            var slot = response.data.newAllotedCourse2[i].slots;
-            var credits = response.data.newAllotedCourse2[i].credits;
-            var courseCode = response.data.newAllotedCourse2[i].courseCode;
+            /*var id = response.data.newAllotedCourse2[i].course_docs[0]._id;
+            var courseTitle = response.data.newAllotedCourse2[i].course_docs[0].courseName;
+            var faculty = response.data.newAllotedCourse2[i].course_docs[0].faculty;
+            var slot = response.data.newAllotedCourse2[i].course_docs[0].slots;
+            var credits = response.data.newAllotedCourse2[i].course_docs[0].credits;
+            var courseCode = response.data.newAllotedCourse2[i].course_docs[0].courseCode;*/
+            var id = response.data.newAllotedCourse2[i].course_docs[0]._id;
+            console.log(id);
+            var courseTitle = response.data.newAllotedCourse2[i].course_docs[0].Crsnm;
+            console.log(courseTitle);
+            var faculty = response.data.newAllotedCourse2[i].course_docs[0].Faculty;
+            console.log(faculty);
+            var slot = response.data.newAllotedCourse2[i].course_docs[0].Slot;
+            console.log(slot);
+            //var credits = response.data.newAllotedCourse2[i].course_docs[0].credits;
+            var courseCode = response.data.newAllotedCourse2[i].course_docs[0].Crscd;
+            console.log(courseCode);
             if (response.status==true){
               $('.timetable-selected-table').append('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+courseTitle+'</td><td>'+slot+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td><i class="small material-icons">delete</i></td></tr>');
             }
