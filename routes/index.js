@@ -112,7 +112,7 @@ router.post('/addcourse',(req,res)=>{
 		suggestion.incrementCount(req.body.courseId,req.headers.token),
 		course.incrementCount(req.body.courseId,req.headers.token)
 	])
-	.then(([r1,r2])=>{
+	.then(()=>{
 		res.json({'status':true});
 	})
 	.catch((err)=>{
@@ -128,9 +128,10 @@ router.post('/deletecourse',(req,res)=>{
 	console.log(req.body);
 	promise.all([
 		user.deleteCourse(req.body.courseId,req.headers.token),
-		course.removeUserFromCourse(req.headers.token,req.body.courseId)
+		course.removeUserFromCourse(req.headers.token,req.body.courseId),
+		suggestion.removeFromSuggestCourse(req.body.courseId,req.headers.token)
 	])
-	.then(()=>{
+	.then(([r1,r2])=>{
 		res.json({'status':true});
 	})
 	.catch((err)=>{
