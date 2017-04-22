@@ -86,6 +86,9 @@ exports.removeFromSuggestCourse = (id, reg) => {
                             console.log(crscd);
                             console.log(arr[i].count);
                             arr[i].count = arr[i].count - 1;
+                            if(arr[i].count == 0 ){
+                                arr.splice(i,1);
+                            }
                             //console.log(arr[i]);
                         }
                     }
