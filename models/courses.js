@@ -16,6 +16,12 @@ var course = mongoose.Schema({
     },
     Slot: {
         type: String
+    },
+    Credits:{
+        type:Number
+    },
+    Venue:{
+        type:String
     }
 });
 
@@ -101,7 +107,7 @@ function insertCourses() {
         getCourses()
             .then((result) => {
                 result.forEach((res) => {
-                    var item = { Faculty: res.Faculty, Count: [], Crscd: res['Course Code'], Crsnm: res['Course Name'], Slot: res.Slot }
+                    var item = { Faculty: res.Faculty, Count: [], Crscd: res['Course Code'], Crsnm: res['Course Name'], Slot: res["Slot"] ,Credits:res["Credits"],Venue:res["Venue"]}
                     var newCourse = new Course(item);
                     return Save(newCourse);
                 });
