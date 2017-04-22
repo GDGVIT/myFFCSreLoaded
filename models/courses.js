@@ -6,7 +6,7 @@ var course = mongoose.Schema({
         type: String,
     },
     Count: {
-        type: Array,
+        type: Array,    
     },
     Crscd: {
         type: String
@@ -50,7 +50,7 @@ exports.incrementCount = (id, reg) => {
                             us.courses.push(new mongoose.mongo.ObjectId(id));
                             us.save((err2) => {
                                 if (err2)
-                                    console.log(err2);
+                                    //console.log(err2);
                                 doc.save((err, d) => {
                                     console.log(d);
                                     if (!err)
@@ -86,7 +86,6 @@ exports.details = (reg) => {
             }
         }]).match({ 'regno': reg }).unwind('courses').exec((err, us) => {
             if (err) {
-                console.log(err);
                 rej(err)
             }
             else {
@@ -109,13 +108,13 @@ function insertCourses() {
 
             })
             .catch((e) => {
-                console.log(e);
+                //console.log(e);
             })
             .then((q) => {
                 if (q.length > 0) console.log("Courses inserted: " + q.length);
             })
             .catch((e) => {
-                console.log("Mongo Save error: " + e);
+                //console.log("Mongo Save error: " + e);
             });
     });
 };

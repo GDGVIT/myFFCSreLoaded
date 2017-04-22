@@ -34,7 +34,6 @@ router.post('/register', function (req, res) {
 	data=req.body;
 	user.insertUser(data.name, data.regno, data.password)
 		.then(function (action) {
-			console.log('adjba');
 			res.render('home', { data: true, message: action });
 		}).catch(function (error) {
 			res.render('home', { data: true, message: error });
@@ -59,7 +58,6 @@ router.get('/home', (req, res) => {
 
 		});
 	}
-
 });
 
 
@@ -153,8 +151,6 @@ router.get('/detail',(req,res)=>{
 
 
 router.post('/suggestcourse',(req,res)=>{
-	console.log('adwefwuevfuyvwfuyvewfyu');
-	console.log(req.body);
 	suggestion.getData(req.body.reg)
 	.then((re)=>{
 		res.json({status:200,data:re});
