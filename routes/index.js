@@ -121,6 +121,35 @@ router.post('/addcourse',(req,res)=>{
 
 });
 
+router.post('/validate',(req,res)=>{
+	promise.all([
+		course.validateCredits(req.body.courseId,req.headers.token),
+		course.validateSlots(req.body.courseId,req.headers.token),
+		course.validateFaculty(req.body.courseId,req.headers.token)
+	])
+	.then(()=>{
+		res.redirect('/addcourse/'+req.body.courseId+'/'+req.headers.token);
+	})
+	.catch((err)=>{
+		console.log(err);
+		res.send('failed');
+	});
+});
+
+router.get('/addcourse/:p1/:p2',(req,res)=>{
+	var courseId=req.params.p1;
+	var token=req.params.p2;
+	promise.all([
+		suggestion.incrementCount(courseId,token),
+		course.incrementCount(courseId,token)
+	])
+	.then(()=>{
+		res.json({'status':true});
+	})
+	.catch((err)=>{
+		res.json({'status':false});
+	});
+});
 
 
 router.post('/deletecourse',(req,res)=>{

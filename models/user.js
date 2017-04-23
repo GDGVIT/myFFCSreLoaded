@@ -15,7 +15,8 @@ var user = mongoose.Schema({
 		type: String,
 		bcrypt: true
 	},
-	courses: []
+	courses: [],
+	Credits: {type:Number,default:0}
 });
 
 var User = mongoose.model("User", user);

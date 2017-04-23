@@ -30,7 +30,98 @@ var User = require('./user').User;
 exports.Course = Course;
 
 exports.test = "test";
+var sl = require('./slots');
 
+exports.validateCredits=(cid,uid)=>{
+	return new promise((full,rej)=>{
+	Course.findById(cid,(err,crs)=>{
+		if(!err)
+		User.findOne({'regno':uid},(er,usr)=>{
+			if(usr.Credits+crs.Credits<=27)
+			full();
+			else
+			rej('excess');
+		});
+	});
+	});
+}
+
+exports.validateSlots=(cid,uid)=>{
+	return new promise((full,rej)=>{
+	Course.findById(cid,(err,crs)=>{
+		User.findOne({'regno':uid},(er,usr)=>{
+			if(!er && usr){
+			Course.find({'_id':{'$in':usr.courses}},'Slot -_id',(err,data)=>{
+				var c=[];
+				var d=data.map((item)=>{
+					return c.push(item.Slot);
+				});
+				var x=c.join(" ");
+				x=x.replace(/\+/g," ");
+				var dd=x.split(' ');
+				var c=dd.map((item)=>{
+					return dd.push(sl[item]);
+				});
+				var crsS=crs.Slot.split(/\+/g);
+				var v=[];
+				var crd=crsS.map((item)=>{
+					if(dd.indexOf(item)<0)
+					return v.push(true);
+					else
+					return v.push(false);
+				});
+				if(v.indexOf(false)<0){
+					//console.log(dd.join(" "));
+					console.log(v);
+					full();
+				}
+				else{
+					console.log(dd.join(" "));
+					console.log(crs.Slot);
+					rej('clash');
+				}
+			});	
+			}
+		})
+	});
+	});
+}
+
+exports.validateFaculty=(cid,uid)=>{
+	return new promise((full,rej)=>{
+	Course.findById(cid,(err,crs)=>{
+		User.findOne({'regno':uid},(er,usr)=>{
+			Course.find({'_id':{'$in':usr.courses},'Crscd':crs.Crscd},(er1,data)=>{
+				if(data.length>0 && !er1){
+				if(data.length>1){
+					rej('already selected both');
+				}
+				else{
+					var cc=[];
+					if(data[0].Faculty==crs.Faculty){
+						if((data[0].Slot.includes('L') && !crs.Slot.includes('L'))||(!data[0].Slot.includes('L') && crs.Slot.includes('L')))
+						full()
+						else{
+							console.log(data[0].slot);
+							console.log(crs.Slot);
+							rej('both theory');
+						}
+						
+					}
+					else{
+						rej('not same faculty');
+					}
+				}
+				
+				full();
+			}
+			else
+			full();
+			});
+		});
+	});
+	});
+}
 
 exports.checkClash=(cid,uid)=>{
 	return new promise((full,rej)=>{
