@@ -6,7 +6,7 @@ var course = mongoose.Schema({
         type: String,
     },
     Count: {
-        type: Array,
+        type: Array,    
     },
     Crscd: {
         type: String
@@ -16,6 +16,12 @@ var course = mongoose.Schema({
     },
     Slot: {
         type: String
+    },
+    Credits:{
+        type:Number
+    },
+    Venue:{
+        type:String
     }
 });
 
@@ -24,6 +30,29 @@ var User = require('./user').User;
 exports.Course = Course;
 
 exports.test = "test";
+
+
+exports.checkClash=(cid,uid)=>{
+	return new promise((full,rej)=>{
+		Course.findById(cid,(er,crs)=>{
+			if(er)
+			rej(er);
+			if(crs.Count.indexOf(uid)<0){
+				User.findOne({'regno':uid},'courses',(err,data)=>{
+					if(data)
+					Course.find({'_id' : {$in : data.courses}},'Slot -_id',(err,dat)=>{
+						console.log("------");
+						var s=dat.map((value)=>{
+							return value.Slot
+						});
+						console.log(s);
+						full('done');
+					});
+				});
+			}
+		});
+	});
+}
 
 exports.removeUserFromCourse = (uid, cid) => {
     return new promise((full, rej) => {
@@ -50,7 +79,7 @@ exports.incrementCount = (id, reg) => {
                             us.courses.push(new mongoose.mongo.ObjectId(id));
                             us.save((err2) => {
                                 if (err2)
-                                    console.log(err2);
+                                    //console.log(err2);
                                 doc.save((err, d) => {
                                     console.log(d);
                                     if (!err)
@@ -86,7 +115,6 @@ exports.details = (reg) => {
             }
         }]).match({ 'regno': reg }).unwind('courses').exec((err, us) => {
             if (err) {
-                console.log(err);
                 rej(err)
             }
             else {
@@ -102,20 +130,20 @@ function insertCourses() {
         getCourses()
             .then((result) => {
                 result.forEach((res) => {
-                    var item = { Faculty: res.Faculty, Count: [], Crscd: res['Course Code'], Crsnm: res['Course Name'], Slot: res.Slot }
+                    var item = { Faculty: res.Faculty, Count: [], Crscd: res['Course Code'], Crsnm: res['Course Name'], Slot: res["Slot"] ,Credits:res["Credits"],Venue:res["Venue"]}
                     var newCourse = new Course(item);
                     return Save(newCourse);
                 });
 
             })
             .catch((e) => {
-                console.log(e);
+                //console.log(e);
             })
             .then((q) => {
                 if (q.length > 0) console.log("Courses inserted: " + q.length);
             })
             .catch((e) => {
-                console.log("Mongo Save error: " + e);
+                //console.log("Mongo Save error: " + e);
             });
     });
 };

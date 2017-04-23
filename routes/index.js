@@ -34,7 +34,6 @@ router.post('/register', function (req, res) {
 	data=req.body;
 	user.insertUser(data.name, data.regno, data.password)
 		.then(function (action) {
-			console.log('adjba');
 			res.render('home', { data: true, message: action });
 		}).catch(function (error) {
 			res.render('home', { data: true, message: error });
@@ -59,7 +58,6 @@ router.get('/home', (req, res) => {
 
 		});
 	}
-
 });
 
 
@@ -109,10 +107,11 @@ router.get('/logout', (req, res) => {
 
 router.post('/addcourse',(req,res)=>{
 	promise.all([
+		course.checkClash(req.body.courseId,req.headers.token),
 		suggestion.incrementCount(req.body.courseId,req.headers.token),
 		course.incrementCount(req.body.courseId,req.headers.token)
 	])
-	.then(([r1,r2])=>{
+	.then(([r0,r1,r2])=>{
 		res.json({'status':true});
 	})
 	.catch((err)=>{
@@ -128,9 +127,10 @@ router.post('/deletecourse',(req,res)=>{
 	console.log(req.body);
 	promise.all([
 		user.deleteCourse(req.body.courseId,req.headers.token),
-		course.removeUserFromCourse(req.headers.token,req.body.courseId)
+		course.removeUserFromCourse(req.headers.token,req.body.courseId),
+		suggestion.removeFromSuggestCourse(req.body.courseId,req.headers.token)
 	])
-	.then(()=>{
+	.then(([r1,r2])=>{
 		res.json({'status':true});
 	})
 	.catch((err)=>{
@@ -152,8 +152,6 @@ router.get('/detail',(req,res)=>{
 
 
 router.post('/suggestcourse',(req,res)=>{
-	console.log('adwefwuevfuyvwfuyvewfyu');
-	console.log(req.body);
 	suggestion.getData(req.body.reg)
 	.then((re)=>{
 		res.json({status:200,data:re});
