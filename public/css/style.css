@@ -55,6 +55,99 @@ select span{
   padding: 2%;
   border: none;
 }
+.login-left-col{
+  background-color: #e84247;
+}
+.logo-top{
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.btn-sign-sub{
+  border-radius: 20px;
+  background-color:#e84247 !important;
+  border: none;
+  padding: 0.1rem 0.6rem;
+  color: #fff;
+  /*border-top-right-radius: 10px;*/
+}
+.paper-pen-img{
+width: 40%;
+margin-left: auto;
+margin-right: auto;
+}
+.login-right-col{
+  background-color: #112240;
+}
+.signin-signup-but-div{
+  border-radius: 10px;
+}
+.login-left-col,.login-right-col,.card-content{
+  height: 390px;
+}
+.signup-form-div input, .signin-form-div input{
+color: #fff !important;
+}
+.signin-signup-but-div .signin-but{
+  width: 50%;
+  padding: 0.2rem 0.4rem;
+  background-color: #3d5786;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #fff;
+}
+.signin-signup-but-div .signup-but{
+  width: 50%;
+  padding: 0.2rem 0.4rem;
+  background-color: #3d5786;
+  margin-left: -5px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  cursor: pointer;
+   font-size: 0.9rem;
+   color: #fff;
+}
+.aboutus-but{
+     margin: 20px;
+    padding: 0.5rem 0.7rem;
+    border-radius: 20px;
+    box-shadow: none;
+    border: none;
+    background-color: #e84247 !important;
+    color: #fff;
+}
+.aboutus-but:hover{
+  background-color: #cc393d !important;
+}
+.social-footer .fa{
+  margin: 1rem;
+  color: #8a8a8a;
+  transition: all 0.4s ease;
+   -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+     -o-transition: all 0.4s ease;
+}
+input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]), input[type=password]:focus:not([readonly]), input[type=email]:focus:not([readonly]), input[type=url]:focus:not([readonly]), input[type=time]:focus:not([readonly]), input[type=date]:focus:not([readonly]), input[type=datetime]:focus:not([readonly]), input[type=datetime-local]:focus:not([readonly]), input[type=tel]:focus:not([readonly]), input[type=number]:focus:not([readonly]), input[type=search]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #e84247;
+    box-shadow: 0 1px 0 0 #e84247;
+}
+.social-footer .fa-facebook:hover{
+  color: #3b5998;
+}
+.social-footer .fa-twitter:hover{
+  color: #0084b4;
+}
+.social-footer .fa-github:hover{
+  color: #000;
+}
+.social-footer .fa-google-plus:hover{
+  color: #d34836;
+}
+.active-sign-but{
+  background-color: #e84247 !important;
+}
 .submit-button{
   width: 40%!important;
   background-color: rgb(0,233,143);
@@ -90,7 +183,6 @@ select span{
     width: 100%;
     padding-right: 0px!important;
     padding: 0%;
-    margin-left: -35%;
   }
   .login-holder h4
   {
