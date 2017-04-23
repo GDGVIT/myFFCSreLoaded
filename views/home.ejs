@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
-  
+
 
   <meta name='description' content='MyFFCS - Make your timetable before FFCS, share it with your friends.'>
   <meta name = 'description' content = 'Make your own timetable before FFCS starts'>
@@ -65,7 +65,7 @@
     <div class="row">
       <div class="col s12 m8 offset-m2">
        <div class="center">
-      
+
          <img src="/images/logo_black.png" class="responsive-img logo-top">
        </div>
        <div class="card z-depth-3">
@@ -91,7 +91,7 @@
                </div>
                <br />
                <div class="signup-form-div">
-                <form action="#" autocomplete="off">
+                <form  method="post" action="/register" autocomplete="off">
                   <div class="input-field col s12">
                     <input id="reg-name" type="text" name="name">
                     <label for="reg-name" data-error="Enter name">Name</label>
@@ -111,9 +111,9 @@
                 </form>
               </div>
                 <div class="signin-form-div">
-                <form action="#" autocomplete="on">
+                <form method="post" action="/login" autocomplete="on">
                   <div class="input-field col s12">
-                    <input id="reg-regnum" type="text" name="regno">
+                    <input id="reg-regnum" type="text" name="username">
                     <label for="reg-regnum" data-error="Enter a valid reg num">Registration Number</label>
                   </div>
                   <div id="invalid-entry">
@@ -177,7 +177,7 @@ $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal').modal();
   });
-         
+
 </script>
 <script type="text/javascript">
 $(".signup-but").click(function(){
