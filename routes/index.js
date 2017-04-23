@@ -107,10 +107,11 @@ router.get('/logout', (req, res) => {
 
 router.post('/addcourse',(req,res)=>{
 	promise.all([
+		course.checkClash(req.body.courseId,req.headers.token),
 		suggestion.incrementCount(req.body.courseId,req.headers.token),
 		course.incrementCount(req.body.courseId,req.headers.token)
 	])
-	.then(()=>{
+	.then(([r0,r1,r2])=>{
 		res.json({'status':true});
 	})
 	.catch((err)=>{

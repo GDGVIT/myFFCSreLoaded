@@ -31,6 +31,29 @@ exports.Course = Course;
 
 exports.test = "test";
 
+
+exports.checkClash=(cid,uid)=>{
+	return new promise((full,rej)=>{
+		Course.findById(cid,(er,crs)=>{
+			if(er)
+			rej(er);
+			if(crs.Count.indexOf(uid)<0){
+				User.findOne({'regno':uid},'courses',(err,data)=>{
+					if(data)
+					Course.find({'_id' : {$in : data.courses}},'Slot -_id',(err,dat)=>{
+						console.log("------");
+						var s=dat.map((value)=>{
+							return value.Slot
+						});
+						console.log(s);
+						full('done');
+					});
+				});
+			}
+		});
+	});
+}
+
 exports.removeUserFromCourse = (uid, cid) => {
     return new promise((full, rej) => {
         Course.findById(cid, (er1, csr) => {

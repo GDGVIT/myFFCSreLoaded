@@ -9,7 +9,7 @@ var course = require('./models/courses');
 var LocalStrategy = require('passport-local').LocalStrategy;
 var session = require('express-session');
 require('dotenv').config();
-var mongoDBuRl = process.env.mongourl;
+//var mongoDBuRl = process.env.mongourl;
 var app = express();
 mongoose.connect("mongodb://myffcs:myffcs@ds147995.mlab.com:47995/myffcs");
 var index = require('./routes/index');
