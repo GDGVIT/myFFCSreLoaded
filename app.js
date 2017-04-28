@@ -9,9 +9,9 @@ var course = require('./models/courses');
 var LocalStrategy = require('passport-local').LocalStrategy;
 var session = require('express-session');
 require('dotenv').config();
-//var mongoDBuRl = process.env.mongourl;
+var mongoDBuRl = process.env.mongourl || "mongodb://127.0.0.1/myffcs";
 var app = express();
-mongoose.connect("mongodb://myffcs:myffcs@ds147995.mlab.com:47995/myffcs");
+mongoose.connect(mongourl);
 var index = require('./routes/index');
 
 app.set('views', path.join(__dirname, 'views'));
