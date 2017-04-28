@@ -11,7 +11,7 @@ var session = require('express-session');
 require('dotenv').config();
 var mongoDBuRl = process.env.mongourl || "mongodb://127.0.0.1:27017/myffcs";
 var app = express();
-mongoose.connect(mongourl);
+mongoose.connect(mongoDBuRl);
 var index = require('./routes/index');
 
 app.set('views', path.join(__dirname, 'views'));
