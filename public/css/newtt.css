@@ -1,0 +1,146 @@
+/*
+77c10e - light green wala
+515151 - light black
+2d2d2d - dark black(nvbar wala)
+*/
+body{
+	background-color: #fff;
+	overflow-y: scroll !important;
+}
+.top-nav-wrap{
+	background-color: #2d2d2d;
+	padding: 2rem 2rem;
+	padding-bottom: 0.4rem;
+}
+.hamburger{
+	vertical-align: middle;
+	padding: 8px 8px;
+}
+.hamburger-inner,.hamburger-inner::before,.hamburger-inner::after{
+	background-color: #fff;
+}
+
+.dropdown-content li>a, .dropdown-content li>span {
+	color: #2d2d2d;
+}
+
+.bootstrap-select{
+	background-color: #eee;
+	color:#000;
+	padding: 0 15px;
+	vertical-align: middle;
+}
+ul.dropdown-content{
+	left:0px !important;
+}
+.select-wrapper input.select-dropdown{
+	border-bottom: none;
+	height: 2rem;
+	vertical-align: middle;
+	margin-left: -10px;
+	width: 150%;
+}
+.select-wrapper span.caret {
+	right: 5px;
+	top: 30%;
+}
+.nav-course-btn{
+	background-color: #515151 !important;
+}
+.nav-course-btn:hover{
+	background-color: #444343 !important;
+}
+
+/*TABLE**********/
+.timetable-timing{
+	background-color: transparent !important;
+}
+.timetable-header{
+	background-color: #2d2d2d !important;
+	color: #fff !important;
+	
+}
+td.unselected{
+	background-color: #f2f2f2 !important;
+	border:;
+}
+td.unselected .number{
+	background-color: #f2f2f2 !important;
+}
+.timetable td {
+	border: 4px solid;
+	border-color: rgb(255, 255, 255);
+}
+
+/*****Selected timetables******/
+.timetable-selected-headings{
+	background-color: #2d2d2d !important;
+}
+
+
+.download-share-but{
+	background-color: #77c10e;
+	text-align: center;
+	padding: 0.5rem 0.6rem;
+	color: #fff !important;
+}
+
+.tt-footer{
+	background-color: #2d2d2d !important;
+	padding: 2rem;
+}
+.tt-footer .withlovegdg{
+	color: #eee;
+	display: inline-block;
+}
+.tt-footer .footer-gdg-logo{
+	width: 150px;
+	vertical-align: middle;
+}
+
+/*********sidenav slide******/
+.side-nav-my {
+	position: absolute;
+	width: 240px;
+	left: 0;
+	top: 0;
+	margin: 0;
+	-webkit-transform: translateX(-100%);
+	transform: translateX(-100%);
+	height: 100%;
+	height: calc(100% + 20px);
+	height: -moz-calc(100%);
+	padding-bottom: 60px;
+	background-color: #fff;
+	z-index: 999;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	overflow-y: auto;
+	will-change: transform;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transform: translateX(-105%);
+	transform: translateX(-105%);
+
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+
+	padding: 2rem;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+}
+.side-nav-my.opened{
+	-webkit-transform: translateX(0%);
+	transform: translateX(0%);
+}
+#sidenav-overlay{
+	display: none !important;
+	opacity: 0 !important;
+}
+#slide-out{
+
+}
+.side-type-box{
+	background-color: #77c10e;
+	padding: 1rem;
+
+}
