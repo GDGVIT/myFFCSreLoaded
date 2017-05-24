@@ -1,5 +1,5 @@
 # myFFCSreLoaded
-[Click here for demo](https://myffcs1.herokuapp.com/)
+[Click here for demo](https://myffcs.herokuapp.com/)
 
 
 # ToDo's:
@@ -11,7 +11,7 @@
 
 #API Reference:
 
-`BaseUrl: https://myffcs1.herokuapp.com/`
+`BaseUrl: https://myffcs.herokuapp.com/`
 
 
 
