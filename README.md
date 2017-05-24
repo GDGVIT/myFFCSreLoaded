@@ -4,26 +4,89 @@
 
 # ToDo's:
 ```
- Make validator and integrate it before addCourses ,atlast add status in responses
-1. Login and register - 
-  a. Modify it for app backend.
-  b. Forgot passwd feature.
-2. Detail - Check response in postman - Redundancy
-3. Documentation
-
-Done :
-4. OldTimeTable - WTF is that!!!
-5. AddCourse - OK
-6. DeleteCourse - OK
-7. SuggestCourse - OK
-8. Get data from actual xls sheet
-
+  a. Forgot passwd.
+  b. Download and share.
 ```
 
-# Validator:
 
+#API Reference:
+
+`BaseUrl: https://myffcs1.herokuapp.com/`
+
+
+
+
+### /getslot
 ```
-1. Slot clashing.
-2. Credits =>16 && <=27.
-3. Same teacher in lab and theory.
+request type: GET,
+request query: {q:'<course_code>'}
+success response:{response:'<slots>'}  STATUS:200
+error response:{message:'error'} STATUS:500
 ```
+
+
+### /getcourse
+```
+request type: GET,
+request query: {courseCode:'<course_code>',slots:'<slot>'}
+success response:{response:'<courses>'} STATUS:200
+error response:{message:'error'} STATUS:500
+```
+
+
+
+### /validate
+```
+request type: POST,
+request body: {courseId:'<courseId>'}
+request headers: {token:"<regno>"}
+success response:{'status':true} STATUS:200
+error response:{'status':false} STATUS:500
+```
+
+
+### /deletecourse
+```
+request type: POST,
+request body: {courseId:'<courseId>'}
+request headers: {token:"<regno>"}
+success response:{'status':true} STATUS:200
+error response:{'status':false} STATUS:500
+```
+
+### /suggestcourse
+```
+request type: POST,
+request body: {reg:'<registerNo>'}
+success response:{message:true,data:"course and count of that batch"} STATUS:200
+error response:{message:false} STATUS:500
+```
+
+
+
+### /detail
+```
+request type: GET,
+request headers: {token:"<regno>"}
+success response:{'status':true,'data':{'newAllotedCourse2':'<allCourses>'}} STATUS:200
+error response:{'status':false,'data':{'newAllotedCourse2':[]}} STATUS:500
+```
+
+
+
+### /register
+```
+request type: POST,
+request body: {name:'<name>',regno:'<regno>',password:'<password>',type:'mobile'}
+success response:{status:"inserted"} STATUS:200
+error response:{status:"error"} STATUS:500
+```
+
+### /login
+```
+request type: POST,
+request body: {regno:'<regno>',password:'<password>'}
+success response: STATUS:200
+error response: STATUS:500
+```
+
