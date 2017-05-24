@@ -13,7 +13,7 @@
 
 `BaseUrl: https://myffcs.herokuapp.com/`
 
-
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dda3382cc211ec22cd2c)
 
 
 ### /getslot
