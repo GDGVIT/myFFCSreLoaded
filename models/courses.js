@@ -71,7 +71,6 @@ exports.validateSlots=(cid,uid)=>{
 					return v.push(false);
 				});
 				if(v.indexOf(false)<0){
-					//console.log(dd.join(" "));
 					console.log(v);
 					full();
 				}
@@ -132,7 +131,6 @@ exports.checkClash=(cid,uid)=>{
 				User.findOne({'regno':uid},'courses',(err,data)=>{
 					if(data)
 					Course.find({'_id' : {$in : data.courses}},'Slot -_id',(err,dat)=>{
-						console.log("------");
 						var s=dat.map((value)=>{
 							return value.Slot
 						});
@@ -170,11 +168,13 @@ exports.incrementCount = (id, reg) => {
                             us.courses.push(new mongoose.mongo.ObjectId(id));
                             us.save((err2) => {
                                 if (err2)
-                                    //console.log(err2);
+                                    console.log(err2);
                                 doc.save((err, d) => {
-                                    console.log(d);
                                     if (!err)
-                                        full(doc.Count.length);
+                                        {
+                                            full(doc.Count.length);
+                                        }
+                                        
                                 });
                             });
                         }

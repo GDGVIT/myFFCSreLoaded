@@ -10,6 +10,7 @@ var bcrypt = require('bcrypt');
 var auth = require('../authentication/auth');
 
 
+
 // course.allCourseCode(null, null).then((res) => {			//slot,crsnm
 // 	console.log(res);
 // });
@@ -31,13 +32,28 @@ router.get('/', function (req, res) {
 });
 
 router.post('/register', function (req, res) {
-	data=req.body;
-	user.insertUser(data.name, data.regno, data.password)
+	data=req.body; 
+	if(data.type != undefined && data.type!=null){
+		user.insertUser(data.name, data.regno, data.password)
 		.then(function (action) {
+			res.status(200);
+			res.json({status:"inserted"});
+		}).catch(function (error) {
+			res.status(500);
+			res.json({status:"error"});
+		});
+	}
+	else{
+		user.insertUser(data.name, data.regno, data.password)
+		.then(function (action) {
+			res.status(200);
 			res.render('home', { data: true, message: action });
 		}).catch(function (error) {
+			res.status(500);
 			res.render('home', { data: true, message: error });
 		});
+	}
+	
 });
 
 
@@ -45,19 +61,20 @@ router.post('/register', function (req, res) {
 router.post('/login', passport.authenticate('local', { successRedirect: '/home', failureRedirect: '/failed' }));
 
 router.get('/home', (req, res) => {
-	if (req.user == undefined) {
-		res.redirect('/');
-	} else {
+	// if (req.user == undefined) {
+	// 	res.redirect('/');
+	// } else {
 		course.all().then((res1) => {
 			course.allCourseCode(null, null).then((res2) => {
 				course.allSlots("CSE2006", null).then((res3) => {
+					res.status(200);
 					res.render('newtt', { user: req.user, data: res1, codes: res2, slots: res3 });
 				});
 
 			});
 
 		});
-	}
+	// }
 });
 
 
@@ -65,10 +82,12 @@ router.get('/getslot/', (req, res) => {
 	var crscd = req.query.q;
 	course.allSlots(crscd, null)
 	.then((res1) => {
+		res.status(200);
 		res.send(res1);
 	})
 	.catch((res2)=>{
-		console.log(res2);
+		res.status(500);
+		res.send({message:'error'});
 	});
 });
 
@@ -76,27 +95,30 @@ router.get('/getslot/', (req, res) => {
 router.get("/getcourse/",(req,res)=>{
 	course.all(req.query.courseCode,req.query.slots)
 	.then((res1)=>{
+		res.status(200);
 		res.send(res1);
 	})
 	.catch((res2)=>{
-		console.log(res2);
+		res.status(500);
+		res.send({message:'error'});
 	});
 });
 
 router.get('/failed', function (req, res) {
+	res.status(500);
 	res.render('home', { message: "Invalid Credentials", data: true });
 });
 
 
-router.get('/oldtimetable',(req,res)=>{
-	if(req.user ==undefined){
-		res.render('home',{data:true,message:"Login First"});
-		res.location('/');
-	}
-	else{
-		res.render('oldtt',{user:req.user});
-	}
-});
+// router.get('/oldtimetable',(req,res)=>{
+// 	if(req.user ==undefined){
+// 		res.render('home',{data:true,message:"Login First"});
+// 		res.location('/');
+// 	}
+// 	else{
+// 		res.render('oldtt',{user:req.user});
+// 	}
+// });
 
 
 
@@ -112,9 +134,11 @@ router.post('/addcourse',(req,res)=>{
 		course.incrementCount(req.body.courseId,req.headers.token)
 	])
 	.then(([r0,r1,r2])=>{
+		res.status(200);
 		res.json({'status':true});
 	})
 	.catch((err)=>{
+		res.status(500);
 		res.json({'status':false});
 	});
 
@@ -131,8 +155,8 @@ router.post('/validate',(req,res)=>{
 		res.redirect('/addcourse/'+req.body.courseId+'/'+req.headers.token);
 	})
 	.catch((err)=>{
-		console.log(err);
-		res.send('failed');
+		res.status(500);
+		res.json({'status':false});
 	});
 });
 
@@ -144,9 +168,11 @@ router.get('/addcourse/:p1/:p2',(req,res)=>{
 		course.incrementCount(courseId,token)
 	])
 	.then(()=>{
+		res.status(200);
 		res.json({'status':true});
 	})
 	.catch((err)=>{
+		res.status(500);
 		res.json({'status':false});
 	});
 });
@@ -160,9 +186,11 @@ router.post('/deletecourse',(req,res)=>{
 		suggestion.removeFromSuggestCourse(req.body.courseId,req.headers.token)
 	])
 	.then(([r1,r2])=>{
+		res.status(200);
 		res.json({'status':true});
 	})
 	.catch((err)=>{
+		res.status(500);
 		res.json({'status':false});
 	});
 });
@@ -172,9 +200,11 @@ router.get('/detail',(req,res)=>{
 	course.details(req.headers.token)
 		.then((course_arr)=>{
 			console.log(JSON.stringify(course_arr,null,4));
+			res.status(200);
 			res.json({'status':true,'data':{'newAllotedCourse2':course_arr}});
 		})
 		.catch((e)=>{
+			res.status(500);
 			res.json({'status':false,'data':{'newAllotedCourse2':[]}});
 		});
 });
@@ -183,10 +213,12 @@ router.get('/detail',(req,res)=>{
 router.post('/suggestcourse',(req,res)=>{
 	suggestion.getData(req.body.reg)
 	.then((re)=>{
-		res.json({status:200,data:re});
+		res.status(200);
+		res.json({message:true,data:re});
 	})
 	.catch((er)=>{
-		res.json({status:400,data:er});
+		res.status(500);
+		res.json({message:false});
 	});
 });
 
