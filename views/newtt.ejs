@@ -95,9 +95,9 @@
         </div>
       </div>
       <div class="col s12 m4 offset-m1">
-        <button class="submit-button timetable-results-trigger btn waves-effect grey-black-bg nav-course-btn"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+        <button class="nav-sea-log-but submit-button timetable-results-trigger btn waves-effect grey-black-bg nav-course-btn"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
         <span class="" style="margin-right: 1rem;"></span>
-        <a href="/logout"><button class="btn waves-effect grey-black-bg nav-course-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</button></a>
+        <a href="/logout"><button class="nav-sea-log-but btn waves-effect grey-black-bg nav-course-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</button></a>
       </div>
     </div>
   </div>
@@ -107,28 +107,6 @@
         <h6 class="center white-text" id="course-name-slide">Please select course</h6>
       </div>
       <div class="timetable-results" style="display: block !important;">
-        <div class="side-type-box slot z-depth-1">
-          <h5 class="white-text center">Marimuthu K</h5>
-          <div class="center">
-            <h7 class="slot-gool center">E2+TE2</h7>
-          </div>
-          <div class="center">
-            <div class="add-plus-div">
-              <i class="fa fa-plus white-text" aria-hidden="true"></i>
-            </div>
-          </div>
-        </div>
-        <div class="side-type-box slot z-depth-1">
-          <h5 class="white-text center">Marimuthu K</h5>
-          <div class="center">
-            <h7 class="slot-gool center">E2+TE2</h7>
-          </div>
-          <div class="center">
-            <div class="add-plus-div">
-              <i class="fa fa-plus white-text" aria-hidden="true"></i>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
     <div class="row timetable">
@@ -316,35 +294,35 @@
     var token = $('.user-token').val();
     var slotRequest = slot;
     slot = slot.toLowerCase();
-   
-        var isClashing = false;
-        slot = slot.split('+');
-        for(var i in slot){
-          tempSlot = slot[i];
-          if($('.'+tempSlot).hasClass('selected')){
-            isClashing = true;
-            $("."+slot).addTemporaryClass("clash", 4000);
-            Materialize.toast("Course Clashing!",4000);
-            $('.'+slot).addClass('selected');
-            $('.'+slot).css('color', 'white');
-            $('.'+slot+" .number").css("color","#00e676");
-          }
-        }
-        if(!isClashing){
-          count++;
-          for(var i in slot){
-            tempSlot = slot[i];
-            $("."+tempSlot).addClass("selected");
-            $("."+tempSlot).removeClass("unselected");
-            $('.'+tempSlot+" .number").css("color","#00e676");
-            $('.'+tempSlot+" .number").html(count);
-          }
-          if(count==1){
-            $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-headings');
-          } else{
-            $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-subject:nth-child('+count+")");
-          }
-          $.ajax({
+
+    var isClashing = false;
+    slot = slot.split('+');
+    for(var i in slot){
+      tempSlot = slot[i];
+      if($('.'+tempSlot).hasClass('selected')){
+        isClashing = true;
+        $("."+slot).addTemporaryClass("clash", 4000);
+        Materialize.toast("Course Clashing!",4000);
+        // $('.'+slot).addClass('selected');
+        // $('.'+slot).css('color', 'white');
+        // $('.'+slot+" .number").css("color","#00e676");
+      }
+    }
+    if(!isClashing){
+      count++;
+      for(var i in slot){
+        tempSlot = slot[i];
+        $("."+tempSlot).addClass("selected");
+        $("."+tempSlot).removeClass("unselected");
+        $('.'+tempSlot+" .number").css("color","#00e676");
+        $('.'+tempSlot+" .number").html(count);
+      }
+      if(count==1){
+        $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-headings');
+      } else{
+        $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-subject:nth-child('+count+")");
+      }
+      $.ajax({
             //url: '/addcourse',
             url: '/validate',
             headers: {
@@ -356,7 +334,8 @@
             },
             success: function(response){
               if(response.status==true){
-                Materialize.toast("Course Added "+response.count , 4000);
+                Materialize.toast("Course Added" , 4000);
+                close_side();
               }
               else{
                 Materialize.toast("Some Error" , 4000);
@@ -366,26 +345,26 @@
               Materialize.toast("Some Error" , 4000);
             }
           });
-        } else{
-          for(var i in slot){
-            tempSlot = slot[i];
-            $("."+tempSlot).removeClass("unselected");
-            $("."+tempSlot).addTemporaryClass("clash", 4000);
-            Materialize.toast("Course Clashing!",4000);
-            $("."+tempSlot).addClass("unselected");
-            $('.'+tempSlot).css('color', 'white');
-            $('.'+tempSlot+" .number").css("color","rgb(250,77,92)");
+    } else{
+      for(var i in slot){
+        tempSlot = slot[i];
+        $("."+tempSlot).removeClass("unselected");
+        $("."+tempSlot).addTemporaryClass("clash", 4000);
+        Materialize.toast("Course Clashing!",4000);
+        // $("."+tempSlot).addClass("unselected");
+        // $('.'+tempSlot).css('color', 'white');
+        // $('.'+tempSlot+" .number").css("color","rgb(250,77,92)");
             //$('.'+tempSlot+" .number").html(count);
           }
         }
       //}
     });
-$(document).on('click', '.timetable-selected-subject .material-icons',function(){
-  var slot = $(this).closest($('.timetable-selected-subject')).find($('.timetable-selected-subject td:nth-child(3)')).text();
-  slot = slot.split('+');
-  var id = $(this).closest($('.timetable-selected-subject')).find($('.course-id')).val();
-  var token = $('.user-token').val();
-  $.ajax({
+  $(document).on('click', '.timetable-selected-subject .material-icons',function(){
+    var slot = $(this).closest($('.timetable-selected-subject')).find($('.timetable-selected-subject td:nth-child(3)')).text();
+    slot = slot.split('+');
+    var id = $(this).closest($('.timetable-selected-subject')).find($('.course-id')).val();
+    var token = $('.user-token').val();
+    $.ajax({
         //url: '/v2/student/deletecourse/',
         url: '/deletecourse',
         headers: {
@@ -406,44 +385,44 @@ $(document).on('click', '.timetable-selected-subject .material-icons',function()
           Materialize.toast("Some Error Found" , 40000);
         }
       });
-  for(var i in slot){
-    var tempSlot = slot[i].replace(' ','').toLowerCase();
-    $('.'+tempSlot).addClass('unselected').removeClass('selected').removeClass('clash');
-    $('.'+tempSlot+' .number').html("");
-  }
-  $(this).closest($('.timetable-selected-subject')).remove();
-  count--;
-  var index=1;
-  var current = $('.timetable-selected-subject');
-  for(var i=1;i<=$('.timetable-selected-subject').length;i++){
-    $(current).find($('td:nth-child(1)')).html(index);
-    var slot = $(current).find($('td:nth-child(4)')).html();
-    if(slot.charAt(0)=='l'){
-      slot = slot.split('+');
-      for(var j=0;j<slot.length;j++){
-        var tempSlot = slot[j];
-        tempSlot = tempSlot.toLowerCase();
-        $('.'+tempSlot+' .number').html(index);
+    for(var i in slot){
+      var tempSlot = slot[i].replace(' ','').toLowerCase();
+      $('.'+tempSlot).addClass('unselected').removeClass('selected').removeClass('clash');
+      $('.'+tempSlot+' .number').html("");
+    }
+    $(this).closest($('.timetable-selected-subject')).remove();
+    count--;
+    var index=1;
+    var current = $('.timetable-selected-subject');
+    for(var i=1;i<=$('.timetable-selected-subject').length;i++){
+      $(current).find($('td:nth-child(1)')).html(index);
+      var slot = $(current).find($('td:nth-child(4)')).html();
+      if(slot.charAt(0)=='l'){
+        slot = slot.split('+');
+        for(var j=0;j<slot.length;j++){
+          var tempSlot = slot[j];
+          tempSlot = tempSlot.toLowerCase();
+          $('.'+tempSlot+' .number').html(index);
+        }
       }
+      else{
+        slot = slot.toLowerCase();
+        $('.'+slot+' .number').html(index);
+      }
+      current = current.next($('.timetable-selected-subject'));
+      index++;
     }
-    else{
-      slot = slot.toLowerCase();
-      $('.'+slot+' .number').html(index);
-    }
-    current = current.next($('.timetable-selected-subject'));
-    index++;
-  }
-});
-$(document).on('click','.custom-card-edit img:nth-child(2)',function(){
-  $(this).closest($('.custom-card')).remove();
-});
-$(document).on('click','.timetable-results .close',function(){
+  });
+  $(document).on('click','.custom-card-edit img:nth-child(2)',function(){
+    $(this).closest($('.custom-card')).remove();
+  });
+  $(document).on('click','.timetable-results .close',function(){
   //$('.timetable-results').slideUp(400);
 });
-$(document).ready(function(){
-  $('.course-list-1').select2();
-  $('.faculty-list-1').select2();
-  $('.slot-list-1').select2();
+  $(document).ready(function(){
+    $('.course-list-1').select2();
+    $('.faculty-list-1').select2();
+    $('.slot-list-1').select2();
       /*$('.timetable-results').slick({
         dots: false,
         infinite: true,
@@ -636,11 +615,10 @@ $(document).ready(function(){
             var id = response[i]._id;
 
             console.log("likhne jaa raha hun");
-            $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+id+'"><h5 class="white-text center">'+faculty+'</h5><div class="center"><h7 class="slot-gool center">'+slot+'</h7></div><div class="center"><div class="add-plus-div save-tt" data-crsnm="'+courseTitle+'" data-crscd="'+courseCode+'" data-slot="'+slot+'" data-credits="'+credits+'" data-faculty="'+faculty+'" data-id="'+id+'"><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div></div>');
+            $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+id+'"><h6 class="white-text center">'+faculty+'</h6><div class="center"><div class="slot-gool center">'+slot+'</div></div><div class="center"><div class="add-plus-div save-tt" data-crsnm="'+courseTitle+'" data-crscd="'+courseCode+'" data-slot="'+slot+'" data-credits="'+credits+'" data-faculty="'+faculty+'" data-id="'+id+'"><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div></div>');
             
-            
-
           }
+          open_side();
         },
         error: function(){
           Materialize.toast("Some Error Found" , 4000);
@@ -678,25 +656,29 @@ $(document).ready(function(){
     });*/
   </script>
   <script type="text/javascript">
-    $(document).ready(function() {
         //$('select').material_select(); dont use this if there is select2 library
 
         // Initialize collapse button
         var state=0;//0 for closed
-        $(".button-collapse").click(function(){
-          if(state==0)
-          {
-            state=1;
-            $(".hamburger").addClass("is-active");
-            $(".side-nav-my").addClass("opened");
-          }
-          else
-          {
-            state=0;
-            $(".hamburger").removeClass("is-active");
-            $(".side-nav-my").removeClass("opened");
-          }
-        });
+        function open_side(){
+          state=1;
+          $(".hamburger").addClass("is-active");
+          $(".side-nav-my").addClass("opened");
+        }
+        function close_side(){
+         state=0;
+         $(".hamburger").removeClass("is-active");
+         $(".side-nav-my").removeClass("opened");
+       }
+       $(".button-collapse").click(function(){
+        if(state==0)
+        {
+          open_side();
+        }
+        else
+        {
+          close_side();
+        }
       });
     </script>
     </html>

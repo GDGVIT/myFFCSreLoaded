@@ -56,7 +56,7 @@ select span{
   border: none;
 }
 .login-left-col{
-  background-color: #e84247;
+  background-color: #77c10e;
 }
 .logo-top{
   width: 200px;
@@ -65,7 +65,7 @@ select span{
 }
 .btn-sign-sub{
   border-radius: 20px;
-  background-color:#e84247 !important;
+  background-color:#77c10e !important;
   border: none;
   padding: 0.1rem 0.6rem;
   color: #fff;
@@ -115,11 +115,14 @@ color: #fff !important;
     border-radius: 20px;
     box-shadow: none;
     border: none;
-    background-color: #e84247 !important;
+    background-color: #77c10e !important;
     color: #fff;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 .aboutus-but:hover{
-  background-color: #cc393d !important;
+  background-color: #6aab0e !important;
 }
 .social-footer .fa{
   margin: 1rem;
@@ -130,8 +133,8 @@ color: #fff !important;
      -o-transition: all 0.4s ease;
 }
 input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]), input[type=password]:focus:not([readonly]), input[type=email]:focus:not([readonly]), input[type=url]:focus:not([readonly]), input[type=time]:focus:not([readonly]), input[type=date]:focus:not([readonly]), input[type=datetime]:focus:not([readonly]), input[type=datetime-local]:focus:not([readonly]), input[type=tel]:focus:not([readonly]), input[type=number]:focus:not([readonly]), input[type=search]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
-    border-bottom: 1px solid #e84247;
-    box-shadow: 0 1px 0 0 #e84247;
+    border-bottom: 1px solid #77c10e;
+    box-shadow: 0 1px 0 0 #77c10e;
 }
 .social-footer .fa-facebook:hover{
   color: #3b5998;
@@ -146,7 +149,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   color: #d34836;
 }
 .active-sign-but{
-  background-color: #e84247 !important;
+  background-color: #77c10e !important;
 }
 .submit-button{
   /*width: 40%!important;

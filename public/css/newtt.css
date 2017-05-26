@@ -157,3 +157,13 @@ td.unselected .number{
 	margin-bottom: 1rem;
 
 }
+.slot-gool{
+	font-size: 0.8rem !important;
+    margin-bottom: 0.5rem;
+}
+
+@media(max-width: 769px){
+	.nav-sea-log-but{
+		margin-top: 1rem;
+	}
+}
