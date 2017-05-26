@@ -149,16 +149,16 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   background-color: #e84247 !important;
 }
 .submit-button{
-  width: 40%!important;
+  /*width: 40%!important;
   background-color: rgb(0,233,143);
   padding: 2%;
   border: none;
-  color: white;
+  color: white;*/
 }
-.submit-button:focus{
+/*.submit-button:focus{
   border: none;
   padding: 2%;
-}
+}*/
 .submit-button:active{
   border: none;
 }
@@ -516,15 +516,15 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   height: 70%;
   font-size: 15px;
   width: 100%;
-  background-color: rgb(127,144,153);
-  color: rgb(215,220,219);
+  /*background-color: rgb(127,144,153);
+  color: rgb(215,220,219)*/;
 }
 .select2-container{
   font-size: 14px;
   font-weight: 200%;
 }
 
-.select2-container .select2-choice .select2-chosen{
+/*.select2-container .select2-choice .select2-chosen{
   background-color: rgb(127,144,153);
 }
 #select2-course-list-container,#select2-slot-list-container,#select2-faculty-list-container{
@@ -542,13 +542,14 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
     background-color: rgb(127,144,153);
 }
-
+*/
 .timetable-results{
-  background: rgb(96,125,139);
+  /*background: rgb(96,125,139);*/
   padding: 3%;
   font-size: 15px;
   margin-top: 0px;
   overflow-x: scroll;
+  display: block !important;
 }
 .timetable-results .custom-card-edit .save-tt{
   padding-left: 15%;
@@ -720,7 +721,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   padding: 0px!important;
 }
 .submit-button{
-  border: 0.5px solid rgba(0,233,143,0.9)!important;
+  /*border: 0.5px solid rgba(0,233,143,0.9)!important;*/
 }
 .submit-button-logout{
   width: 50%!important;
@@ -791,4 +792,87 @@ label{
 
     border: 2px solid #fff !important;
 
+}
+
+
+::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+  width: 6px;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #bbbbbb;
+}
+/*for another*/
+::scrollbar-track
+{
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+::scrollbar
+{
+  width: 6px;
+  background-color: #F5F5F5;
+}
+
+::scrollbar-thumb
+{
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #bbbbbb;
+}
+
+/*for main page*/
+
+html::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+html::-webkit-scrollbar
+{
+  width: 12px;
+  background-color: #F5F5F5;
+}
+
+html::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #bbbbbb;
+}
+/*for another*/
+html::scrollbar-track
+{
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+html::scrollbar
+{
+  width: 12px;
+  background-color: #F5F5F5;
+}
+
+html::scrollbar-thumb
+{
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #bbbbbb;
 }
