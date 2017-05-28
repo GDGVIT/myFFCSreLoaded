@@ -82,7 +82,7 @@
           success: function(response){
             if(response.status==true){
 				//alert("Download Link: "+response.link);
-				var file_path = "http://52.51.60.178:3000"+response.link;
+				var file_path = "http://localhost:3000"+response.link+"/"+token;
 				console.log(file_path)
 				var a = document.createElement('A');
 				a.href = file_path;
