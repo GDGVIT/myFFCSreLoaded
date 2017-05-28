@@ -252,7 +252,7 @@ router.post('/downloadtt',(req,res)=>{
 	phantomPrint.doPrint(uid)
 	.then(()=>{
 		console.log("done print")
-		res.send({"status":true, "link":"/download/"+req.session.passport.user})
+		res.send({"status":true, "link":"/download/"+req.session.passport.user, "token2":req.headers.token})
 	})
 	.catch((e)=>{
 		console.log(e)
@@ -289,8 +289,16 @@ router.get('/rendertt/:uid',(req,res)=>{
 	})
 })
 
-router.get('/download/:uid',(req,res)=>{
+router.get('/download/:uid/:reg',(req,res)=>{
 	var uid = req.params.uid;
-	res.sendfile("./downloads/"+uid+".png")
+	var reg = req.params.reg;
+	if(req.session.passport.user == uid){
+		var filename = "myFFCStt.png"
+		console.log(filename)
+		res.download("./downloads/"+uid+".png",reg+"_"+filename)
+	}
+	else{
+		console.log(req.session.passport.user+" "+uid)
+	}
 })
 module.exports = router;
