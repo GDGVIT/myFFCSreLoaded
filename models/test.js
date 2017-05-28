@@ -12,7 +12,7 @@ var options = {
 	,shotSize: {
 		width: 1500
 		,height: 'all'
-	}
+	},
 }; 
 
 webshot(path,fname,options, function(err) {

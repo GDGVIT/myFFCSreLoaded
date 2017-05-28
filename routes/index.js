@@ -252,6 +252,7 @@ router.post('/downloadtt',(req,res)=>{
 	phantomPrint.doPrint(uid)
 	.then(()=>{
 		console.log("done print")
+		res.send(req.session.passport.user)
 	})
 	.catch((e)=>{
 		console.log(e)
