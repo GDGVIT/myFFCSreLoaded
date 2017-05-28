@@ -48,7 +48,7 @@
   <script src="js/select2.min.js"></script>
   <script>
   $(document).on('ready',function(){
-    $("#downloadtt").click(function(){
+    $("#downloadtt2,#downloadtt").click(function(){
       var xx = []
       var tt = []
       var slots = []
@@ -82,7 +82,7 @@
             success: function(response){
               if(response.status==true){
 				//alert("Download Link: "+response.link);
-				var file_path = "http://localhost:3000"+response.link;
+				var file_path = "http://52.51.60.178:3000"+response.link;
 				console.log(file_path)
 				var a = document.createElement('A');
 				a.href = file_path;
@@ -275,10 +275,10 @@
 
     <div class="row">
       <div class="col s12 offset-m1 m10">
-        <span class="download-share-but circle">
-          <i id="downloadtt" class="fa fa-download" aria-hidden="true"></i>
+        <span id="downloadtt" class="download-share-but circle">
+          <i class="fa fa-download" aria-hidden="true"></i>
         </span>
-        <span class="download-share-text">&nbsp;Download</span>
+        <span class="download-share-text">&nbsp;<button id="downloadtt2" style="background-color: Transparent;border: none;">Download</button></span>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <span class="download-share-but circle">
           <i class="fa fa-share-alt" aria-hidden="true"></i>
