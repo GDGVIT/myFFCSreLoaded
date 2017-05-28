@@ -211,6 +211,7 @@ router.get('/detail',(req,res)=>{
 
 
 router.post('/suggestcourse',(req,res)=>{
+	console.log("The body is:"+req.body.reg);
 	suggestion.getData(req.body.reg)
 	.then((re)=>{
 		res.status(200);

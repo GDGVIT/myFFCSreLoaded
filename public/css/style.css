@@ -343,7 +343,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
     min-width: 80%!important;
   }
   .timetable-selected-table td{
-    font-size: 8px!important;
+    font-size: 10px!important;
   }
   .timetable-selected-headings td:nth-child(6){
     padding: 0%!important;
@@ -711,7 +711,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   background: white;
 }
 .timetable-selected-subject:hover{
-  background: rgb(0,233,143);
+     background: rgb(119, 193, 14);
   transition: 0.3s;
 }
 .timetable-selected-subject:after{

@@ -105,7 +105,10 @@
   </script>
 </head>
 <body>
-
+  <div class="message-box">
+  <span class="message-box-text"></span>
+  &nbsp;&nbsp;<i class="fa message-close-but fa-times-circle" aria-hidden="true"></i>
+  </div>
   <input type="text" class="user-token" name="token" style="display:none;" value="<%=user.regno%>">
 
   <div class="top-nav-wrap">
@@ -121,22 +124,22 @@
       <span style="font-size: 1.4rem;" class="white-text"><b>MyFFCS</b></span>
     </div>
     <div class="select-wrap col s12 m5 l4">
-      <div class="input-field col m3 white-text">
+      <div class="input-field col s6 m4 white-text">
               <!-- <select name="school" class="bootstrap-select school-select">
                 <option value="" disabled selected>school..</option>
                 <%for(i=0;i<codes.length;i++){%>
                 <option value="<%=codes[i]%>"><%=codes[i]%></option>
                 <%}%>
               </select> -->
-              <select id="course-list" class="course-list-1 bootstrap-select school-select" name="course-list" data-placeholder="Search Course" style="width: 50px !important;">
+              <select id="course-list" class="course-list-1 bootstrap-select school-select" name="course-list" data-placeholder="Search Course" style="min-width: 200px !important;">
                 <option></option>
                 <%for(i=0;i<codes.length;i++){%>
-                <option value="<%=codes[i]%>"><%=codes[i]%></option>
+                <option value="<%=codes[i]%>" id="crscd_<%=codes[i]%>"><%=codes[i]%></option>
                 <%}%>
               </select>
             </div>
 
-            <div class="input-field col offset-m3 m4 white-text">
+            <div class="input-field col s6 offset-m3 m4 white-text">
           <!--     <select name="subject" class="bootstrap-select subject-select">
                 <option value="" disabled selected>subject..</option>
                 <option value="1">Option 1</option>
@@ -152,17 +155,17 @@
         </div>
       </div>
       <div class="col s12 m4 offset-m1 right-align">
-       <!--  <button class="nav-sea-log-but submit-button timetable-results-trigger btn waves-effect grey-black-bg nav-course-btn"><i class="fa fa-search" aria-hidden="true"></i> Search</button> -->
-       <span class="" style="margin-right: 1rem;"></span>
-       <a href="/logout"><button class="nav-sea-log-but btn waves-effect grey-black-bg nav-course-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</button></a>
-       <div>
+        <button style="display: none;" class="nav-sea-log-but submit-button timetable-results-trigger btn waves-effect grey-black-bg nav-course-btn"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+        <span class="" style="margin-right: 1rem;"></span>
+        <a href="/logout"><button class="nav-sea-log-but btn waves-effect grey-black-bg nav-course-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</button></a>
+        <div>
 
-       </div>
-     </div>
-   </div>
-   <div class="row">
-   <div class="col m4 offset-m3 center">
-     <button class="nav-sea-log-but submit-button btn waves-effect grey-black-bg nav-course-btn suggested-courses-but"><i class="fa fa-users" aria-hidden="true"></i> Suggested Courses</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+     <div class="col m4 offset-m8 right-align">
+       <button title="Show Suggested Courses for me" class="nav-sea-log-but submit-button btn waves-effect grey-black-bg nav-course-btn suggested-courses-but"><i class="fa fa-users" aria-hidden="true"></i> Suggested Courses</button>
      </div>
    </div>
  </div>
@@ -273,9 +276,11 @@
     <table class="timetable-selected-table">
       <tr class="timetable-selected-headings">
         <td style="padding: 2%">Course Code</td>
+        <td>Credits</td>
         <td>Course Name</td>
         <td>Slot</td>
         <td>Faculty</td>
+        <td>Venue</td>
         <td></td>
       </tr>
     </table>
@@ -305,6 +310,20 @@
   </footer>
 </div>
 </body>
+<script type="text/javascript">
+  function show_message(mess){
+    $(".message-box").addClass("showing");
+    $(".message-box-text").text(mess);
+  }
+  function hide_message(){
+    $(".message-box").removeClass("showing");
+     $(".message-box-text").text("");
+  }
+
+  $(".message-close-but").click(function(){
+    hide_message();
+  });
+</script>
 <script type="text/javascript">
   var doneOnce = false;
   var hasLab = false;
@@ -353,6 +372,7 @@
     var faculty=$(this).attr("data-faculty");
     var courseTitle=$(this).attr("data-crsnm");
     var credits=$(this).attr("data-credits");
+    var venue=$(this).attr("data-venue");
     var id=$(this).attr("data-id");
     console.log(slot+","+courseCode+","+faculty+","+courseTitle+","+credits+","+id+".");
 
@@ -383,9 +403,9 @@
         $('.'+tempSlot+" .number").html(count);
       }
       if(count==1){
-        $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-headings');
+        $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+credits+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td>'+venue+'</td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-headings');
       } else{
-        $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-subject:nth-child('+count+")");
+        $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+credits+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td>'+venue+'</td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-subject:nth-child('+count+")");
       }
       $.ajax({
             //url: '/addcourse',
@@ -410,10 +430,11 @@
               Materialize.toast("Some Error" , 4000);
             }
           });
-    } else{
+    } 
+    else{
       for(var i in slot){
         tempSlot = slot[i];
-        $("."+tempSlot).removeClass("unselected");
+        // $("."+tempSlot).removeClass("unselected");
         $("."+tempSlot).addTemporaryClass("clash", 4000);
         Materialize.toast("Course Clashing!",4000);
         // $("."+tempSlot).addClass("unselected");
@@ -532,11 +553,12 @@ $(document).ready(function(){
             console.log(faculty);
             var slot = response.data.newAllotedCourse2[i].course_docs[0].Slot;
             console.log(slot);
-            //var credits = response.data.newAllotedCourse2[i].course_docs[0].credits;
+            var credits = response.data.newAllotedCourse2[i].course_docs[0].Credits;
+            var venue = response.data.newAllotedCourse2[i].course_docs[0].Venue;
             var courseCode = response.data.newAllotedCourse2[i].course_docs[0].Crscd;
             console.log(courseCode);
             if (response.status==true){
-              $('.timetable-selected-table').append('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+courseTitle+'</td><td>'+slot+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td><i class="small material-icons">delete</i></td></tr>');
+              $('.timetable-selected-table').append('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+credits+'</td><td> '+courseTitle+'</td><td>'+slot+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td>'+venue+'</td><td><i class="small material-icons">delete</i></td></tr>');
             }
 
 
@@ -624,7 +646,11 @@ $(document).ready(function(){
         doneOnce = true;
       }
     });*/
+    $(document).on("change","#slot-list",function(){
+      $(".timetable-results-trigger").click();
+    });
     $(document).on('change','.course-list-1',function(){
+      show_message("Loading slots...");
       //if(!doneOnce){
         var search = $('.course-list-1').select2('data')[0]['text'];
         /*var search = $('.slot-list-1').select2('data')[0]['text'];*/
@@ -633,6 +659,7 @@ $(document).ready(function(){
           datatype: 'json',
           type: 'GET',
           success: function(response){
+            hide_message();
             /*$('.course-list-1').empty();
             $('.course-list-1').append('<option></option>');*/
             $('.slot-list-1').prop('disabled', false);
@@ -644,6 +671,7 @@ $(document).ready(function(){
             }
           },
           error: function(){
+            hide_message();
             Materialize.toast("Some Error Found" , 4000);
           }
         });
@@ -653,6 +681,7 @@ $(document).ready(function(){
     $(document).on('click','.timetable-results-trigger',function(){
       /*if(!doneOnce)
       return;*/
+      show_message("Loading results...");
       var search1 = $('.course-list-1').select2('data')[0]['text'];
       var search   = $('.slot-list-1').select2('data')[0]['text'];
       search = search.replace(/\+/g,"%2B");
@@ -661,6 +690,7 @@ $(document).ready(function(){
         type: 'GET',
         datatype: 'json',
         success: function(response){
+          hide_message();
           $('.timetable-results').empty();
           //$('.timetable-results').slideDown(400);
           //$('.timetable-menu-list').hide();
@@ -673,19 +703,21 @@ $(document).ready(function(){
             var courseTitle = response[i].Crsnm;
             var courseCode = response[i].Crscd;
             var slot = response[i].Slot;
-            var credits = 4;
+            var credits = response[i].Credits;
             var faculty = response[i].Faculty;
+            var venue= response[i].Venue;
             //var courseType = response.data[i].type;
             //var school = response.data[i].school;
             var id = response[i]._id;
 
-            console.log("likhne jaa raha hun");
-            $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+id+'"><h6 class="white-text center">'+faculty+'</h6><div class="center"><div class="slot-gool center">'+slot+'</div></div><div class="center"><div class="add-plus-div save-tt" data-crsnm="'+courseTitle+'" data-crscd="'+courseCode+'" data-slot="'+slot+'" data-credits="'+credits+'" data-faculty="'+faculty+'" data-id="'+id+'"><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div></div>');
+            
+            $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+id+'"><h6 class="white-text center">'+faculty+'</h6><div class="center"><div class="slot-gool center">'+slot+'</div></div><div class="center"><div class="add-plus-div save-tt" data-crsnm="'+courseTitle+'" data-crscd="'+courseCode+'" data-slot="'+slot+'" data-credits="'+credits+'" data-faculty="'+faculty+'" data-id="'+id+'"data-venue="'+venue+'"><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div></div>');
 
           }
           open_side();
         },
         error: function(){
+          hide_message();
           Materialize.toast("Some Error Found" , 4000);
           //alert('Ajax Error');
         }
@@ -721,6 +753,53 @@ $(document).ready(function(){
     });*/
   </script>
   <script type="text/javascript">
+    $(".suggested-courses-but").click(function(){
+      show_message("Loading...");
+     $('.timetable-results').empty();
+     $("#course-name-slide").text("SUGGESTED COURSES");
+     var token = $('.user-token').val();
+     $.ajax({
+        //url: '/v2/student/deletecourse/',
+        url: '/suggestcourse',
+        headers: {
+          'token': token
+        },
+        type: 'POST',
+        data: {
+          'reg': token
+        },
+        success: function(response){
+          hide_message();
+          if(!response.message)
+           Materialize.toast("Error in suggesting Courses" , 40000);
+         else{
+          var arr_subs=response.data;
+          var len=arr_subs.length;
+          console.log("Length of courses="+len);
+          for(var i=0;i<len;i++){
+            var count = arr_subs[i].count;
+            var crsnm = arr_subs[i].crsnm;
+            var crscd = arr_subs[i].crscd;
+            $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+crscd+'"><h6 class="white-text center">'+crsnm+'</h6><div class="center"><div class="slot-gool center">'+crscd+'</div></div><div class="center"><div class="add-plus-div add-course-sugg" data-crsnm="'+crsnm+'" data-crscd="'+crscd+'" data-slot="'+crscd+'" data-credits="'+crscd+'" data-faculty="'+crscd+'" data-id="'+crscd+'"><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div></div>');
+          }
+          $(".add-course-sugg").click(function(){
+
+            var crscd=$(this).attr("data-id");
+            $('#course-list').val(crscd).trigger('change');
+            close_side();
+          });
+          open_side();
+        }
+      },
+      error: function(){
+         hide_message();
+        Materialize.toast("Error in suggested Courses" , 40000);
+      }
+    });
+   });
+ </script>
+ 
+ <script type="text/javascript">
         //$('select').material_select(); dont use this if there is select2 library
 
         // Initialize collapse button
@@ -745,5 +824,9 @@ $(document).ready(function(){
           close_side();
         }
       });
+    </script>
+    <script type="text/javascript">
+
+
     </script>
     </html>

@@ -162,14 +162,40 @@ td.unselected .number{
     margin-bottom: 0.5rem;
 }
 .suggested-courses-but{
-	background-color: #77c10e !important;
+	/*background-color: #77c10e !important;*/
 	margin-top: 0.5rem;
 }
 .suggested-courses-but:hover{
-	background-color: #64a10c !important;
+	/*background-color: #64a10c !important;*/
+}
+.add-plus-div{
+	cursor: pointer;
+}
+.message-box{
+	position: absolute;
+	top: 28%;
+	left: 46%;
+	text-align: center;
+	border-radius: 30px;
+	color: white;
+	background-color: #77c10e;
+	padding: 7px 17px;
+	padding-right: 10px;
+	z-index: 10001;
+	display: none;
+}
+.message-box.showing{
+	display: block;
+}
+.message-close-but{
+	cursor: pointer;
 }
 @media(max-width: 769px){
 	.nav-sea-log-but{
 		margin-top: 1rem;
+	}
+	.message-box{
+		top: 20px;
+		left: 37%;
 	}
 }
