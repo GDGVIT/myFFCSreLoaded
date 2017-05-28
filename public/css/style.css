@@ -634,7 +634,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   text-align: center;
 }
 .timetable .selected{
-  background: #00e676;
+  background: #77c10e;
 }
 .timetable .clash{
   background: rgb(250,77,92);

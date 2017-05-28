@@ -10,7 +10,7 @@ var LocalStrategy = require('passport-local').LocalStrategy;
 var session = require('express-session');
 require('dotenv').config();
 var mongoDBuRl = process.env.mongourl || "mongodb://127.0.0.1:27017/myffcs";
-
+//var mongoDBuRl = "mongodb://3rr0r:n0t40und@ds147995.mlab.com:47995/myffcs";
 var app = express();
 mongoose.connect(mongoDBuRl);
 var index = require('./routes/index');

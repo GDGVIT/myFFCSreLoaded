@@ -161,7 +161,13 @@ td.unselected .number{
 	font-size: 0.8rem !important;
     margin-bottom: 0.5rem;
 }
-
+.suggested-courses-but{
+	background-color: #77c10e !important;
+	margin-top: 0.5rem;
+}
+.suggested-courses-but:hover{
+	background-color: #64a10c !important;
+}
 @media(max-width: 769px){
 	.nav-sea-log-but{
 		margin-top: 1rem;
