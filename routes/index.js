@@ -8,8 +8,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt');
 var auth = require('../authentication/auth');
-
-
+var phantomPrint = require('../models/phantomworker.js')
+var exec = require('child_process').exec;
 
 // course.allCourseCode(null, null).then((res) => {			//slot,crsnm
 // 	console.log(res);
@@ -32,7 +32,7 @@ router.get('/', function (req, res) {
 });
 
 router.post('/register', function (req, res) {
-	data=req.body; 
+	data=req.body;
 	if(data.type != undefined && data.type!=null){
 		user.insertUser(data.name, data.regno, data.password)
 		.then(function (action) {
@@ -53,7 +53,7 @@ router.post('/register', function (req, res) {
 			res.render('home', { data: true, message: error });
 		});
 	}
-	
+
 });
 
 
@@ -222,4 +222,74 @@ router.post('/suggestcourse',(req,res)=>{
 	});
 });
 
+/*router.post('/downloadtt',(req,res)=>{
+	console.log(typeof(req.session.passport.user));
+	var uid = req.session.passport.user
+	phantomPrint.render(uid)
+	.then((data)=>{
+		res.render("newtt3.ejs",{info:data})
+	})
+	.catch((e)=>{
+		res.send("error")
+	})
+	/*let data = req.body
+	let len = Object.keys(data).length
+	let slots = data["slots[]"] || data["slots"]
+	console.log(req.session.passport.user);
+	phantomPrint(slots)
+	.then(()=>{
+		res.send("done")
+	})
+	.catch((e)=>{
+		res.send("error")
+		console.log(e)
+	})
+})*/
+
+router.post('/downloadtt',(req,res)=>{
+	console.log(typeof(req.session.passport.user));
+	var uid = req.session.passport.user
+	phantomPrint.doPrint(uid)
+	.then(()=>{
+		console.log("done print")
+	})
+	.catch((e)=>{
+		console.log(e)
+	})
+})
+
+router.get('/rendertt/:uid',(req,res)=>{
+	var uid = req.params.uid;
+	phantomPrint.render(uid)
+	.then((data)=>{
+		var slot = []
+		var pr = data.map((value)=>{
+			return new promise((full,rej)=>{
+				var sl = value.Slot.split('+');
+				var x = sl.map((val)=>{
+					return new promise((f,r)=>{
+						slot.push(val)
+						f()
+					})
+				})
+				promise.all(x)
+				.then(()=>{
+						full()
+				})
+			})
+		})
+		promise.all(pr)
+		.then(()=>{
+			res.render("newtt3.ejs",{info:data,slots:slot})
+		})
+	})
+	.catch((e)=>{
+		res.send("error")
+	})
+})
+
+router.get('/download/:uid',(req,res)=>{
+	var uid = req.params.uid;
+	res.sendfile("./downloads/"+uid+".png")
+})
 module.exports = router;

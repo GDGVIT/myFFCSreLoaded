@@ -46,11 +46,60 @@
   <script src="js/materialize.min.js"></script>
   <script src="js/script.js"></script>
   <script src="js/select2.min.js"></script>
+  <script>
+  $(document).on('ready',function(){
+    $("#downloadtt").click(function(){
+      var xx = []
+      var tt = []
+      var slots = []
+      var i = 0
+      $(".timetable-selected-subject > td").each(function(){
+        xx.push($(this).text())
+        i++
+        if(i==5){
+          tt.push(xx)
+          i=0
+          xx=[]
+        }
+      })
+
+      $(".selected").each(function(){
+        var z = $(this).text()
+        slots.push(z.substring(0,z.indexOf("/")));
+      })
+      console.log(xx);
+      var token = $('.user-token').val();
+      $.ajax({
+            url: '/downloadtt',
+            headers: {
+              'token': token
+            },
+            type: 'POST',
+            data: {
+              'slots':slots,
+              'tt':tt
+            },
+            success: function(response){
+              if(response.status==true){
+                Materialize.toast("Course Added" , 200);
+                close_side();
+              }
+              else{
+                Materialize.toast("Some Error" , 200);
+              }
+            },
+            error: function(){
+              Materialize.toast("Some Error" , 200);
+            }
+          });
+    })
+  })
+  </script>
 </head>
 <body>
 
   <input type="text" class="user-token" name="token" style="display:none;" value="<%=user.regno%>">
-  
+
   <div class="top-nav-wrap">
     <div class="row">
       <div class="col s12 m3">
@@ -219,7 +268,7 @@
     <div class="row">
       <div class="col s12 offset-m1 m10">
         <span class="download-share-but circle">
-          <i class="fa fa-download" aria-hidden="true"></i>
+          <i id="downloadtt" class="fa fa-download" aria-hidden="true"></i>
         </span>
         <span class="download-share-text">&nbsp;Download</span>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -616,7 +665,7 @@
 
             console.log("likhne jaa raha hun");
             $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+id+'"><h6 class="white-text center">'+faculty+'</h6><div class="center"><div class="slot-gool center">'+slot+'</div></div><div class="center"><div class="add-plus-div save-tt" data-crsnm="'+courseTitle+'" data-crscd="'+courseCode+'" data-slot="'+slot+'" data-credits="'+credits+'" data-faculty="'+faculty+'" data-id="'+id+'"><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div></div>');
-            
+
           }
           open_side();
         },
