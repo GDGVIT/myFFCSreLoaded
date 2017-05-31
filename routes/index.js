@@ -154,14 +154,19 @@ router.post('/validate', (req, res) => {
 				course.validateSlots(req.body.courseId, regno),
 				course.validateFaculty(req.body.courseId, regno)
 			])
-				.then(() => {
+			.then(() => {
 					res.redirect('/addcourse/' + req.body.courseId + '/' + regno);
-				})
-
+			})
+			.catch((err) => {
+				console.log(err)
+				res.status(200);
+				res.json({ 'status': false, 'message' : err });
+			})
 		})
 		.catch((err) => {
-			res.status(500);
-			res.json({ 'status': false });
+			console.log(err)
+			res.status(200);
+			res.json({ 'status': false, 'message' : err });
 		});
 
 
@@ -191,7 +196,7 @@ router.post('/deletecourse', (req, res) => {
 		.then((regno) => {
 			console.log(regno);
 			promise.all([
-				user.deleteCourse(req.body.courseId, regno),
+				//user.deleteCourse(req.body.courseId, regno),
 				course.removeUserFromCourse(regno, req.body.courseId),
 				suggestion.removeFromSuggestCourse(req.body.courseId, regno)
 			])
@@ -285,7 +290,9 @@ router.post('/downloadtt', (req, res) => {
 router.get('/rendertt/:uid', (req, res) => {
 	var uid = req.params.uid;
 	phantomPrint.render(uid)
-		.then((data) => {
+		.then((datax) => {
+			data = datax[0]
+			nam = datax[1]
 			var slot = []
 			var pr = data.map((value) => {
 				return new promise((full, rej) => {
@@ -304,7 +311,7 @@ router.get('/rendertt/:uid', (req, res) => {
 			})
 			promise.all(pr)
 				.then(() => {
-					res.render("newtt3.ejs", { info: data, slots: slot })
+					res.render("newtt3.ejs", { info: data, slots: slot, name:"YOUR" })
 				})
 		})
 		.catch((e) => {
@@ -324,4 +331,38 @@ router.get('/download/:uid/:reg', (req, res) => {
 		console.log(req.session.passport.user + " " + uid)
 	}
 })
+
+router.get('/share/:uid', (req, res) => {
+	var uid = req.params.uid;
+	phantomPrint.render(uid)
+		.then((datax) => {
+			data = datax[0]
+			nam = datax[1]
+			var slot = []
+			var pr = data.map((value) => {
+				return new promise((full, rej) => {
+					var sl = value.Slot.split('+');
+					var x = sl.map((val) => {
+						return new promise((f, r) => {
+							slot.push(val)
+							f()
+						})
+					})
+					promise.all(x)
+						.then(() => {
+							full()
+						})
+				})
+			})
+			promise.all(pr)
+				.then(() => {
+					let namm = nam+"'s"
+					res.render("newtt_share.ejs", { info: data, slots: slot, name:namm})
+				})
+		})
+		.catch((e) => {
+			res.send("error")
+		})
+})
+
 module.exports = router;
