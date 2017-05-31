@@ -106,8 +106,8 @@
 </head>
 <body>
   <div class="message-box">
-  <span class="message-box-text"></span>
-  &nbsp;&nbsp;<i class="fa message-close-but fa-times-circle" aria-hidden="true"></i>
+    <span class="message-box-text"></span>
+    &nbsp;&nbsp;<i class="fa message-close-but fa-times-circle" aria-hidden="true"></i>
   </div>
   <input type="text" class="user-token" name="token" style="display:none;" value="<%=user.regno%>">
 
@@ -317,7 +317,7 @@
   }
   function hide_message(){
     $(".message-box").removeClass("showing");
-     $(".message-box-text").text("");
+    $(".message-box-text").text("");
   }
 
   $(".message-close-but").click(function(){
@@ -394,19 +394,7 @@
       }
     }
     if(!isClashing){
-      count++;
-      for(var i in slot){
-        tempSlot = slot[i];
-        $("."+tempSlot).addClass("selected");
-        $("."+tempSlot).removeClass("unselected");
-        $('.'+tempSlot+" .number").css("color","#00e676");
-        $('.'+tempSlot+" .number").html(count);
-      }
-      if(count==1){
-        $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+credits+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td>'+venue+'</td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-headings');
-      } else{
-        $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+credits+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td>'+venue+'</td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-subject:nth-child('+count+")");
-      }
+
       $.ajax({
             //url: '/addcourse',
             url: '/validate',
@@ -419,18 +407,33 @@
             },
             success: function(response){
               if(response.status==true){
-                Materialize.toast("Course Added" , 4000);
-                close_side();
+               count++;
+               for(var i in slot){
+                tempSlot = slot[i];
+                $("."+tempSlot).addClass("selected");
+                $("."+tempSlot).removeClass("unselected");
+                $('.'+tempSlot+" .number").css("color","#00e676");
+                $('.'+tempSlot+" .number").html(count);
               }
+              if(count==1){
+                $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+credits+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td>'+venue+'</td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-headings');
+              } 
               else{
-                Materialize.toast("Some Error" , 4000);
+                $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+credits+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td>'+venue+'</td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-subject:nth-child('+count+")");
               }
-            },
-            error: function(){
+              Materialize.toast("Course Added" , 4000);
+              close_side();
+            }
+            else{
               Materialize.toast("Some Error" , 4000);
             }
-          });
-    } 
+          },
+          error: function(){
+            Materialize.toast("Some Error" , 4000);
+          }
+        });
+    }
+
     else{
       for(var i in slot){
         tempSlot = slot[i];
@@ -755,10 +758,10 @@ $(document).ready(function(){
   <script type="text/javascript">
     $(".suggested-courses-but").click(function(){
       show_message("Loading...");
-     $('.timetable-results').empty();
-     $("#course-name-slide").text("SUGGESTED COURSES");
-     var token = $('.user-token').val();
-     $.ajax({
+      $('.timetable-results').empty();
+      $("#course-name-slide").text("SUGGESTED COURSES");
+      var token = $('.user-token').val();
+      $.ajax({
         //url: '/v2/student/deletecourse/',
         url: '/suggestcourse',
         headers: {
@@ -792,14 +795,14 @@ $(document).ready(function(){
         }
       },
       error: function(){
-         hide_message();
-        Materialize.toast("Error in suggested Courses" , 40000);
-      }
-    });
+       hide_message();
+       Materialize.toast("Error in suggested Courses" , 40000);
+     }
    });
- </script>
- 
- <script type="text/javascript">
+    });
+  </script>
+
+  <script type="text/javascript">
         //$('select').material_select(); dont use this if there is select2 library
 
         // Initialize collapse button
