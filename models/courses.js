@@ -165,6 +165,7 @@ exports.incrementCount = (id, reg) => {
                     doc.Count.push(reg);
                     User.findOne({ 'regno': reg }, (er, us) => {
                         if (!err && doc) {
+							us.Credits += doc.Credits;
                             us.courses.push(new mongoose.mongo.ObjectId(id));
                             us.save((err2) => {
                                 if (err2)
