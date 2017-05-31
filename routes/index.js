@@ -32,26 +32,26 @@ router.get('/', function (req, res) {
 });
 
 router.post('/register', function (req, res) {
-	data=req.body;
-	if(data.type != undefined && data.type!=null){
+	data = req.body;
+	if (data.type != undefined && data.type != null) {
 		user.insertUser(data.name, data.regno, data.password)
-		.then(function (action) {
-			res.status(200);
-			res.json({status:"inserted"});
-		}).catch(function (error) {
-			res.status(500);
-			res.json({status:"error"});
-		});
+			.then(function (action) {
+				res.status(200);
+				res.json({ status: "inserted" });
+			}).catch(function (error) {
+				res.status(500);
+				res.json({ status: "error" });
+			});
 	}
-	else{
+	else {
 		user.insertUser(data.name, data.regno, data.password)
-		.then(function (action) {
-			res.status(200);
-			res.render('home', { data: true, message: action });
-		}).catch(function (error) {
-			res.status(500);
-			res.render('home', { data: true, message: error });
-		});
+			.then(function (action) {
+				res.status(200);
+				res.render('home', { data: true, message: action });
+			}).catch(function (error) {
+				res.status(500);
+				res.render('home', { data: true, message: error });
+			});
 	}
 
 });
@@ -64,16 +64,17 @@ router.get('/home', (req, res) => {
 	// if (req.user == undefined) {
 	// 	res.redirect('/');
 	// } else {
-		course.all().then((res1) => {
-			course.allCourseCode(null, null).then((res2) => {
-				course.allSlots("CSE2006", null).then((res3) => {
-					res.status(200);
-					res.render('newtt', { user: req.user, data: res1, codes: res2, slots: res3 });
-				});
-
+	console.log(req.user);
+	course.all().then((res1) => {
+		course.allCourseCode(null, null).then((res2) => {
+			course.allSlots("CSE2006", null).then((res3) => {
+				res.status(200);
+				res.render('newtt', { user: req.user, data: res1, codes: res2, slots: res3 });
 			});
 
 		});
+
+	});
 	// }
 });
 
@@ -81,27 +82,27 @@ router.get('/home', (req, res) => {
 router.get('/getslot/', (req, res) => {
 	var crscd = req.query.q;
 	course.allSlots(crscd, null)
-	.then((res1) => {
-		res.status(200);
-		res.send(res1);
-	})
-	.catch((res2)=>{
-		res.status(500);
-		res.send({message:'error'});
-	});
+		.then((res1) => {
+			res.status(200);
+			res.send(res1);
+		})
+		.catch((res2) => {
+			res.status(500);
+			res.send({ message: 'error' });
+		});
 });
 
 
-router.get("/getcourse/",(req,res)=>{
-	course.all(req.query.courseCode,req.query.slots)
-	.then((res1)=>{
-		res.status(200);
-		res.send(res1);
-	})
-	.catch((res2)=>{
-		res.status(500);
-		res.send({message:'error'});
-	});
+router.get("/getcourse/", (req, res) => {
+	course.all(req.query.courseCode, req.query.slots)
+		.then((res1) => {
+			res.status(200);
+			res.send(res1);
+		})
+		.catch((res2) => {
+			res.status(500);
+			res.send({ message: 'error' });
+		});
 });
 
 router.get('/failed', function (req, res) {
@@ -127,100 +128,121 @@ router.get('/logout', (req, res) => {
 	res.redirect('/');
 });
 
-router.post('/addcourse',(req,res)=>{
+router.post('/addcourse', (req, res) => {
 	promise.all([
-		course.checkClash(req.body.courseId,req.headers.token),
-		suggestion.incrementCount(req.body.courseId,req.headers.token),
-		course.incrementCount(req.body.courseId,req.headers.token)
+		course.checkClash(req.body.courseId, req.headers.token),
+		suggestion.incrementCount(req.body.courseId, req.headers.token),
+		course.incrementCount(req.body.courseId, req.headers.token)
 	])
-	.then(([r0,r1,r2])=>{
-		res.status(200);
-		res.json({'status':true});
-	})
-	.catch((err)=>{
-		res.status(500);
-		res.json({'status':false});
-	});
-
-
-});
-
-router.post('/validate',(req,res)=>{
-	promise.all([
-		course.validateCredits(req.body.courseId,req.headers.token),
-		course.validateSlots(req.body.courseId,req.headers.token),
-		course.validateFaculty(req.body.courseId,req.headers.token)
-	])
-	.then(()=>{
-		res.redirect('/addcourse/'+req.body.courseId+'/'+req.headers.token);
-	})
-	.catch((err)=>{
-		res.status(500);
-		res.json({'status':false});
-	});
-});
-
-router.get('/addcourse/:p1/:p2',(req,res)=>{
-	var courseId=req.params.p1;
-	var token=req.params.p2;
-	promise.all([
-		suggestion.incrementCount(courseId,token),
-		course.incrementCount(courseId,token)
-	])
-	.then(()=>{
-		res.status(200);
-		res.json({'status':true});
-	})
-	.catch((err)=>{
-		res.status(500);
-		res.json({'status':false});
-	});
-});
-
-
-router.post('/deletecourse',(req,res)=>{
-	console.log(req.body);
-	promise.all([
-		user.deleteCourse(req.body.courseId,req.headers.token),
-		course.removeUserFromCourse(req.headers.token,req.body.courseId),
-		suggestion.removeFromSuggestCourse(req.body.courseId,req.headers.token)
-	])
-	.then(([r1,r2])=>{
-		res.status(200);
-		res.json({'status':true});
-	})
-	.catch((err)=>{
-		res.status(500);
-		res.json({'status':false});
-	});
-});
-
-
-router.get('/detail',(req,res)=>{
-	course.details(req.headers.token)
-		.then((course_arr)=>{
-			console.log(JSON.stringify(course_arr,null,4));
+		.then(([r0, r1, r2]) => {
 			res.status(200);
-			res.json({'status':true,'data':{'newAllotedCourse2':course_arr}});
+			res.json({ 'status': true });
 		})
-		.catch((e)=>{
+		.catch((err) => {
 			res.status(500);
-			res.json({'status':false,'data':{'newAllotedCourse2':[]}});
+			res.json({ 'status': false });
+		});
+
+
+});
+
+router.post('/validate', (req, res) => {
+	user.getRegisterNo(req.headers.token)
+		.then((regno) => {
+			promise.all([
+				course.validateCredits(req.body.courseId, regno),
+				course.validateSlots(req.body.courseId, regno),
+				course.validateFaculty(req.body.courseId, regno)
+			])
+				.then(() => {
+					res.redirect('/addcourse/' + req.body.courseId + '/' + regno);
+				})
+
+		})
+		.catch((err) => {
+			res.status(500);
+			res.json({ 'status': false });
+		});
+
+
+});
+
+router.get('/addcourse/:p1/:p2', (req, res) => {
+	var courseId = req.params.p1;
+	var token = req.params.p2;
+	promise.all([
+		suggestion.incrementCount(courseId, token),
+		course.incrementCount(courseId, token)
+	])
+		.then(() => {
+			res.status(200);
+			res.json({ 'status': true });
+		})
+		.catch((err) => {
+			res.status(500);
+			res.json({ 'status': false });
 		});
 });
 
 
-router.post('/suggestcourse',(req,res)=>{
-	console.log("The body is:"+req.body.reg);
-	suggestion.getData(req.body.reg)
-	.then((re)=>{
-		res.status(200);
-		res.json({message:true,data:re});
-	})
-	.catch((er)=>{
-		res.status(500);
-		res.json({message:false});
-	});
+router.post('/deletecourse', (req, res) => {
+	console.log(req.headers.token);
+	user.getRegisterNo(req.headers.token)
+		.then((regno) => {
+			console.log(regno);
+			promise.all([
+				user.deleteCourse(req.body.courseId, regno),
+				course.removeUserFromCourse(regno, req.body.courseId),
+				suggestion.removeFromSuggestCourse(req.body.courseId, regno)
+			])
+				.then(([r1, r2]) => {
+					res.status(200);
+					res.json({ 'status': true });
+				})
+
+		})
+		.catch((err) => {
+			res.status(500);
+			res.json({ 'status': false });
+		});
+
+
+});
+
+
+router.get('/detail', (req, res) => {
+	user.getRegisterNo(req.headers.token)
+		.then((regno) => {
+			console.log(regno);
+			course.details(regno)
+				.then((course_arr) => {
+					console.log(JSON.stringify(course_arr, null, 4));
+					res.status(200);
+					res.json({ 'status': true, 'data': { 'newAllotedCourse2': course_arr } });
+				})
+
+		})
+		.catch((e) => {
+			res.status(500);
+			res.json({ 'status': false, 'data': { 'newAllotedCourse2': [] } });
+		});
+});
+
+
+router.post('/suggestcourse', (req, res) => {
+	user.getRegisterNo(req.body.reg)
+		.then((regno) => {
+			suggestion.getData(regno)
+				.then((re) => {
+					res.status(200);
+					res.json({ message: true, data: re });
+				})
+		})
+		.catch((er) => {
+			res.status(500);
+			res.json({ message: false });
+		});
+
 });
 
 /*router.post('/downloadtt',(req,res)=>{
@@ -247,59 +269,59 @@ router.post('/suggestcourse',(req,res)=>{
 	})
 })*/
 
-router.post('/downloadtt',(req,res)=>{
-	console.log(typeof(req.session.passport.user));
+router.post('/downloadtt', (req, res) => {
+	console.log(typeof (req.session.passport.user));
 	var uid = req.session.passport.user
 	phantomPrint.doPrint(uid)
-	.then(()=>{
-		console.log("done print")
-		res.send({"status":true, "link":"/download/"+req.session.passport.user, "token2":req.headers.token})
-	})
-	.catch((e)=>{
-		console.log(e)
-	})
+		.then(() => {
+			console.log("done print")
+			res.send({ "status": true, "link": "/download/" + req.session.passport.user, "token2": req.headers.token })
+		})
+		.catch((e) => {
+			console.log(e)
+		})
 })
 
-router.get('/rendertt/:uid',(req,res)=>{
+router.get('/rendertt/:uid', (req, res) => {
 	var uid = req.params.uid;
 	phantomPrint.render(uid)
-	.then((data)=>{
-		var slot = []
-		var pr = data.map((value)=>{
-			return new promise((full,rej)=>{
-				var sl = value.Slot.split('+');
-				var x = sl.map((val)=>{
-					return new promise((f,r)=>{
-						slot.push(val)
-						f()
+		.then((data) => {
+			var slot = []
+			var pr = data.map((value) => {
+				return new promise((full, rej) => {
+					var sl = value.Slot.split('+');
+					var x = sl.map((val) => {
+						return new promise((f, r) => {
+							slot.push(val)
+							f()
+						})
 					})
-				})
-				promise.all(x)
-				.then(()=>{
-						full()
+					promise.all(x)
+						.then(() => {
+							full()
+						})
 				})
 			})
+			promise.all(pr)
+				.then(() => {
+					res.render("newtt3.ejs", { info: data, slots: slot })
+				})
 		})
-		promise.all(pr)
-		.then(()=>{
-			res.render("newtt3.ejs",{info:data,slots:slot})
+		.catch((e) => {
+			res.send("error")
 		})
-	})
-	.catch((e)=>{
-		res.send("error")
-	})
 })
 
-router.get('/download/:uid/:reg',(req,res)=>{
+router.get('/download/:uid/:reg', (req, res) => {
 	var uid = req.params.uid;
 	var reg = req.params.reg;
-	if(req.session.passport.user == uid){
+	if (req.session.passport.user == uid) {
 		var filename = "myFFCStt.png"
 		console.log(filename)
-		res.download("./downloads/"+uid+".png",reg+"_"+filename)
+		res.download("./downloads/" + uid + ".png", reg + "_" + filename)
 	}
-	else{
-		console.log(req.session.passport.user+" "+uid)
+	else {
+		console.log(req.session.passport.user + " " + uid)
 	}
 })
 module.exports = router;

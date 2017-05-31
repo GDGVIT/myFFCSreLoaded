@@ -107,5 +107,19 @@ exports.deleteCourse = (id, uid) => {
 	});
 };
 
+
+exports.getRegisterNo = (id)=>{
+	return new Promise((full,rej)=>{
+		User.findById(id,(err,data)=>{
+			if(!err&& data){
+				full(data.regno);
+			}
+			else{
+				rej(err);
+			}
+		});
+	});
+}
+
 exports.insertUser = userInsert;
 exports.User = User;
