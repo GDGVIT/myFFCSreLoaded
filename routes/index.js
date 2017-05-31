@@ -322,14 +322,20 @@ router.get('/rendertt/:uid', (req, res) => {
 router.get('/download/:uid/:reg', (req, res) => {
 	var uid = req.params.uid;
 	var reg = req.params.reg;
+	user.getRegisterNo(reg)
+		.then((regno) => {
 	if (req.session.passport.user == uid) {
 		var filename = "myFFCStt.png"
 		console.log(filename)
-		res.download("./downloads/" + uid + ".png", reg + "_" + filename)
+		res.download("./downloads/" + uid + ".png", regno + "_" + filename)
 	}
 	else {
 		console.log(req.session.passport.user + " " + uid)
 	}
+	})
+	.catch((e)=>{
+		res.send("error");
+	})
 })
 
 router.get('/share/:uid', (req, res) => {
