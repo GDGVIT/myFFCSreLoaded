@@ -61,21 +61,18 @@ router.post('/register', function (req, res) {
 router.post('/login', passport.authenticate('local', { successRedirect: '/home', failureRedirect: '/failed' }));
 
 router.get('/home', (req, res) => {
-	// if (req.user == undefined) {
-	// 	res.redirect('/');
-	// } else {
-	console.log(req.user);
-	course.all().then((res1) => {
-		course.allCourseCode(null, null).then((res2) => {
-			course.allSlots("CSE2006", null).then((res3) => {
+	if (req.user == undefined) {
+		res.redirect('/');
+	} else {
+		course.allCourseCode(null, null).then((res1) => {
+			course.allCourseName(null).then((res2) => {
 				res.status(200);
-				res.render('newtt', { user: req.user, data: res1, codes: res2, slots: res3 });
+				console.log(res1,res2);
+				res.render('newtt', { user: req.user, codes: res1, names:res2 });
 			});
 
 		});
-
-	});
-	// }
+	}
 });
 
 
@@ -110,16 +107,6 @@ router.get('/failed', function (req, res) {
 	res.render('home', { message: "Invalid Credentials", data: true });
 });
 
-
-// router.get('/oldtimetable',(req,res)=>{
-// 	if(req.user ==undefined){
-// 		res.render('home',{data:true,message:"Login First"});
-// 		res.location('/');
-// 	}
-// 	else{
-// 		res.render('oldtt',{user:req.user});
-// 	}
-// });
 
 
 
@@ -157,11 +144,16 @@ router.post('/validate', (req, res) => {
 				.then(() => {
 					res.redirect('/addcourse/' + req.body.courseId + '/' + regno);
 				})
-
+				.catch((err) => {
+					console.log(err)
+					res.status(200);
+					res.json({ 'status': false, 'message': err });
+				})
 		})
 		.catch((err) => {
-			res.status(500);
-			res.json({ 'status': false });
+			console.log(err)
+			res.status(200);
+			res.json({ 'status': false, 'message': err });
 		});
 
 
@@ -191,7 +183,7 @@ router.post('/deletecourse', (req, res) => {
 		.then((regno) => {
 			console.log(regno);
 			promise.all([
-				user.deleteCourse(req.body.courseId, regno),
+				//user.deleteCourse(req.body.courseId, regno),
 				course.removeUserFromCourse(regno, req.body.courseId),
 				suggestion.removeFromSuggestCourse(req.body.courseId, regno)
 			])
@@ -285,7 +277,9 @@ router.post('/downloadtt', (req, res) => {
 router.get('/rendertt/:uid', (req, res) => {
 	var uid = req.params.uid;
 	phantomPrint.render(uid)
-		.then((data) => {
+		.then((datax) => {
+			data = datax[0]
+			nam = datax[1]
 			var slot = []
 			var pr = data.map((value) => {
 				return new promise((full, rej) => {
@@ -304,7 +298,7 @@ router.get('/rendertt/:uid', (req, res) => {
 			})
 			promise.all(pr)
 				.then(() => {
-					res.render("newtt3.ejs", { info: data, slots: slot })
+					res.render("newtt3.ejs", { info: data, slots: slot, name: "YOUR" })
 				})
 		})
 		.catch((e) => {
@@ -315,13 +309,53 @@ router.get('/rendertt/:uid', (req, res) => {
 router.get('/download/:uid/:reg', (req, res) => {
 	var uid = req.params.uid;
 	var reg = req.params.reg;
-	if (req.session.passport.user == uid) {
-		var filename = "myFFCStt.png"
-		console.log(filename)
-		res.download("./downloads/" + uid + ".png", reg + "_" + filename)
-	}
-	else {
-		console.log(req.session.passport.user + " " + uid)
-	}
+	user.getRegisterNo(reg)
+		.then((regno) => {
+			if (req.session.passport.user == uid) {
+				var filename = "myFFCStt.png"
+				console.log(filename)
+				res.download("./downloads/" + uid + ".png", regno + "_" + filename)
+			}
+			else {
+				console.log(req.session.passport.user + " " + uid)
+			}
+		})
+		.catch((e) => {
+			res.send("error");
+		})
 })
+
+router.get('/share/:uid', (req, res) => {
+	var uid = req.params.uid;
+	phantomPrint.render(uid)
+		.then((datax) => {
+			data = datax[0]
+			nam = datax[1]
+			var slot = []
+			var pr = data.map((value) => {
+				return new promise((full, rej) => {
+					var sl = value.Slot.split('+');
+					var x = sl.map((val) => {
+						return new promise((f, r) => {
+							slot.push(val)
+							f()
+						})
+					})
+					promise.all(x)
+						.then(() => {
+							full()
+						})
+				})
+			})
+			promise.all(pr)
+				.then(() => {
+					let namm = nam + "'s"
+					res.render("newtt_share.ejs", { info: data, slots: slot, name: namm })
+				})
+		})
+		.catch((e) => {
+			res.send("error")
+		})
+})
+
 module.exports = router;

@@ -40,7 +40,7 @@ exports.validateCredits=(cid,uid)=>{
 			if(usr.Credits+crs.Credits<=27)
 			full();
 			else
-			rej('excess');
+			rej('You cannot take more that 27 credits');
 		});
 	});
 	});
@@ -77,7 +77,7 @@ exports.validateSlots=(cid,uid)=>{
 				else{
 					console.log(dd.join(" "));
 					console.log(crs.Slot);
-					rej('clash');
+					rej('Slots clashing');
 				}
 			});	
 			}
@@ -103,12 +103,12 @@ exports.validateFaculty=(cid,uid)=>{
 						else{
 							console.log(data[0].slot);
 							console.log(crs.Slot);
-							rej('both theory');
+							rej('You have selected both theory slots');
 						}
 						
 					}
 					else{
-						rej('not same faculty');
+						rej('Please select same faculty for theory and lab');
 					}
 				}
 				
@@ -147,10 +147,28 @@ exports.removeUserFromCourse = (uid, cid) => {
     return new promise((full, rej) => {
         Course.findById(cid, (er1, csr) => {
             if (csr) {
-                csr.Count.splice(csr.Count.indexOf(uid), 1);
-                csr.save((er2, csdc) => {
-                    full();
-                })
+				User.findOne({ 'regno': uid }, (err, data) => {
+					if (!err && data) {
+						data.courses.splice(data.courses.indexOf(new mongoose.mongo.ObjectID(cid)), 1);
+						data.Credits -= csr.Credits;
+						data.save((er, usd) => {
+							if (er)
+								rej(er);
+							else{
+								csr.Count.splice(csr.Count.indexOf(uid), 1);
+								csr.save((er2, csdc) => {
+									full();
+								})
+							}
+						});
+					}
+					else {
+						if (err)
+							rej(err);
+						else
+							rej('not found');
+					}
+				});
             }
         });
     });

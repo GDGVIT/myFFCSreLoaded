@@ -51,9 +51,9 @@ exports.render=(uid)=>{
 	return new promise((full,rej)=>{
 		user.User.findById(uid,(err,data)=>{
 			console.log(data.courses)
-			course.Course.find({'_id' : {$in : data.courses}},'Slot -_id Faculty Crscd Crsnm',(err,dat)=>{
+			course.Course.find({'_id' : {$in : data.courses}},'Slot -_id Faculty Crscd Crsnm Credits Venue',(err,dat)=>{
 				console.log(dat);
-				full(dat)
+				full([dat,data.name])
 			})
 		})
 	})
