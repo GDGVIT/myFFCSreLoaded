@@ -394,7 +394,7 @@
       }
     }
     if(!isClashing){
-
+      show_message("Validating...");
       $.ajax({
             //url: '/addcourse',
             url: '/validate',
@@ -406,6 +406,8 @@
               'courseId': id
             },
             success: function(response){
+              hide_message();
+              
               if(response.status==true){
                count++;
                for(var i in slot){
@@ -429,6 +431,7 @@
             }
           },
           error: function(){
+            hide_message();
             Materialize.toast("Some Error" , 4000);
           }
         });
@@ -670,7 +673,10 @@ $(document).ready(function(){
             $('.slot-list-1').append('<option></option>');
             /*$('.slot-list-1').append('<option value="'+response.data[i].slots+'">'+response.data[i].slots+'</option>')*/
             for(var i in response){
-              $('.slot-list-1').append('<option value="'+response[i]+'">'+response[i]+'</option>');
+              if(response[i]=="NIL")
+                $('.slot-list-1').append('<option value="'+response[i]+'">'+'Project'+'</option>');
+              else
+                $('.slot-list-1').append('<option value="'+response[i]+'">'+response[i]+'</option>');
             }
           },
           error: function(){
