@@ -61,21 +61,18 @@ router.post('/register', function (req, res) {
 router.post('/login', passport.authenticate('local', { successRedirect: '/home', failureRedirect: '/failed' }));
 
 router.get('/home', (req, res) => {
-	// if (req.user == undefined) {
-	// 	res.redirect('/');
-	// } else {
-	console.log(req.user);
-	course.all().then((res1) => {
-		course.allCourseCode(null, null).then((res2) => {
-			course.allSlots("CSE2006", null).then((res3) => {
+	if (req.user == undefined) {
+		res.redirect('/');
+	} else {
+		course.allCourseCode(null, null).then((res1) => {
+			course.allCourseName(null).then((res2) => {
 				res.status(200);
-				res.render('newtt', { user: req.user, data: res1, codes: res2, slots: res3 });
+				console.log(res1,res2);
+				res.render('newtt', { user: req.user, codes: res1, names:res2 });
 			});
 
 		});
-
-	});
-	// }
+	}
 });
 
 
@@ -111,16 +108,6 @@ router.get('/failed', function (req, res) {
 });
 
 
-// router.get('/oldtimetable',(req,res)=>{
-// 	if(req.user ==undefined){
-// 		res.render('home',{data:true,message:"Login First"});
-// 		res.location('/');
-// 	}
-// 	else{
-// 		res.render('oldtt',{user:req.user});
-// 	}
-// });
-
 
 
 router.get('/logout', (req, res) => {
@@ -154,19 +141,19 @@ router.post('/validate', (req, res) => {
 				course.validateSlots(req.body.courseId, regno),
 				course.validateFaculty(req.body.courseId, regno)
 			])
-			.then(() => {
+				.then(() => {
 					res.redirect('/addcourse/' + req.body.courseId + '/' + regno);
-			})
-			.catch((err) => {
-				console.log(err)
-				res.status(200);
-				res.json({ 'status': false, 'message' : err });
-			})
+				})
+				.catch((err) => {
+					console.log(err)
+					res.status(200);
+					res.json({ 'status': false, 'message': err });
+				})
 		})
 		.catch((err) => {
 			console.log(err)
 			res.status(200);
-			res.json({ 'status': false, 'message' : err });
+			res.json({ 'status': false, 'message': err });
 		});
 
 
@@ -311,7 +298,7 @@ router.get('/rendertt/:uid', (req, res) => {
 			})
 			promise.all(pr)
 				.then(() => {
-					res.render("newtt3.ejs", { info: data, slots: slot, name:"YOUR" })
+					res.render("newtt3.ejs", { info: data, slots: slot, name: "YOUR" })
 				})
 		})
 		.catch((e) => {
@@ -324,18 +311,18 @@ router.get('/download/:uid/:reg', (req, res) => {
 	var reg = req.params.reg;
 	user.getRegisterNo(reg)
 		.then((regno) => {
-	if (req.session.passport.user == uid) {
-		var filename = "myFFCStt.png"
-		console.log(filename)
-		res.download("./downloads/" + uid + ".png", regno + "_" + filename)
-	}
-	else {
-		console.log(req.session.passport.user + " " + uid)
-	}
-	})
-	.catch((e)=>{
-		res.send("error");
-	})
+			if (req.session.passport.user == uid) {
+				var filename = "myFFCStt.png"
+				console.log(filename)
+				res.download("./downloads/" + uid + ".png", regno + "_" + filename)
+			}
+			else {
+				console.log(req.session.passport.user + " " + uid)
+			}
+		})
+		.catch((e) => {
+			res.send("error");
+		})
 })
 
 router.get('/share/:uid', (req, res) => {
@@ -362,8 +349,8 @@ router.get('/share/:uid', (req, res) => {
 			})
 			promise.all(pr)
 				.then(() => {
-					let namm = nam+"'s"
-					res.render("newtt_share.ejs", { info: data, slots: slot, name:namm})
+					let namm = nam + "'s"
+					res.render("newtt_share.ejs", { info: data, slots: slot, name: namm })
 				})
 		})
 		.catch((e) => {

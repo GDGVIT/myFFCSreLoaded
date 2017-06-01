@@ -134,7 +134,7 @@
               <select id="course-list" class="course-list-1 bootstrap-select school-select" name="course-list" data-placeholder="Search Course" style="min-width: 200px !important;">
                 <option></option>
                 <%for(i=0;i<codes.length;i++){%>
-                <option value="<%=codes[i]%>" id="crscd_<%=codes[i]%>"><%=codes[i]%></option>
+                <option value="<%=codes[i]%>" id="crscd_<%=codes[i]%>"><%=codes[i]%> - <%=names[i]%></option>
                 <%}%>
               </select>
             </div>
@@ -148,9 +148,6 @@
               </select> -->
               <select id="slot-list" class="slot-list-1" name="slot-list" style="min-width: 200px" data-placeholder="Select Slot">
                 <option></option>
-            <!--   <%for(i=0;i<slots.length;i++){%>
-            //   <option value="<%=slots[i]%>"><%=slots[i]%></option>
-            //  <%}%>-->
           </select>
         </div>
       </div>
@@ -653,6 +650,9 @@ $(document).ready(function(){
       show_message("Loading slots...");
       //if(!doneOnce){
         var search = $('.course-list-1').select2('data')[0]['text'];
+        var res = search.split(" - ");
+        var search = res[0];
+        console.log(search);
         /*var search = $('.slot-list-1').select2('data')[0]['text'];*/
         $.ajax({
           url: '/getslot/?q='+search,
@@ -683,6 +683,8 @@ $(document).ready(function(){
       return;*/
       show_message("Loading results...");
       var search1 = $('.course-list-1').select2('data')[0]['text'];
+      var res = search1.split(" - ");
+      var search1 = res[0];
       var search   = $('.slot-list-1').select2('data')[0]['text'];
       search = search.replace(/\+/g,"%2B");
       $.ajax({
