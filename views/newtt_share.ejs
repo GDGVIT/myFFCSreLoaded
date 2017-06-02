@@ -45,7 +45,7 @@
   <!-- script src="/js/select2.min.js"></script -->
   <script>
   function doMark(){
-	var sll = "<%=slots%>"
+  var sll = "<%=slots%>"
     var arr= sll.split(',');
     for(var i=0;i<arr.length;i++){
       $("."+arr[i]).addClass('selected').removeClass('unselected').text(arr[i])
@@ -53,12 +53,13 @@
     window.callPhantom('takeShot');
   }
   window.addEventListener('load',function(){
-		doMark();
+    doMark();
   })
   </script>
 </head>
+<%var totcred=0;%>
 <center>
-  <h1 id="start"><%=name%> TIMETABLE<h1>
+  <h1 id="start"><%=name%> Timetable<h1>
 </center>
 <div class="row timetable" id="timetabledata">
   <table onload="doMark()">
@@ -155,6 +156,10 @@
 </div>
 <div class="row save-timetable">
 </div>
+<div class="total-credits-div center row">
+    <span class="slot-gool" style="font-size: 1.2rem !important;
+    padding: 10px 20px;">Total Credits:<span id="totcredits"></span></span>
+  </div>
 <div class="row timetable-selected-list z-depth-1">
   <table class="timetable-selected-table">
     <tr class="timetable-selected-headings">
@@ -166,16 +171,29 @@
         <td>Venue</td>
         <td></td>
     </tr>
-    <% for(i of info){ %>
+    <% for(i of info){ totcred+=parseInt(i.Credits); %>
     <tr class="timetable-selected-subject">
-		<td><%= i.Crscd %></td>
-		<td><%= i.Credits %></td>
-		<td><%= i.Crsnm %></td>
-		<td><%= i.Slot %></td>
-		<td class=""><p class="timetable-selected-faculty"><%= i.Faculty %></p></td>
-		<td><%= i.Venue %></td>
-		<td></td>
-	</tr>
-	<% } %>
+    <td><%= i.Crscd %></td>
+    <td><%= i.Credits %></td>
+    <td><%= i.Crsnm %></td>
+    <td><%= i.Slot %></td>
+    <td class=""><p class="timetable-selected-faculty"><%= i.Faculty %></p></td>
+    <td><%= i.Venue %></td>
+    <td></td>
+  </tr>
+  <% } %>
   </table>
 </div>
+<div class="row" style="margin-bottom: 0px !important;">
+  <footer class="tt-footer">
+    <div class="right-align">
+      <h6 class="right-align withlovegdg">WITH LOVE FROM &nbsp;&nbsp;&nbsp;</h6>
+      <a href="http://gdgvitvellore.com" target="_blank"> <img src="/images/gdg_white_straight.png?11" class="responsive-img footer-gdg-logo">
+      </a>
+    </div>
+  </footer>
+</div>
+<script type="text/javascript">
+  var tot_cre=<%=totcred%>;
+  $("#totcredits").text(tot_cre);
+</script>

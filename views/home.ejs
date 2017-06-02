@@ -55,11 +55,7 @@
     ga('send', 'pageview');
   </script>
   <!-- End Google Analytics -->
-  <script>
-    <% if(data){%>
-     Materialize.toast('<%=message%>', 4000)
-     <%}%>
-   </script>
+  
 <button class="aboutus-but modal-trigger" data-target="modal1">About Us</button>
    <div class="container">
     <div class="row">
@@ -169,6 +165,11 @@
   <script   src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
   <script src="js/script.js"></script>
+  <script>
+    <% if(data){%>
+     Materialize.toast('<%=message%>', 4000)
+     <%}%>
+   </script>
   <script type="text/javascript">
   //<![CDATA[
   $(window).on('load', function() { // makes sure the whole site is loaded

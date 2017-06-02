@@ -2,11 +2,7 @@
 [Click here for demo](http://52.51.60.178:3000)
 
 #ToDO:
-1. Materialize.Toast not working after invalid login...There is <%=message%> for this in home.ejs (Harshit)
-2. Include Venue and count of that course in the sidebar that opens up after selecting crscd and slot (Harshit)
-3. Include count in suggested courses (Harshit)
-4. Add the course to the table only if the STATUS is 200 after /validate. (Harshit)
-5. Increase the width of crscd selection box (Harshit)
+
 
 
 # API Reference:

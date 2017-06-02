@@ -45,6 +45,7 @@ ul.dropdown-content{
 	top: 30%;
 }
 .nav-course-btn{
+	margin-top: 1.8rem;
 	background-color: #515151 !important;
 }
 .nav-course-btn:hover{
@@ -101,7 +102,7 @@ td.unselected .number{
 /*********sidenav slide******/
 .side-nav-my {
 	position: absolute;
-	width: 270px;
+	width: 300px;
 	left: 0;
 	top: 0;
 	margin: 0;
@@ -153,23 +154,35 @@ td.unselected .number{
 }
 .side-type-box{
 	background-color: #77c10e;
-	padding: 1rem;
+	padding: 0.7rem;
 	margin-bottom: 1rem;
+}
+.course-count-span{
+	float: right;
+	cursor: default;
+}
+.course-venue-span{
 
 }
 .slot-gool{
 	font-size: 0.8rem !important;
     margin-bottom: 0.5rem;
+    max-width: 100%;
+    overflow-wrap: break-word;
 }
 .suggested-courses-but{
 	/*background-color: #77c10e !important;*/
-	margin-top: 0.5rem;
+	margin-top: 1.8rem;
 }
 .suggested-courses-but:hover{
 	/*background-color: #64a10c !important;*/
 }
 .add-plus-div{
 	cursor: pointer;
+	margin-top: 10px;
+}
+.faculty-heading{
+	margin-bottom: 10px;
 }
 .message-box{
 	position: absolute;
@@ -198,4 +211,13 @@ td.unselected .number{
 		top: 20px;
 		left: 37%;
 	}
+}
+@media(min-width: 769px){
+	.hamburger-nav-col{
+		margin-top: 1.6rem;
+	}
+}
+
+.select2-container{
+	width: 100% !important;
 }

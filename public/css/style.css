@@ -274,9 +274,8 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
     min-width: 200px;
   }
   .timetable-results{
-    height: 50vw;
-    overflow-x: scroll;
-    width: 100vw;
+   
+   
   }
   .timetable-results .custom-card{
     margin-top: 2%;
@@ -675,6 +674,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
 .timetable-selected-list{
   margin: 6%!important;
   border-radius: 2px;
+  overflow: auto;
 }
 .timetable-selected-list .timetable-selected-table .timetable-selected-headings{
   background-color: rgb(73,97,109);
