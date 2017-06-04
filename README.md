@@ -1,10 +1,6 @@
 # myFFCSreLoaded
 [Click here for demo](http://52.51.60.178:3000)
 
-#ToDO:
-
-
-
 # API Reference:
 
 `BaseUrl: http://52.51.60.178:3000`
