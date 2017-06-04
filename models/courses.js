@@ -49,6 +49,10 @@ exports.validateCredits=(cid,uid)=>{
 exports.validateSlots=(cid,uid)=>{
 	return new promise((full,rej)=>{
 	Course.findById(cid,(err,crs)=>{
+		if(crs.Slot == 'NIL'){
+			full()
+		}
+		else{
 		User.findOne({'regno':uid},(er,usr)=>{
 			if(!er && usr){
 			Course.find({'_id':{'$in':usr.courses}},'Slot -_id',(err,data)=>{
@@ -82,6 +86,7 @@ exports.validateSlots=(cid,uid)=>{
 			});	
 			}
 		})
+	}
 	});
 	});
 }
@@ -89,8 +94,12 @@ exports.validateSlots=(cid,uid)=>{
 exports.validateFaculty=(cid,uid)=>{
 	return new promise((full,rej)=>{
 	Course.findById(cid,(err,crs)=>{
+		if(crs.Faculty == 'ACAD FACULTY'){
+			full()
+		}
+		else{
 		User.findOne({'regno':uid},(er,usr)=>{
-			Course.find({'_id':{'$in':usr.courses},'Crscd':crs.Crscd},(er1,data)=>{
+			Course.find({'_id':{'$in':usr.courses},'Crscd':crs.Crscd,'Slot':{"$ne":"NIL"}},(er1,data)=>{
 				if(data.length>0 && !er1){
 				if(data.length>1){
 					rej('already selected both');
@@ -118,6 +127,7 @@ exports.validateFaculty=(cid,uid)=>{
 			full();
 			});
 		});
+	}
 	});
 	});
 }
