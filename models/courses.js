@@ -47,80 +47,91 @@ exports.validateCredits = (cid, uid) => {
     });
 }
 
-exports.validateSlots = (cid, uid) => {
-    return new promise((full, rej) => {
-        Course.findById(cid, (err, crs) => {
-            User.findOne({ 'regno': uid }, (er, usr) => {
-                if (!er && usr) {
-                    Course.find({ '_id': { '$in': usr.courses } }, 'Slot -_id', (err, data) => {
-                        var c = [];
-                        var d = data.map((item) => {
-                            return c.push(item.Slot);
-                        });
-                        var x = c.join(" ");
-                        x = x.replace(/\+/g, " ");
-                        var dd = x.split(' ');
-                        var c = dd.map((item) => {
-                            return dd.push(sl[item]);
-                        });
-                        var crsS = crs.Slot.split(/\+/g);
-                        var v = [];
-                        var crd = crsS.map((item) => {
-                            if (dd.indexOf(item) < 0)
-                                return v.push(true);
-                            else
-                                return v.push(false);
-                        });
-                        if (v.indexOf(false) < 0) {
-                            console.log(v);
-                            full();
-                        }
-                        else {
-                            console.log(dd.join(" "));
-                            console.log(crs.Slot);
-                            rej('Slots clashing');
-                        }
-                    });
-                }
-            })
-        });
-    });
+
+exports.validateSlots=(cid,uid)=>{
+	return new promise((full,rej)=>{
+	Course.findById(cid,(err,crs)=>{
+		if(crs.Slot == 'NIL'){
+			full()
+		}
+		else{
+		User.findOne({'regno':uid},(er,usr)=>{
+			if(!er && usr){
+			Course.find({'_id':{'$in':usr.courses}},'Slot -_id',(err,data)=>{
+				var c=[];
+				var d=data.map((item)=>{
+					return c.push(item.Slot);
+				});
+				var x=c.join(" ");
+				x=x.replace(/\+/g," ");
+				var dd=x.split(' ');
+				var c=dd.map((item)=>{
+					return dd.push(sl[item]);
+				});
+				var crsS=crs.Slot.split(/\+/g);
+				var v=[];
+				var crd=crsS.map((item)=>{
+					if(dd.indexOf(item)<0)
+					return v.push(true);
+					else
+					return v.push(false);
+				});
+				if(v.indexOf(false)<0){
+					console.log(v);
+					full();
+				}
+				else{
+					console.log(dd.join(" "));
+					console.log(crs.Slot);
+					rej('Slots clashing');
+				}
+			});	
+			}
+		})
+	}
+	});
+	});
 }
 
-exports.validateFaculty = (cid, uid) => {
-    return new promise((full, rej) => {
-        Course.findById(cid, (err, crs) => {
-            User.findOne({ 'regno': uid }, (er, usr) => {
-                Course.find({ '_id': { '$in': usr.courses }, 'Crscd': crs.Crscd }, (er1, data) => {
-                    if (data.length > 0 && !er1) {
-                        if (data.length > 1) {
-                            rej('already selected both');
-                        }
-                        else {
-                            var cc = [];
-                            if (data[0].Faculty == crs.Faculty) {
-                                if ((data[0].Slot.includes('L') && !crs.Slot.includes('L')) || (!data[0].Slot.includes('L') && crs.Slot.includes('L')))
-                                    full()
-                                else {
-                                    console.log(data[0].slot);
-                                    console.log(crs.Slot);
-                                    rej('You have selected both theory slots');
-                                }
-
-                            }
-                            else {
-                                rej('Please select same faculty for theory and lab');
-                            }
-                        }
-
-                        full();
-                    }
-                    else
-                        full();
-                });
-            });
-        });
-    });
+exports.validateFaculty=(cid,uid)=>{
+	return new promise((full,rej)=>{
+	Course.findById(cid,(err,crs)=>{
+		if(crs.Faculty == 'ACAD FACULTY'){
+			full()
+		}
+		else{
+		User.findOne({'regno':uid},(er,usr)=>{
+			Course.find({'_id':{'$in':usr.courses},'Crscd':crs.Crscd,'Slot':{"$ne":"NIL"}},(er1,data)=>{
+				if(data.length>0 && !er1){
+				if(data.length>1){
+					rej('already selected both');
+				}
+				else{
+					var cc=[];
+					if(data[0].Faculty==crs.Faculty){
+						if((data[0].Slot.includes('L') && !crs.Slot.includes('L'))||(!data[0].Slot.includes('L') && crs.Slot.includes('L')))
+						full()
+						else{
+							console.log(data[0].slot);
+							console.log(crs.Slot);
+							rej('You have selected both theory slots');
+						}
+						
+					}
+					else{
+						rej('Please select same faculty for theory and lab');
+					}
+				}
+				
+				full();
+			}
+			else
+			full();
+			});
+		});
+	}
+	});
+	});
 }
 
 exports.checkClash = (cid, uid) => {
