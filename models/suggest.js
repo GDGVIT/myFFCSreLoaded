@@ -17,11 +17,12 @@ exports.incrementCount = (id, reg) => {
         Course.findById(id, (err, data) => {
             var crscd = data.Crscd;
             var crsnm = data.Crsnm;
+            var credits = data.Credits;
             Suggest.findOne({ ffd: reg }, (err, doc) => {
                 if (err) rej(err);
                 if (doc) {
                     var arr = doc.cnt;
-                    var obj = { 'crscd': crscd,'crsnm':crsnm, 'count': 1 };
+                    var obj = { 'crscd': crscd,'crsnm':crsnm,'credits':credits ,'count': 1 };
                     flag = 0;
                     for (i = 0; i < arr.length; i++) {
                         if (arr[i].crscd == crscd) {
@@ -40,7 +41,7 @@ exports.incrementCount = (id, reg) => {
                     });
                 }
                 else {
-                    var a = [{ "crscd": crscd, 'crsnm':crsnm, "count": 1 }];
+                    var a = [{ "crscd": crscd, 'crsnm':crsnm,'credits':credits , "count": 1 }];
                     var item = { ffd: reg, cnt: a };
                     var newSuggest = new Suggest(item);
                     newSuggest.save((e, d) => {
@@ -99,8 +100,12 @@ exports.getData = (reg) => {
     return new promise((full, rej) => {
         Suggest.findOne({ ffd: reg }, (err, doc) => {
             if (err) rej(err);
-            else {
+            else if(doc != null){
                 full(doc.cnt);
+            }
+            else{
+                var u = "You are first among all " + reg +"'s";
+                full([ { "count" : " - ", "credits" : ' - ', "crsnm" : "No suggestions till now", "crscd" : u }]);
             }
         });
     });

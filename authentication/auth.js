@@ -3,7 +3,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt');
 
-passport.serializeUser(function (u, done) {
+passport.serializeUser(function (u, done) {	
 	done(null, u.id);
 });
 
@@ -15,6 +15,7 @@ passport.deserializeUser(function (id, done) {
 
 passport.use(new LocalStrategy(
 	function (username, password, done) {
+		console.log("In login function"+ username + password);
 		user.User.findOne({ regno: username }, function (err, u) {
 			if (err) { return done(err); }
 			if (!u) {

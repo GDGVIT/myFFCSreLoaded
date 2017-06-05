@@ -47,10 +47,19 @@ router.post('/register', function (req, res) {
 	else {
 		user.insertUser(data.name, data.regno, data.password)
 			.then(function (action) {
-				res.status(200);
-				res.render('home', { data: true, message: action });
+				req.login(action, function (err) {
+					if (!err) {
+						res.redirect('/home');
+						console.log("It worked : " + req.user);
+					} else {
+						res.redirect('/');
+						console.log(err);
+					}
+				})
+				// res.status(200);
+				// res.render('home', { data: true, message: action });
 			}).catch(function (error) {
-				res.status(500);
+				res.status(200);
 				res.render('home', { data: true, message: error });
 			});
 	}
@@ -66,7 +75,7 @@ router.get('/home', (req, res) => {
 		res.redirect('/');
 	} else {
 		//Uncomment after new xls
-		//course.staticArray(req,res);
+		// course.staticArray(req,res);
 
 
 		fs.readFile('crsnm.txt', 'utf8', function (err, contents1) {

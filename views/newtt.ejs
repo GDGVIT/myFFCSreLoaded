@@ -858,11 +858,18 @@ error: function(){
           }
           initialize_toolkit();
           $(".add-course-sugg").click(function(){
-
+            
             var crscd=$(this).attr("data-id");
-            $('#course-list').val(crscd).trigger('change');
-            Materialize.toast("Select Slot" , 40000);
-            close_side();
+            if(crscd.substr(0,22)=="You are first among al"){
+              Materialize.toast("Add your first course" , 40000);
+              close_side();
+            }
+            else{
+              $('#course-list').val(crscd).trigger('change');
+              Materialize.toast("Select Slot" , 40000);
+              close_side();
+            }
+            
           });
           open_side();
         }
