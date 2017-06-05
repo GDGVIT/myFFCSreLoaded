@@ -277,13 +277,15 @@
   </div>
   <div class="total-credits-div center row">
     <span class="slot-gool" style="font-size: 1.2rem !important;
-    padding: 10px 20px;">Total Credits:<span id="totcredits"></span></span>
+    padding: 10px 20px;color: #fff;
+    background-color: #77c10e;">Total Credits : <span id="totcredits"></span></span>
   </div>
   <div class="row timetable-selected-list z-depth-1">
 
     <table class="timetable-selected-table">
       <tr class="timetable-selected-headings">
-        <td style="padding: 2%">Course Code</td>
+      <td style="padding: 2%">Sl. No.</td>
+        <td>Course Code</td>
         <td>Credits</td>
         <td>Course Name</td>
         <td>Slot</td>
@@ -296,10 +298,10 @@
 
   <div class="row">
     <div class="col s12 offset-m1 m10">
-      <span id="downloadtt" class="download-share-but circle">
+      <span id="downloadtt" style="cursor: pointer;" class="download-share-but circle">
         <i class="fa fa-download" aria-hidden="true"></i>
       </span>
-      <span class="download-share-text">&nbsp;<button id="downloadtt2" style="background-color: Transparent;border: none;">Download</button></span>
+      <span class="download-share-text">&nbsp;<button id="downloadtt2" style="background-color: Transparent;border: none;cursor: pointer;">Download</button></span>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <!-- <span class="download-share-but circle">
         <i class="fa fa-share-alt" aria-hidden="true"></i>
@@ -428,15 +430,19 @@
                 $('.'+tempSlot+" .number").css("color","#00e676");
                 $('.'+tempSlot+" .number").html(count);
               }
+              var slotToShow=slot.join('+').toUpperCase();
+
+              // $('.timetable-selected-table').append('<tr class="timetable-selected-subject"><td class="sl-no"><span class="count-span">'+count+'</span><input class="course-id" style="display: none;" value="'+id+'"><input class="course-credits" style="display: none;" value="'+credits+'"></td><td class="coursecode">'+courseCode+'</td><td class="coursecredits">'+credits+'</td><td class="coursetitle"> '+courseTitle+'</td><td class="courseslot">'+slotToShow+'</td><td class="coursefaculty"><p class="timetable-selected-faculty">'+faculty+'</p></td><td class="coursevenue">'+venue+'</td><td><i class="small material-icons delete-course-icon">delete</i></td></tr>');
+
               if(count==1){
-                $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+credits+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td>'+venue+'</td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-headings');
+                $('<tr class="timetable-selected-subject"><td class="sl-no"><span class="count-span">'+count+'</span><input class="course-id" style="display: none;" value="'+id+'"><input class="course-credits" style="display: none;" value="'+credits+'"></td><td class="coursecode">'+courseCode+'</td><td class="coursecredits">'+credits+'</td><td class="coursetitle"> '+courseTitle+'</td><td class="courseslot">'+slotToShow+'</td><td class="coursefaculty"><p class="timetable-selected-faculty">'+faculty+'</p></td><td class="coursevenue">'+venue+'</td><td><i class="small material-icons delete-course-icon">delete</i></td></tr>').insertAfter('.timetable-selected-headings');
               } 
               else{
-                $('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'"><input class="course-credits" style="display: none;" value="'+credits+'">'+courseCode+'</td><td>'+credits+'</td><td>'+courseTitle+'</td><td>'+slot.join('+').toUpperCase()+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td>'+venue+'</td><td><i class="small material-icons">delete</i></td></tr>').insertAfter('.timetable-selected-subject:nth-child('+count+")");
+                $('<tr class="timetable-selected-subject"><td class="sl-no"><span class="count-span">'+count+'</span><input class="course-id" style="display: none;" value="'+id+'"><input class="course-credits" style="display: none;" value="'+credits+'"></td><td class="coursecode">'+courseCode+'</td><td class="coursecredits">'+credits+'</td><td class="coursetitle"> '+courseTitle+'</td><td class="courseslot">'+slotToShow+'</td><td class="coursefaculty"><p class="timetable-selected-faculty">'+faculty+'</p></td><td class="coursevenue">'+venue+'</td><td><i class="small material-icons delete-course-icon">delete</i></td></tr>').insertAfter('.timetable-selected-subject:nth-child('+count+")");
                 Materialize.toast(response.message , 4000);
               }
               addToTotalCredits(credits);
-              Materialize.toast("Course Added" , 4000);
+              Materialize.toast("Success: Course Added" , 4000);
               close_side();
             }
             else{
@@ -445,7 +451,7 @@
           },
           error: function(){
             hide_message();
-            Materialize.toast("Some Error" , 4000);
+            Materialize.toast("Error: Couldn't add course" , 4000);
           }
         });
     }
@@ -464,12 +470,11 @@
         }
       //}
     });
-$(document).on('click', '.timetable-selected-subject .material-icons',function(){
+$(document).on('click', '.delete-course-icon',function(){
   var clicked_deleted=this;
-  
-  
-  var id = $(this).closest($('.timetable-selected-subject')).find($('.course-id')).val();
-  var credits = $(this).closest($('.timetable-selected-subject')).find($('.course-credits')).val();
+  var courseRow=  $(this).closest($('.timetable-selected-subject'));
+  var id = courseRow.find($('.course-id')).val();
+  var credits = courseRow.find($('.course-credits')).val();
   var token = $('.user-token').val();
   show_message("deleting...");
   $.ajax({
@@ -484,7 +489,7 @@ $(document).on('click', '.timetable-selected-subject .material-icons',function()
         },
         success: function(response){
           hide_message();
-          var slot = $(clicked_deleted).closest($('.timetable-selected-subject')).find($('.timetable-selected-subject td:nth-child(4)')).text();
+          var slot = courseRow.find($('.courseslot')).text();
           slot = slot.split('+');
          
           if (response.status == true) {
@@ -495,13 +500,13 @@ $(document).on('click', '.timetable-selected-subject .material-icons',function()
               $('.'+tempSlot).addClass('unselected').removeClass('selected').removeClass('clash');
               $('.'+tempSlot+' .number').html("");
             }
-            $(clicked_deleted).closest($('.timetable-selected-subject')).remove();
+            $(courseRow).remove();
             
             var index=1;
             var current = $('.timetable-selected-subject');
             for(var i=1;i<=$('.timetable-selected-subject').length;i++){
-              $(current).find($('td:nth-child(1)')).html(index);
-              var slot = $(current).find($('td:nth-child(4)')).html();
+              // $(current).find($('td:nth-child(1)')).html(index);
+              var slot = $(current).find($('.courseslot')).html();
               if(slot.charAt(0)=='l'){
                 slot = slot.split('+');
                 for(var j=0;j<slot.length;j++){
@@ -518,16 +523,16 @@ $(document).on('click', '.timetable-selected-subject .material-icons',function()
               index++;
             }
             delToTotalCredits(credits);
-            Materialize.toast("Course Deleted!" , 40000);
+            Materialize.toast("Success: Course Deleted!" , 4000);
           }
           else{
-            Materialize.toast("Some Error Found" , 40000);
+            Materialize.toast("Error: couldn't delete course" , 4000);
           }
 
         },
         error: function(){
          hide_message();
-         Materialize.toast("Some Error Found" , 40000);
+         Materialize.toast("Error: Couldn't delete course" , 4000);
        }
      });
 
@@ -567,7 +572,7 @@ $(document).ready(function(){
           'token': $('.user-token').val()
         },
         type: 'GET',
-        success: function(response){
+        success: function(response){ 
           $('.timetable-selected-subject').remove();
           var count = 1;
           var tot_creds_ini=0;
@@ -593,7 +598,7 @@ $(document).ready(function(){
             var courseCode = response.data.newAllotedCourse2[i].course_docs[0].Crscd;
            
             if (response.status==true){
-              $('.timetable-selected-table').append('<tr class="timetable-selected-subject"><td><input class="course-id" style="display: none;" value="'+id+'">'+courseCode+'</td><td>'+credits+'</td><td> '+courseTitle+'</td><td>'+slot+'</td><td class=""><p class="timetable-selected-faculty">'+faculty+'</p></td><td>'+venue+'</td><td><i class="small material-icons">delete</i></td></tr>');
+              $('.timetable-selected-table').append('<tr class="timetable-selected-subject"><td class="sl-no"><span class="count-span">'+count+'</span><input class="course-id" style="display: none;" value="'+id+'"><input class="course-credits" style="display: none;" value="'+credits+'"></td><td class="coursecode">'+courseCode+'</td><td class="coursecredits">'+credits+'</td><td class="coursetitle"> '+courseTitle+'</td><td class="courseslot">'+slot+'</td><td class="coursefaculty"><p class="timetable-selected-faculty">'+faculty+'</p></td><td class="coursevenue">'+venue+'</td><td><i class="small material-icons delete-course-icon">delete</i></td></tr>');
             }
 
 
@@ -836,23 +841,27 @@ error: function(){
         },
         success: function(response){
           hide_message();
+          console.log("Suggest courses");
+          console.log(response);
           if(!response.message)
-           Materialize.toast("Error in suggesting Courses" , 40000);
+           Materialize.toast("Error: in suggesting Courses" , 40000);
          else{
           var arr_subs=response.data;
           var len=arr_subs.length;
-          console.log("Length of courses="+len);
+        
           for(var i=0;i<len;i++){
             var count = arr_subs[i].count;
             var crsnm = arr_subs[i].crsnm;
             var crscd = arr_subs[i].crscd;
-            $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+crscd+'"><h6 class="white-text center">'+crsnm+'</h6><div class="center"><div class="slot-gool center">'+crscd+'</div></div><div class="center"><div class="add-plus-div tooltipped add-course-sugg" data-crsnm="'+crsnm+'" data-crscd="'+crscd+'" data-slot="'+crscd+'" data-credits="'+crscd+'" data-faculty="'+crscd+'" data-id="'+crscd+'"data-tooltip="load this course" data-position="right" ><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div><br><div class="right-align"><span class="tooltipped course-count-span slot-gool" data-tooltip="count of students who are taking this course" data-position="right" style="float:none;">count : '+count+'</span></div></div>');
+            var credits= arr_subs[i].credits;
+            $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+crscd+'"><h6 class="white-text center">'+crsnm+'</h6><div class="center"><div class="slot-gool center">'+crscd+'</div></div><div class="center"><div class="add-plus-div tooltipped add-course-sugg" data-crsnm="'+crsnm+'" data-crscd="'+crscd+'" data-slot="'+crscd+'" data-credits="'+crscd+'" data-faculty="'+crscd+'" data-id="'+crscd+'"data-tooltip="load this course" data-position="right" ><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div><br><div class="right-align"><span class="course-count-span slot-gool" style="float:left;">credits : '+credits+'</span><span class="tooltipped course-count-span slot-gool" data-tooltip="count of students who are taking this course" data-position="right" style="float:none;">count : '+count+'</span></div></div>');
           }
           initialize_toolkit();
           $(".add-course-sugg").click(function(){
 
             var crscd=$(this).attr("data-id");
             $('#course-list').val(crscd).trigger('change');
+            Materialize.toast("Select Slot" , 40000);
             close_side();
           });
           open_side();
@@ -902,7 +911,7 @@ error: function(){
       $("#totcredits").text(cred);
     }
     function makeToTotalCredits(tot_creds_ini){
-       $("#totcredits").text(tot_creds_ini);
+       $("#totcredits").text(parseInt(tot_creds_ini));
     }
 
     function delToTotalCredits(credits){
@@ -911,7 +920,7 @@ error: function(){
       $("#totcredits").text(cred);
     }
     function iniToTotalCredits(){
-     $("#totcredits").text("0");
+     $("#totcredits").text(parseInt("0"));
    }
    iniToTotalCredits();
    $(".course-credits-slide-span").hide();
