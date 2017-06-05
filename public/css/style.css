@@ -124,30 +124,12 @@ color: #fff !important;
 .aboutus-but:hover{
   background-color: #6aab0e !important;
 }
-.social-footer .fa{
-  margin: 1rem;
-  color: #8a8a8a;
-  transition: all 0.4s ease;
-   -webkit-transition: all 0.4s ease;
-    -moz-transition: all 0.4s ease;
-     -o-transition: all 0.4s ease;
-}
+
 input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]), input[type=password]:focus:not([readonly]), input[type=email]:focus:not([readonly]), input[type=url]:focus:not([readonly]), input[type=time]:focus:not([readonly]), input[type=date]:focus:not([readonly]), input[type=datetime]:focus:not([readonly]), input[type=datetime-local]:focus:not([readonly]), input[type=tel]:focus:not([readonly]), input[type=number]:focus:not([readonly]), input[type=search]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
     border-bottom: 1px solid #77c10e;
     box-shadow: 0 1px 0 0 #77c10e;
 }
-.social-footer .fa-facebook:hover{
-  color: #3b5998;
-}
-.social-footer .fa-twitter:hover{
-  color: #0084b4;
-}
-.social-footer .fa-github:hover{
-  color: #000;
-}
-.social-footer .fa-google-plus:hover{
-  color: #d34836;
-}
+
 .active-sign-but{
   background-color: #77c10e !important;
 }

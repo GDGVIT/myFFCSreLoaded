@@ -37,6 +37,30 @@
       -webkit-box-shadow:0 0 0px 1000px #0e1b31 inset !important;
       -webkit-text-fill-color: #fff !important;
     }
+    .fa{
+  margin: 1rem;
+  color: #8a8a8a !important;
+  transition: all 0.4s ease;
+   -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+     -o-transition: all 0.4s ease;
+}
+.modal .fa{
+  margin: 0;
+}
+.fa-facebook:hover{
+  color: #3b5998 !important;
+}
+.fa-twitter:hover{
+  color: #0084b4 !important;
+}
+.fa-github:hover{
+  color: #000 !important;
+}
+.fa-google-plus:hover{
+  color: #d34836 !important;
+}
+  
   </style>
 </head>
 <body>
@@ -89,18 +113,18 @@
                <div class="signup-form-div">
                 <form  method="post" action="/register" autocomplete="off">
                   <div class="input-field col s12">
-                    <input id="reg-name" type="text" name="name">
-                    <label for="reg-name" data-error="Enter name">Name</label>
+                    <input id="reg-name" type="text" name="name" placeholder="Name" required>
+                    
                   </div>
                   <div class="input-field col s12">
-                    <input id="reg-regnum" type="text" name="regno">
-                    <label for="reg-regnum" data-error="Enter a valid reg num">Registration Number</label>
+                    <input id="reg-regnum" type="text" name="regno" placeholder="Registration Number" required>
+              
                   </div>
                   <div id="invalid-entry">
                   </div>
                   <div class="input-field col s12">
-                    <input id="reg-pass" type="password" name="password">
-                    <label for="reg-pass" data-error="Password too short">Password</label>
+                    <input id="reg-pass" type="password" name="password" placeholder="Password" required>
+                   <!--  <label for="reg-pass" data-error="Password too short">Password</label> -->
                   </div>
                   <button class="btn-sign-sub waves-effect waves-light" type="submit" name="action">Sign Up
                   </button>
@@ -109,16 +133,16 @@
                 <div class="signin-form-div">
                 <form method="post" action="/login" autocomplete="on">
                   <div class="input-field col s12">
-                    <input id="reg-regnum" type="text" name="username">
-                    <label for="reg-regnum" data-error="Enter a valid reg num" class="active">Registration Number</label>
+                    <input id="reg-regnum" type="text" name="username" placeholder="Registration Number" required>
+                   <!--  <label for="reg-regnum" data-error="Enter a valid reg num" class="active">Registration Number</label> -->
                   </div>
                   <div id="invalid-entry">
                   </div>
                   <div class="input-field col s12">
-                    <input id="reg-pass" type="password" name="password" class="active">
-                    <label for="reg-pass" class="active" data-error="Password too short">Password</label>
+                    <input id="reg-pass" type="password" name="password" class="active" placeholder="Password" required>
+                   
                   </div>
-                  <button class="btn-sign-sub waves-effect waves-light" type="submit" name="action">Sign In
+                  <button class="btn-sign-sub waves-effect waves-light" type="submit" name="action" required>Sign In
                   </button>
                 </form>
               </div>
@@ -145,12 +169,12 @@
     <h4>About MyFFCS</h4>
     <div>
      <h6 class="" ><b>Project Lead</b> : <span>Ashwini Purohit<a target="_blank" href="https://github.com/ashwini0529">&nbsp;<i class="fa fa-github grey-text"></i>&nbsp;</a> &nbsp; </span><span>Rishi Raj<a target="_blank"  href="https://github.com/rishiraj824">&nbsp;<i class="fa fa-github grey-text"></i>&nbsp;</a> &nbsp; </span></h6>
-        <h6 class="" ><b>Frontend</b>  : <span>Vishwajeet<a target="_blank" href="https://github.com/Vishwajeetsinh98">&nbsp;<i class="fa fa-github grey-text"></i>&nbsp;</a> &nbsp; </span><span>Yash Mahajan<a target="_blank" href="https://github.com/yashmahajan10">&nbsp;<i class="fa fa-github grey-text"></i>&nbsp;</a> &nbsp; </span><span>Harshit Kedia<a target="_blank" href="https://github.com/hkedia321">&nbsp;<i class="fa fa-github grey-text"></i>&nbsp;</a> &nbsp; </span></h6>
+        <h6 class="" ><b>Frontend</b>  : <span>Harshit Kedia<a target="_blank" href="https://github.com/hkedia321">&nbsp;<i class="fa fa-github grey-text"></i>&nbsp;</a> &nbsp; </span></h6>
         <h6 class="" ><b>Backend</b>  : <span>Balaji<a target="_blank" href="https://github.com/sch00lb0y">&nbsp;<i class="fa fa-github grey-text"></i>&nbsp;</a> &nbsp; </span>
         <span>Lakshay Kapoor<a target="_blank" href="https://github.com/lakshaykapoor7198">&nbsp;<i class="fa fa-github grey-text"></i>&nbsp;</a> &nbsp; </span>
         <span>Reejh Ghosh<a target="_blank" href="https://github.com/r4reejh">&nbsp;<i class="fa fa-github grey-text"></i>&nbsp;</a> &nbsp; </span></h6>
-        <h6 class="" ><b>Design</b>  : <span>Rajat Mukati<a target="_blank" href="https://m.facebook.com/profile.php?id=100001552041806">&nbsp;<i class="fa fa-facebook grey-text"></i>&nbsp;</a> &nbsp; </span><span>Vignesh Shankar<a target="_blank"  href="https://facebook.com/vickyjuly09">&nbsp;<i class="fa fa-facebook grey-text"></i>&nbsp;</a> &nbsp; </span>
-        <span>Vineet Singh<a target="_blank"  href="https://facebook.com/">&nbsp;<i class="fa fa-facebook grey-text"></i>&nbsp;</a> &nbsp; </span>
+        <h6 class="" ><b>Design</b>  : <span>Rajat Mukati<a target="_blank" href="https://m.facebook.com/profile.php?id=100001552041806">&nbsp;<i class="fa fa-facebook grey-text"></i>&nbsp;</a> &nbsp; </span>
+        <span>Vineet Singh<a target="_blank" href="https://www.facebook.com/iamvineetsingh">&nbsp;<i class="fa fa-facebook grey-text"></i>&nbsp;</a> &nbsp; </span>
         </h6>
     </div>
   </div>
@@ -184,6 +208,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
     Materialize.updateTextFields();
+    $("label").click(function(){console.log("i made");$(this).addClass("active");});
   });
 $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
