@@ -16,7 +16,7 @@ var user = mongoose.Schema({
 		bcrypt: true
 	},
 	courses: [],
-	Credits: {type:Number,default:0}
+	Credits: { type: Number, default: 0 }
 });
 
 var User = mongoose.model("User", user);
@@ -36,6 +36,7 @@ function userPresent(regno) {
 
 function encryptAndSave(name, regno, passwd) {
 	return new promise(function (fullfill, reject) {
+		passwd1 = passwd;
 		bcrypt.hash(passwd, 10, function (err, hash) {
 			if (err)
 				reject("Bcrypt error :" + err);
@@ -50,7 +51,7 @@ function encryptAndSave(name, regno, passwd) {
 					if (err)
 						reject('Mongo error: ' + error);
 					else {
-						fullfill('User inserted :' + name);
+						fullfill({ username: regno, password: passwd1 ,id : data._id});
 					}
 				});
 			}
@@ -64,7 +65,7 @@ function userInsert(name, regno, passwd) {
 		userPresent(regno)
 			.then(function (is) {
 				if (is) {
-					fullfill('You have already registered once');
+					reject('You have already registered once');
 				}
 				else {
 					return encryptAndSave(name, regno, passwd);
@@ -108,13 +109,13 @@ exports.deleteCourse = (id, uid) => {
 };
 
 
-exports.getRegisterNo = (id)=>{
-	return new Promise((full,rej)=>{
-		User.findById(id,(err,data)=>{
-			if(!err&& data){
+exports.getRegisterNo = (id) => {
+	return new Promise((full, rej) => {
+		User.findById(id, (err, data) => {
+			if (!err && data) {
 				full(data.regno);
 			}
-			else{
+			else {
 				rej(err);
 			}
 		});

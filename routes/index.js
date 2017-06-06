@@ -10,6 +10,7 @@ var bcrypt = require('bcrypt');
 var auth = require('../authentication/auth');
 var phantomPrint = require('../models/phantomworker.js')
 var exec = require('child_process').exec;
+var fs = require("fs");
 
 // course.allCourseCode(null, null).then((res) => {			//slot,crsnm
 // 	console.log(res);
@@ -46,10 +47,19 @@ router.post('/register', function (req, res) {
 	else {
 		user.insertUser(data.name, data.regno, data.password)
 			.then(function (action) {
-				res.status(200);
-				res.render('home', { data: true, message: action });
+				req.login(action, function (err) {
+					if (!err) {
+						res.redirect('/home');
+						console.log("It worked : " + req.user);
+					} else {
+						res.redirect('/');
+						console.log(err);
+					}
+				})
+				// res.status(200);
+				// res.render('home', { data: true, message: action });
 			}).catch(function (error) {
-				res.status(500);
+				res.status(200);
 				res.render('home', { data: true, message: error });
 			});
 	}
@@ -64,14 +74,25 @@ router.get('/home', (req, res) => {
 	if (req.user == undefined) {
 		res.redirect('/');
 	} else {
-		course.allCourseCode(null, null).then((res1) => {
-			course.allCourseName(null).then((res2) => {
-				res.status(200);
-				console.log(res1,res2);
-				res.render('newtt', { user: req.user, codes: res1, names:res2 });
+		//Uncomment after new xls
+		// course.staticArray(req,res);
+
+
+		fs.readFile('crsnm.txt', 'utf8', function (err, contents1) {
+			var arr = contents1.split(',');
+			fs.readFile('crscd.txt', 'utf8', function (err, contents2) {
+				var arr1 = contents2.split(',');
+				if (err) {
+					console.log(err);
+				}
+				else {
+					res.render('newtt', { user: req.user, codes: arr1, names: arr });
+				}
 			});
 
 		});
+
+
 	}
 });
 

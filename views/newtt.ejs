@@ -137,7 +137,7 @@
           <select id="course-list" class="course-list-1 bootstrap-select school-select" name="course-list" data-placeholder="Search Course" style="min-width: 200px !important;">
             <option></option>
             <%for(i=0;i<codes.length;i++){%>
-            <option value="<%=codes[i]%>" id="crscd_<%=codes[i]%>"><%=codes[i]%> - <%=names[i]%></option>
+            <option value="<%=codes[i]%>" id="crscd_<%=codes[i]%>"><%=names[i]%></option>
             <%}%>
           </select>
         </div>
@@ -858,11 +858,18 @@ error: function(){
           }
           initialize_toolkit();
           $(".add-course-sugg").click(function(){
-
+            
             var crscd=$(this).attr("data-id");
-            $('#course-list').val(crscd).trigger('change');
-            Materialize.toast("Select Slot" , 40000);
-            close_side();
+            if(crscd.substr(0,22)=="You are first among al"){
+              Materialize.toast("Add your first course" , 40000);
+              close_side();
+            }
+            else{
+              $('#course-list').val(crscd).trigger('change');
+              Materialize.toast("Select Slot" , 40000);
+              close_side();
+            }
+            
           });
           open_side();
         }
