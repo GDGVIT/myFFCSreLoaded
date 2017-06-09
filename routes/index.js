@@ -63,12 +63,24 @@ router.post('/register', function (req, res) {
 				res.render('home', { data: true, message: error });
 			});
 	}
-
 });
 
 
 
 router.post('/login', passport.authenticate('local', { successRedirect: '/home', failureRedirect: '/failed' }));
+
+router.post('/apiLogin', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { return res.send({"error":"server faliure","status":false}); }
+    if (!user) { return res.send({"message":"user not found","status":false}); }
+
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      return res.send({"message":"success","status":true});
+    });
+
+  })(req, res, next);
+});
 
 router.get('/home', (req, res) => {
 	if (req.user == undefined) {

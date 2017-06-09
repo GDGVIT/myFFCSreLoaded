@@ -82,3 +82,31 @@ success response: STATUS:200
 error response: STATUS:500
 ```
 
+### /apiLogin
+```
+request type: POST,
+request body: {username:'<regno>',password:'<password>'}
+success response: STATUS:200 
+Response Body:
+{
+  "message": "success",
+  "status": true
+}
+
+failiure response: STATUS 500
+Response Body:
+{
+  "message": "user not found"
+  "status": false
+}
+OR
+{
+  "message": "user not found"
+  "status": false
+}
+OR
+{
+  "error":"server faliure",
+  "status":false
+}
+```
