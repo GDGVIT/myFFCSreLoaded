@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(session({
-  secret: "wh0 c4r3s?",
+  secret: "myFFCS",
   saveUninitialized: false,
   resave: false
 }));
