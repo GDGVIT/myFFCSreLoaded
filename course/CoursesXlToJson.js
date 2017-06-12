@@ -14,6 +14,3 @@ module.exports = function allCourses() {
 
     });
 }
-
-
-

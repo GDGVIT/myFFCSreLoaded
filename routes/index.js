@@ -11,6 +11,7 @@ var auth = require('../authentication/auth');
 var phantomPrint = require('../models/phantomworker.js')
 var exec = require('child_process').exec;
 var fs = require("fs");
+var updater = require('../course/CourseUpdate')
 
 // course.allCourseCode(null, null).then((res) => {			//slot,crsnm
 // 	console.log(res);
@@ -38,7 +39,7 @@ router.post('/register', function (req, res) {
 		user.insertUser(data.name, data.regno, data.password)
 			.then(function (action) {
 				res.status(200);
-				res.json({ status: "inserted" });
+				res.json({ status: "done" });
 			}).catch(function (error) {
 				res.status(500);
 				res.json({ status: "error" });
@@ -236,7 +237,7 @@ router.post('/deletecourse', (req, res) => {
 
 
 router.get('/detail', (req, res) => {
-	user.getRegisterNo(req.headers.token)
+	user.getRegisterNo(req.headers.token || req.user._id)
 		.then((regno) => {
 			console.log(regno);
 			course.details(regno)
@@ -390,5 +391,20 @@ router.get('/share/:uid', (req, res) => {
 			res.send("error")
 		})
 })
+
+
+//CAN BE USED TO UPDATE EXISTING COURSEDB SCHEMA WITHOUT LOSING
+//EXISTING VALUES
+/*
+router.get('/updater',(req,res)=>{
+	updater()
+	.then(()=>{
+		res.send("done")
+	})
+	.catch(()=>{
+		res.send("failed")
+	})
+})
+* */
 
 module.exports = router;
