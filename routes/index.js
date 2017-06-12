@@ -405,6 +405,6 @@ router.get('/updater',(req,res)=>{
 		res.send("failed")
 	})
 })
-* */
+*/
 
 module.exports = router;

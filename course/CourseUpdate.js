@@ -45,11 +45,12 @@ module.exports = () =>{
 		return new promise((full,rej)=>{
 			course.Course.find({Faculty: res.Faculty, Crscd: res['Course Code'], Crsnm: res['Course Name'], Slot: res["Slot"], Credits: res["Credits"], Venue: res["Venue"]},(err,doc)=>{
 				doc[0].Type = res["Type"]
+				doc[0].Mode = res["Mode"]
 				doc[0].save((er,d)=>{
 					if(!err){
 						full()
-						console.log(d.Type)
-						console.log(res.Type+"\n\n")
+						console.log(d.Mode)
+						console.log(res.Mode+"\n\n")
 					}
 					else
 					rej()

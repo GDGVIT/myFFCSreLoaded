@@ -26,6 +26,9 @@ var course = mongoose.Schema({
     },
     Type: {
         type: String
+    },
+    Mode: {
+        type: String
     }
 });
 
