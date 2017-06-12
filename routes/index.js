@@ -168,7 +168,7 @@ router.post('/addcourse', (req, res) => {
 });
 
 router.post('/validate', (req, res) => {
-	user.getRegisterNo(req.headers.token)
+	user.getRegisterNo(req.headers.token || req.user._id)
 		.then((regno) => {
 			promise.all([
 				course.validateCredits(req.body.courseId, regno),
@@ -213,7 +213,7 @@ router.get('/addcourse/:p1/:p2', (req, res) => {
 
 router.post('/deletecourse', (req, res) => {
 	console.log(req.headers.token);
-	user.getRegisterNo(req.headers.token)
+	user.getRegisterNo(req.headers.token || req.user._id)
 		.then((regno) => {
 			console.log(regno);
 			promise.all([
@@ -296,7 +296,6 @@ router.post('/suggestcourse', (req, res) => {
 })*/
 
 router.post('/downloadtt', (req, res) => {
-	console.log(typeof (req.session.passport.user));
 	var uid = req.session.passport.user
 	phantomPrint.doPrint(uid)
 		.then(() => {
