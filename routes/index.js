@@ -12,6 +12,8 @@ var phantomPrint = require('../models/phantomworker.js')
 var exec = require('child_process').exec;
 var fs = require("fs");
 var updater = require('../course/CourseUpdate')
+var appKey = process.env.appKey
+
 
 // course.allCourseCode(null, null).then((res) => {			//slot,crsnm
 // 	console.log(res);
@@ -77,7 +79,7 @@ router.post('/apiLogin', function(req, res, next) {
 
     req.logIn(user, function(err) {
       if (err) { return next(err); }
-      return res.send({"message":"success","status":true});
+      return res.send({"message":"success","status":true,"uid":user._id});
     });
 
   })(req, res, next);
@@ -168,7 +170,37 @@ router.post('/addcourse', (req, res) => {
 });
 
 router.post('/validate', (req, res) => {
-	user.getRegisterNo(req.headers.token || req.user._id)
+	if(!req.headers.token && req.body.uid){
+		if(req.body.appKey == appKey){
+			user.getRegisterNo(req.body.uid)
+			.then((regno) => {
+				promise.all([
+					course.validateCredits(req.body.courseId, regno),
+					course.validateSlots(req.body.courseId, regno),
+					course.validateFaculty(req.body.courseId, regno)
+				])
+					.then(() => {
+						res.redirect('/addcourse/' + req.body.courseId + '/' + regno);
+					})
+					.catch((err) => {
+						console.log(err)
+						res.status(200);
+						res.json({ 'status': false, 'message': err });
+					})
+			})
+			.catch((err) => {
+				console.log(err)
+				res.status(200);
+				res.json({ 'status': false, 'message': err });
+			});
+		}
+		else{
+			res.status(403)
+			res.json({ 'status': false, 'message': "Invalid API key" })
+		}
+	}
+	else{
+	user.getRegisterNo(req.headers.token)
 		.then((regno) => {
 			promise.all([
 				course.validateCredits(req.body.courseId, regno),
@@ -189,7 +221,7 @@ router.post('/validate', (req, res) => {
 			res.status(200);
 			res.json({ 'status': false, 'message': err });
 		});
-
+	}
 
 });
 
@@ -213,26 +245,52 @@ router.get('/addcourse/:p1/:p2', (req, res) => {
 
 router.post('/deletecourse', (req, res) => {
 	console.log(req.headers.token);
-	user.getRegisterNo(req.headers.token || req.user._id)
-		.then((regno) => {
-			console.log(regno);
-			promise.all([
-				//user.deleteCourse(req.body.courseId, regno),
-				course.removeUserFromCourse(regno, req.body.courseId),
-				suggestion.removeFromSuggestCourse(req.body.courseId, regno)
-			])
-				.then(([r1, r2]) => {
-					res.status(200);
-					res.json({ 'status': true });
-				})
+	if(!req.headers.token && req.body.uid){
+		if(req.body.appKey == appKey){
+			user.getRegisterNo(req.body.uid )
+			.then((regno) => {
+				console.log(regno);
+				promise.all([
+					//user.deleteCourse(req.body.courseId, regno),
+					course.removeUserFromCourse(regno, req.body.courseId),
+					suggestion.removeFromSuggestCourse(req.body.courseId, regno)
+				])
+					.then(([r1, r2]) => {
+						res.status(200);
+						res.json({ 'status': true });
+					})
 
-		})
-		.catch((err) => {
-			res.status(500);
-			res.json({ 'status': false });
-		});
+			})
+			.catch((err) => {
+				res.status(500);
+				res.json({ 'status': false });
+			});
+		}
+		else{
+			res.status(403)
+			res.json({ 'status': false, 'message': "Invalid API key" })
+		}
+	}
+	else{
+		user.getRegisterNo(req.headers.token)
+			.then((regno) => {
+				console.log(regno);
+				promise.all([
+					//user.deleteCourse(req.body.courseId, regno),
+					course.removeUserFromCourse(regno, req.body.courseId),
+					suggestion.removeFromSuggestCourse(req.body.courseId, regno)
+				])
+					.then(([r1, r2]) => {
+						res.status(200);
+						res.json({ 'status': true });
+					})
 
-
+			})
+			.catch((err) => {
+				res.status(500);
+				res.json({ 'status': false });
+			});
+	}
 });
 
 
@@ -253,6 +311,27 @@ router.get('/detail', (req, res) => {
 			res.json({ 'status': false, 'data': { 'newAllotedCourse2': [] } });
 		});
 });
+
+
+//FOR APP API
+router.post('/detail', (req, res) => {
+	user.getRegisterNo(req.body.uid)
+		.then((regno) => {
+			console.log(regno);
+			course.details(regno)
+				.then((course_arr) => {
+					console.log(JSON.stringify(course_arr, null, 4));
+					res.status(200);
+					res.json({ 'status': true, 'data': { 'newAllotedCourse2': course_arr } });
+				})
+
+		})
+		.catch((e) => {
+			res.status(500);
+			res.json({ 'status': false, 'data': { 'newAllotedCourse2': [] } });
+		});
+});
+
 
 
 router.post('/suggestcourse', (req, res) => {
@@ -296,11 +375,11 @@ router.post('/suggestcourse', (req, res) => {
 })*/
 
 router.post('/downloadtt', (req, res) => {
-	var uid = req.session.passport.user
+	let uid = req.user._id
 	phantomPrint.doPrint(uid)
 		.then(() => {
 			console.log("done print")
-			res.send({ "status": true, "link": "/download/" + req.session.passport.user, "token2": req.headers.token })
+			res.send({ "status": true, "link": "/download/" + uid , "token2": req.headers.token })
 		})
 		.catch((e) => {
 			console.log(e)
