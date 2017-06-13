@@ -320,9 +320,43 @@ router.post('/detail', (req, res) => {
 			console.log(regno);
 			course.details(regno)
 				.then((course_arr) => {
-					console.log(JSON.stringify(course_arr, null, 4));
-					res.status(200);
-					res.json({ 'status': true, 'data': { 'newAllotedCourse2': course_arr } });
+					let final = []
+					let pp = course_arr.map((val)=>{
+						return new promise((full,rej)=>{
+							let c = {}
+							let value = val.course_docs[0]
+							c["_id"]= value._id
+							c["Faculty"]= value.Faculty
+							c["Crscd"]= value.Crscd
+							c["Crsnm"]= value.Crsnm
+							c["Slot"]= value.Slot
+							c["Credits"]= value.Credits
+							c["Venue"]=value.Venue
+							c["Type"]= value.Type
+							c["Mode"]= value.Mode
+							c["Count"] = value.Count.length
+							console.log(value)
+							final.push(c);
+							full()
+						})
+					})
+					
+					promise.all(pp)
+					.then(()=>{
+						
+							let cc = course_arr[0];
+							let sendData = {
+								'status':true,
+								'name':cc.name,
+								'regno':cc.regno,
+								'total_cred':cc.Credits,
+								'allotedCourse':final
+							}
+						
+							console.log(JSON.stringify(final, null, 4));
+							res.status(200);
+							res.json(sendData);
+					})
 				})
 
 		})
