@@ -351,6 +351,7 @@ router.post('/detail', (req, res) => {
 								sendData = {
 									'status':true,
 									'name':cc.name,
+									'message':'courses registered',
 									'regno':cc.regno,
 									'total_cred':cc.Credits,
 									'allotedCourse':final
