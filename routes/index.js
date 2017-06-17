@@ -315,11 +315,13 @@ router.get('/detail', (req, res) => {
 
 //FOR APP API
 router.post('/detail', (req, res) => {
-	user.getRegisterNo(req.body.uid)
-		.then((regno) => {
-			console.log(regno);
+	user.getRegisterNoAndName(req.body.uid)
+		.then((regnoName) => {
+			regno=regnoName[0]
+			Name=regnoName[1]
 			course.details(regno)
 				.then((course_arr) => {
+					console.log(course_arr)
 					let final = []
 					let pp = course_arr.map((val)=>{
 						return new promise((full,rej)=>{
@@ -343,19 +345,29 @@ router.post('/detail', (req, res) => {
 					
 					promise.all(pp)
 					.then(()=>{
-						
-							let cc = course_arr[0];
-							let sendData = {
+							let sendData;
+							if(course_arr.length>0){
+								let cc = course_arr[0];
+								sendData = {
+									'status':true,
+									'name':cc.name,
+									'regno':cc.regno,
+									'total_cred':cc.Credits,
+									'allotedCourse':final
+								}
+							}
+							else
+							sendData = {
+								'name':Name,
+								'regno':regno,
 								'status':true,
-								'name':cc.name,
-								'regno':cc.regno,
-								'total_cred':cc.Credits,
+								'message':'no courses registered',
 								'allotedCourse':final
 							}
-						
 							console.log(JSON.stringify(final, null, 4));
 							res.status(200);
 							res.json(sendData);
+							
 					})
 				})
 

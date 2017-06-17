@@ -122,5 +122,18 @@ exports.getRegisterNo = (id) => {
 	});
 }
 
+exports.getRegisterNoAndName = (id) => {
+	return new Promise((full, rej) => {
+		User.findById(id, (err, data) => {
+			if (!err && data) {
+				full([data.regno,data.name]);
+			}
+			else {
+				rej(err);
+			}
+		});
+	});
+}
+
 exports.insertUser = userInsert;
 exports.User = User;
