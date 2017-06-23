@@ -170,6 +170,8 @@ $(document).on('ready',function(){
       </div>
     </div>
     <div class="below-navbar-wrap" style="position: relative;">
+      <div class="black-overlay-sideout">
+      </div>
       <div id="slide-out" class="side-nav-my">
         <div class="side-type-box slot z-depth-1" style="padding-right: 0px;padding-left: 0px;">
           <h6 class="center white-text" id="course-name-slide">Please select course and slot</h6>
@@ -495,13 +497,15 @@ $(document).on('click', '.delete-course-icon',function(){
               var tempSlot = slot[j];
               tempSlot = tempSlot.toLowerCase();
               console.log("tempSlot:"+tempSlot);
-
               $('.'+tempSlot+' .number').html(index);
             }
           }
           else{
             slot = slot.toLowerCase();
-            $('.'+slot+' .number').html(index);
+            slot = slot.split('+');
+            for(var j=0;j<slot.length;j++){
+            $('.'+slot[j]+' .number').html(index);
+          }
           }
           current = current.next($('.timetable-selected-subject'));
           index++;
@@ -731,14 +735,19 @@ $(".suggested-courses-but").click(function(){
 </script>
 
 <script type="text/javascript">
+$(".black-overlay-sideout").click(function(){
+  close_side();
+});
 var state=0;//0 for closed
 function open_side(){
   state=1;
+  $(".black-overlay-sideout").fadeIn();
   $(".hamburger").addClass("is-active");
   $(".side-nav-my").addClass("opened");
 }
 function close_side(){
   state=0;
+  $(".black-overlay-sideout").fadeOut();
   $(".hamburger").removeClass("is-active");
   $(".side-nav-my").removeClass("opened");
 }

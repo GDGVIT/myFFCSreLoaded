@@ -256,8 +256,8 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
     min-width: 200px;
   }
   .timetable-results{
-   
-   
+
+
   }
   .timetable-results .custom-card{
     margin-top: 2%;
@@ -532,7 +532,6 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   padding: 3%;
   font-size: 15px;
   margin-top: 0px;
-  overflow-x: scroll;
   display: block !important;
 }
 .timetable-results .custom-card-edit .save-tt{
