@@ -656,11 +656,9 @@ $(document).on('click','.timetable-results-trigger',function(){
         //var school = response.data[i].school;
         var id = response[i]._id;
 
-
-        $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+id+'"><h6 class="white-text center faculty-heading">'+faculty+'</h6><div class="center"><div class="slot-gool center">'+slot+'</div></div><div class="center"><div class="add-plus-div save-tt tooltipped" data-position="right" data-tooltip="add this course" data-crsnm="'+courseTitle+'" data-crscd="'+courseCode+'" data-slot="'+slot+'" data-count="'+count+'" data-credits="'+credits+'" data-faculty="'+faculty+'" data-id="'+id+'"data-venue="'+venue+'"><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div><br><div class=""><span class="course-venue-span slot-gool">'+venue+'</span><span class="course-count-span slot-gool tooltipped" data-position="right" data-tooltip="count of students who are taking this course">count : '+count+'</span></div></div>');
+        $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+id+'"><h6 class="white-text center faculty-heading">'+faculty+'</h6><div class="center"><div class="slot-gool center">'+slot+'</div></div><div class="center"><div class="add-plus-div save-tt" data-crsnm="'+courseTitle+'" data-crscd="'+courseCode+'" data-slot="'+slot+'" data-count="'+count+'" data-credits="'+credits+'" data-faculty="'+faculty+'" data-id="'+id+'"data-venue="'+venue+'"><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div><br><div class=""><span class="course-venue-span slot-gool">'+venue+'</span><span class="course-count-span slot-gool" >count : '+count+'</span></div></div>');
 
       }
-      initialize_toolkit();
       open_side();
     },
     error: function(){
@@ -703,12 +701,13 @@ $(".suggested-courses-but").click(function(){
           var crsnm = arr_subs[i].crsnm;
           var crscd = arr_subs[i].crscd;
           var credits= arr_subs[i].credits;
-          $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+crscd+'"><h6 class="white-text center">'+crsnm+'</h6><div class="center"><div class="slot-gool center">'+crscd+'</div></div><div class="center"><div class="add-plus-div tooltipped add-course-sugg" data-crsnm="'+crsnm+'" data-crscd="'+crscd+'" data-slot="'+crscd+'" data-credits="'+crscd+'" data-faculty="'+crscd+'" data-id="'+crscd+'"data-tooltip="load this course" data-position="right" ><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div><br><div class="right-align"><span class="course-count-span slot-gool" style="float:left;">credits : '+credits+'</span><span class="tooltipped course-count-span slot-gool" data-tooltip="count of students who are taking this course" data-position="right" style="float:none;">count : '+count+'</span></div></div>');
+          $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+crscd+'"><h6 class="white-text center">'+crsnm+'</h6><div class="center"><div class="slot-gool center">'+crscd+'</div></div><div class="center"><div class="add-plus-div add-course-sugg" data-crsnm="'+crsnm+'" data-crscd="'+crscd+'" data-slot="'+crscd+'" data-credits="'+crscd+'" data-faculty="'+crscd+'" data-id="'+crscd+'" ><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div><br><div class="right-align"><span class="course-count-span slot-gool" style="float:left;">credits : '+credits+'</span><span class="course-count-span slot-gool" style="float:none;">count : '+count+'</span></div></div>');
         }
-        initialize_toolkit();
         $(".add-course-sugg").click(function(){
 
           var crscd=$(this).attr("data-id");
+          console.log("Crscode:::");
+          console.log(crscd);
           if(crscd.substr(0,22)=="You are first among al"){
             Materialize.toast("Add your first course" , 40000);
             close_side();
@@ -756,7 +755,7 @@ $(".button-collapse").click(function(){
 </script>
 <script type="text/javascript">
 function initialize_toolkit(){
-  $('.tooltipped').tooltip({delay: 0});
+
 }
 function addToTotalCredits(credits){
   var cred=parseInt($("#totcredits").text());
