@@ -532,6 +532,10 @@ $(document).on('click','.timetable-results .close',function(){
   //$('.timetable-results').slideUp(400);
 });
 $(document).ready(function(){
+  if($(window).width()<769){
+      alert("We recommend you to use MyFFCS in a laptop for a better experience.");
+  }
+
   $('.course-list-1').select2();
   $('.faculty-list-1').select2();
   $('.slot-list-1').select2();
