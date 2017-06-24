@@ -90,7 +90,7 @@ router.get('/home', (req, res) => {
 		res.redirect('/');
 	} else {
 		//Uncomment after new xls
-		// course.staticArray(req,res);
+		//course.staticArray(req,res);
 
 
 		fs.readFile('crsnm.txt', 'utf8', function (err, contents1) {

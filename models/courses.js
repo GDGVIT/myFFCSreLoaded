@@ -528,6 +528,7 @@ exports.staticArray = (req,res)=>{
 			arr = [];
 			arr1 = [];
 			for (i = 0; i < res1.length; i++) {
+                res1[i].Crsnm = res1[i].Crsnm.replace(/\,/g,"");
 				var a = res1[i].Crscd + " - " + res1[i].Crsnm;
 				if (arr.indexOf(a) == -1) {
 					arr.push(a);
