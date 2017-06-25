@@ -394,9 +394,10 @@ $(document).on('click','.save-tt',function(){
     if($('.'+tempSlot).hasClass('selected')){
       isClashing = true;
       $("."+slot).addTemporaryClass("clash", 4000);
-      Materialize.toast("Course Clashing!",4000);
     }
   }
+  if(isClashing)
+  Materialize.toast("Course Clashinggg!",4000);
   if(!isClashing){
     show_message("Validating...");
     $.ajax({
@@ -443,14 +444,6 @@ $(document).on('click','.save-tt',function(){
         Materialize.toast("Error: Couldn't add course" , 4000);
       }
     });
-  }
-
-  else{
-    for(var i in slot){
-      tempSlot = slot[i];
-      $("."+tempSlot).addTemporaryClass("clash", 4000);
-      Materialize.toast("Course Clashing!",4000);
-    }
   }
 });
 $(document).on('click', '.delete-course-icon',function(){
@@ -504,8 +497,8 @@ $(document).on('click', '.delete-course-icon',function(){
             slot = slot.toLowerCase();
             slot = slot.split('+');
             for(var j=0;j<slot.length;j++){
-            $('.'+slot[j]+' .number').html(index);
-          }
+              $('.'+slot[j]+' .number').html(index);
+            }
           }
           current = current.next($('.timetable-selected-subject'));
           index++;
@@ -533,7 +526,7 @@ $(document).on('click','.timetable-results .close',function(){
 });
 $(document).ready(function(){
   if($(window).width()<769){
-      alert("We recommend you to use MyFFCS in a laptop for a better experience.");
+    alert("We recommend you to use MyFFCS in a laptop for a better experience.");
   }
 
   $('.course-list-1').select2();
@@ -629,7 +622,7 @@ $(document).on('change','.course-list-1',function(){
 $(document).on('click','.timetable-results-trigger',function(){
   /*if(!doneOnce)
   return;*/
-  show_message("Loading results...");
+
   var search1 = $('.course-list-1').select2('data')[0]['text'];
   var res = search1.split(" - ");
   var search1 = res[0];
@@ -637,44 +630,62 @@ $(document).on('click','.timetable-results-trigger',function(){
   if(search=="Project")
   search="NIL";
   console.log("search=="+search);
-  search = search.replace(/\+/g,"%2B");
-  $.ajax({
-    url: '/getcourse/?courseCode='+search1+'&slots='+search,
-    type: 'GET',
-    datatype: 'json',
-    success: function(response){
-      hide_message();
-      $('.timetable-results').empty();
-
-      console.log(response);
-      var courseTitle_top=response[0].Crsnm;
-      var courseCredits_top=response[0].Credits;
-      $("#course-credits-slide").text(courseCredits_top);
-      $(".course-credits-slide-span").show();
-      $("#course-name-slide").text(courseTitle_top);
-      for(i=0;i<response.length;i++){
-        var courseTitle = response[i].Crsnm;
-        var courseCode = response[i].Crscd;
-        var slot = response[i].Slot;
-        var credits = response[i].Credits;
-        var faculty = response[i].Faculty;
-        var venue= response[i].Venue;
-        var count = response[i].Count.length;
-        //var courseType = response.data[i].type;
-        //var school = response.data[i].school;
-        var id = response[i]._id;
-
-        $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+id+'"><h6 class="white-text center faculty-heading">'+faculty+'</h6><div class="center"><div class="slot-gool center">'+slot+'</div></div><div class="center"><div class="add-plus-div save-tt" data-crsnm="'+courseTitle+'" data-crscd="'+courseCode+'" data-slot="'+slot+'" data-count="'+count+'" data-credits="'+credits+'" data-faculty="'+faculty+'" data-id="'+id+'"data-venue="'+venue+'"><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div><br><div class=""><span class="course-venue-span slot-gool">'+venue+'</span><span class="course-count-span slot-gool" >count : '+count+'</span></div></div>');
-
-      }
-      open_side();
-    },
-    error: function(){
-      hide_message();
-      Materialize.toast("Some Error Found" , 4000);
-      //alert('Ajax Error');
+  //checking for clashes
+  slot = search.toLowerCase();
+  var isClashing = false;
+  slot = slot.split('+');
+  console.log(slot);
+  for(var i in slot){
+    tempSlot = slot[i];
+    console.log("tempslot:"+tempSlot);
+    if($('.'+tempSlot).hasClass('selected')){
+      isClashing = true;
+      $("."+tempSlot).addTemporaryClass("clash", 4000);
     }
-  });
+  }
+  if(isClashing)
+  Materialize.toast("Slot Clashing!",4000);
+  else{
+    show_message("Loading results...");
+    search = search.replace(/\+/g,"%2B");
+    $.ajax({
+      url: '/getcourse/?courseCode='+search1+'&slots='+search,
+      type: 'GET',
+      datatype: 'json',
+      success: function(response){
+        hide_message();
+        $('.timetable-results').empty();
+
+        console.log(response);
+        var courseTitle_top=response[0].Crsnm;
+        var courseCredits_top=response[0].Credits;
+        $("#course-credits-slide").text(courseCredits_top);
+        $(".course-credits-slide-span").show();
+        $("#course-name-slide").text(courseTitle_top);
+        for(i=0;i<response.length;i++){
+          var courseTitle = response[i].Crsnm;
+          var courseCode = response[i].Crscd;
+          var slot = response[i].Slot;
+          var credits = response[i].Credits;
+          var faculty = response[i].Faculty;
+          var venue= response[i].Venue;
+          var count = response[i].Count.length;
+          //var courseType = response.data[i].type;
+          //var school = response.data[i].school;
+          var id = response[i]._id;
+
+          $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+id+'"><h6 class="white-text center faculty-heading">'+faculty+'</h6><div class="center"><div class="slot-gool center">'+slot+'</div></div><div class="center"><div class="add-plus-div save-tt" data-crsnm="'+courseTitle+'" data-crscd="'+courseCode+'" data-slot="'+slot+'" data-count="'+count+'" data-credits="'+credits+'" data-faculty="'+faculty+'" data-id="'+id+'"data-venue="'+venue+'"><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div><br><div class=""><span class="course-venue-span slot-gool">'+venue+'</span><span class="course-count-span slot-gool" >count : '+count+'</span></div></div>');
+
+        }
+        open_side();
+      },
+      error: function(){
+        hide_message();
+        Materialize.toast("Some Error Found" , 4000);
+        //alert('Ajax Error');
+      }
+    });
+  }
 });
 
 </script>
@@ -698,6 +709,14 @@ $(".suggested-courses-but").click(function(){
       hide_message();
       console.log("Suggest courses");
       console.log(response);
+      var course_codes_reg=[];
+      var current = $('.timetable-selected-subject');
+      for(var i=1;i<=$('.timetable-selected-subject').length;i++){
+        course_codes_reg.push($(current).find(".coursecode").html());
+        current = current.next($('.timetable-selected-subject'));
+      }
+      console.log("course_codes_reg:::");
+      console.log(course_codes_reg);
       if(!response.message)
       Materialize.toast("Error: in suggesting Courses" , 40000);
       else{
@@ -709,7 +728,16 @@ $(".suggested-courses-but").click(function(){
           var crsnm = arr_subs[i].crsnm;
           var crscd = arr_subs[i].crscd;
           var credits= arr_subs[i].credits;
-          $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+crscd+'"><h6 class="white-text center">'+crsnm+'</h6><div class="center"><div class="slot-gool center">'+crscd+'</div></div><div class="center"><div class="add-plus-div add-course-sugg" data-crsnm="'+crsnm+'" data-crscd="'+crscd+'" data-slot="'+crscd+'" data-credits="'+crscd+'" data-faculty="'+crscd+'" data-id="'+crscd+'" ><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div><br><div class="right-align"><span class="course-count-span slot-gool" style="float:left;">credits : '+credits+'</span><span class="course-count-span slot-gool" style="float:none;">count : '+count+'</span></div></div>');
+          let already_present=false;
+          for(let j_crs of course_codes_reg){
+            if(j_crs===crscd){
+              already_present=true;
+            }
+          }
+          console.log("already_present::"+already_present);
+          if(!already_present){
+            $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+crscd+'"><h6 class="white-text center">'+crsnm+'</h6><div class="center"><div class="slot-gool center">'+crscd+'</div></div><div class="center"><div class="add-plus-div add-course-sugg" data-crsnm="'+crsnm+'" data-crscd="'+crscd+'" data-slot="'+crscd+'" data-credits="'+crscd+'" data-faculty="'+crscd+'" data-id="'+crscd+'" ><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div><br><div class="right-align"><span class="course-count-span slot-gool" style="float:left;">credits : '+credits+'</span><span class="course-count-span slot-gool" style="float:none;">count : '+count+'</span></div></div>');
+          }
         }
         $(".add-course-sugg").click(function(){
 
