@@ -504,8 +504,8 @@ $(document).on('click', '.delete-course-icon',function(){
             slot = slot.toLowerCase();
             slot = slot.split('+');
             for(var j=0;j<slot.length;j++){
-            $('.'+slot[j]+' .number').html(index);
-          }
+              $('.'+slot[j]+' .number').html(index);
+            }
           }
           current = current.next($('.timetable-selected-subject'));
           index++;
@@ -533,7 +533,7 @@ $(document).on('click','.timetable-results .close',function(){
 });
 $(document).ready(function(){
   if($(window).width()<769){
-      alert("We recommend you to use MyFFCS in a laptop for a better experience.");
+    alert("We recommend you to use MyFFCS in a laptop for a better experience.");
   }
 
   $('.course-list-1').select2();
@@ -698,6 +698,14 @@ $(".suggested-courses-but").click(function(){
       hide_message();
       console.log("Suggest courses");
       console.log(response);
+      var course_codes_reg=[];
+      var current = $('.timetable-selected-subject');
+      for(var i=1;i<=$('.timetable-selected-subject').length;i++){
+        course_codes_reg.push($(current).find(".coursecode").html());
+        current = current.next($('.timetable-selected-subject'));
+      }
+      console.log("course_codes_reg:::");
+      console.log(course_codes_reg);
       if(!response.message)
       Materialize.toast("Error: in suggesting Courses" , 40000);
       else{
@@ -709,7 +717,16 @@ $(".suggested-courses-but").click(function(){
           var crsnm = arr_subs[i].crsnm;
           var crscd = arr_subs[i].crscd;
           var credits= arr_subs[i].credits;
-          $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+crscd+'"><h6 class="white-text center">'+crsnm+'</h6><div class="center"><div class="slot-gool center">'+crscd+'</div></div><div class="center"><div class="add-plus-div add-course-sugg" data-crsnm="'+crsnm+'" data-crscd="'+crscd+'" data-slot="'+crscd+'" data-credits="'+crscd+'" data-faculty="'+crscd+'" data-id="'+crscd+'" ><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div><br><div class="right-align"><span class="course-count-span slot-gool" style="float:left;">credits : '+credits+'</span><span class="course-count-span slot-gool" style="float:none;">count : '+count+'</span></div></div>');
+          let already_present=false;
+          for(let j_crs of course_codes_reg){
+            if(j_crs===crscd){
+              already_present=true;
+            }
+          }
+          console.log("already_present::"+already_present);
+          if(!already_present){
+            $('.timetable-results').append('<div class="side-type-box slot z-depth-1"><input class="course-id" type="text" style="display:none" value="'+crscd+'"><h6 class="white-text center">'+crsnm+'</h6><div class="center"><div class="slot-gool center">'+crscd+'</div></div><div class="center"><div class="add-plus-div add-course-sugg" data-crsnm="'+crsnm+'" data-crscd="'+crscd+'" data-slot="'+crscd+'" data-credits="'+crscd+'" data-faculty="'+crscd+'" data-id="'+crscd+'" ><i class="fa fa-plus white-text" aria-hidden="true"></i></div></div><br><div class="right-align"><span class="course-count-span slot-gool" style="float:left;">credits : '+credits+'</span><span class="course-count-span slot-gool" style="float:none;">count : '+count+'</span></div></div>');
+          }
         }
         $(".add-course-sugg").click(function(){
 
