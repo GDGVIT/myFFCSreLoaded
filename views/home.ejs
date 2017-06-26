@@ -117,7 +117,7 @@
 
                   </div>
                   <div class="input-field col s12">
-                    <input id="reg-regnum" type="text" minlength="8" maxlength="10" pattern="^([0-9]{2})([A-Z]{3})([0-9]{3,4})$" name="regno" placeholder="Registration Number" required>
+                    <input id="reg-regnum" onkeyup="$(this).val($(this).val().toUpperCase());" type="text" minlength="8" maxlength="10" pattern="^([0-9]{2})([A-Z]{3})([0-9]{3,4})$" name="regno" placeholder="Registration Number" required>
 
                   </div>
                   <div id="invalid-entry">
@@ -133,7 +133,7 @@
                 <div class="signin-form-div">
                 <form method="post" action="/login" autocomplete="on">
                   <div class="input-field col s12">
-                    <input id="reg-regnum" type="text" name="username" placeholder="Registration Number" required minlength="8" maxlength="10" pattern="^([0-9]{2})([A-Z]{3})([0-9]{3,4})$">
+                    <input id="reg-regnum" onkeyup="$(this).val($(this).val().toUpperCase());" type="text" name="username" placeholder="Registration Number" required minlength="8" maxlength="10" pattern="^([0-9]{2})([A-Z]{3})([0-9]{3,4})$">
                    <!--  <label for="reg-regnum" data-error="Enter a valid reg num" class="active">Registration Number</label> -->
                   </div>
                   <div id="invalid-entry">
