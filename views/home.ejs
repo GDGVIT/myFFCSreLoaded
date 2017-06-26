@@ -60,7 +60,7 @@
 .fa-google-plus:hover{
   color: #d34836 !important;
 }
-  
+
   </style>
 </head>
 <body>
@@ -79,7 +79,7 @@
     ga('send', 'pageview');
   </script>
   <!-- End Google Analytics -->
-  
+
 <button class="aboutus-but modal-trigger" data-target="modal1">About Us</button>
    <div class="container">
     <div class="row">
@@ -114,11 +114,11 @@
                 <form  method="post" action="/register" autocomplete="off">
                   <div class="input-field col s12">
                     <input id="reg-name" type="text" name="name" placeholder="Name" required>
-                    
+
                   </div>
                   <div class="input-field col s12">
-                    <input id="reg-regnum" type="text" minlength="8" maxlength="10" pattern="^([0-9]{2})([a-zA-Z]{3})([0-9]{3,4})$" name="regno" placeholder="Registration Number" required>
-              
+                    <input id="reg-regnum" type="text" minlength="8" maxlength="10" pattern="^([0-9]{2})([A-Z]{3})([0-9]{3,4})$" name="regno" placeholder="Registration Number" required>
+
                   </div>
                   <div id="invalid-entry">
                   </div>
@@ -133,14 +133,14 @@
                 <div class="signin-form-div">
                 <form method="post" action="/login" autocomplete="on">
                   <div class="input-field col s12">
-                    <input id="reg-regnum" type="text" name="username" placeholder="Registration Number" required minlength="8" maxlength="10" pattern="^([0-9]{2})([a-zA-Z]{3})([0-9]{3,4})$">
+                    <input id="reg-regnum" type="text" name="username" placeholder="Registration Number" required minlength="8" maxlength="10" pattern="^([0-9]{2})([A-Z]{3})([0-9]{3,4})$">
                    <!--  <label for="reg-regnum" data-error="Enter a valid reg num" class="active">Registration Number</label> -->
                   </div>
                   <div id="invalid-entry">
                   </div>
                   <div class="input-field col s12">
                     <input id="reg-pass" type="password" name="password" class="active" placeholder="Password" required>
-                   
+
                   </div>
                   <button class="btn-sign-sub waves-effect waves-light" type="submit" name="action" required>Sign In
                   </button>
