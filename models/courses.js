@@ -167,18 +167,23 @@ exports.removeUserFromCourse = (uid, cid) => {
             if (csr) {
                 User.findOne({ 'regno': uid }, (err, data) => {
                     if (!err && data) {
-                        data.courses.splice(data.courses.indexOf(new mongoose.mongo.ObjectID(cid)), 1);
-                        data.Credits -= csr.Credits;
-                        data.save((er, usd) => {
-                            if (er)
-                                rej(er);
-                            else {
-                                csr.Count.splice(csr.Count.indexOf(uid), 1);
-                                csr.save((er2, csdc) => {
-                                    full();
-                                })
-                            }
-                        });
+						if(data.courses.indexOf(new mongoose.mongo.ObjectID(cid))>=0){
+							data.courses.splice(data.courses.indexOf(new mongoose.mongo.ObjectID(cid)), 1);
+							data.Credits -= csr.Credits;
+							data.save((er, usd) => {
+								if (er)
+									rej(er);
+								else {
+									csr.Count.splice(csr.Count.indexOf(uid), 1);
+									csr.save((er2, csdc) => {
+										full();
+									})
+								}
+							});	
+						}
+						else{
+							full()
+						}
                     }
                     else {
                         if (err)
